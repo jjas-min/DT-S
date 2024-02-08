@@ -1,21 +1,25 @@
 ﻿using UnityEngine;
 
-public class FirstPersonViewCameraDragRotate : MonoBehaviour
+public class FirstPersonViewCameraController : MonoBehaviour
 {
+    public float moveSpeed = 5.0f; // 플레이어 이동 속도
+
     public float rotateSpeed = 100.0f; // 회전 속도 조절 변수
     private Camera attachedCamera; // 현재 스크립트가 부착된 카메라
     private Vector3 prevMousePosition; // 이전 마우스 위치 저장 변수
 
     void Start()
     {
-        // 현재 스크립트가 부착된 카메라 컴포넌트를 가져옵니다.
+        // 현재 스크립트가 부착된 카메라 컴포넌트를 가져옴
         attachedCamera = GetComponent<Camera>();
     }
 
     void Update()
     {
-        // 카메라가 활성화되어 있지 않으면 회전 처리를 하지 않습니다.
+        // 카메라가 활성화되어 있지 않으면 처리를 하지 않습니다.
         if (!attachedCamera.enabled) return;
+
+        // [회전]
 
         // 마우스 버튼(일반적으로 왼쪽 버튼)이 눌렸는지 확인
         if (Input.GetMouseButtonDown(0))
@@ -39,5 +43,39 @@ public class FirstPersonViewCameraDragRotate : MonoBehaviour
             // 현재 마우스 위치를 이전 마우스 위치로 업데이트
             prevMousePosition = Input.mousePosition;
         }
+
+        // [이동]
+
+        float x = Input.GetAxis("Horizontal") * moveSpeed * Time.deltaTime; // A, D 키 혹은 좌우 화살표
+        float z = Input.GetAxis("Vertical") * moveSpeed * Time.deltaTime; // W, S 키 혹은 상하 화살표
+
+        // 플레이어 이동
+        transform.Translate(x, 0, z);
+
+        // 'e' 키를 누를 때
+        if (Input.GetKey(KeyCode.E))
+        {
+            MoveUp();
+        }
+
+        // 'q' 키를 누를 때
+        if (Input.GetKey(KeyCode.Q))
+        {
+            MoveDown();
+        }
+
+
+    }
+
+    void MoveUp()
+    {
+        // 현재 위치에서 y좌표를 올림
+        transform.position += new Vector3(0, moveSpeed * Time.deltaTime, 0);
+    }
+
+    void MoveDown()
+    {
+        // 현재 위치에서 y좌표를 내림
+        transform.position -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
     }
 }
