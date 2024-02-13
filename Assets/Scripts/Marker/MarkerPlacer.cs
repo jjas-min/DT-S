@@ -6,6 +6,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro; // TextMeshPro 네임스페이스 추가
+
 
 public class MarkerPlacer : MonoBehaviour
 {
@@ -18,6 +20,8 @@ public class MarkerPlacer : MonoBehaviour
     public GameObject informationPanel; // 정보 패널
     private FirebaseFirestore db;
     public InformationManager informationManager; // InformationManager 참조 추가
+    public TMP_InputField informationInputField; // Information 입력 필드
+    public TMP_Dropdown levelInputField; // Level 입력 필드 또는 Dropdown 컴포넌트
 
     void Start()
     {
@@ -25,13 +29,11 @@ public class MarkerPlacer : MonoBehaviour
         currentCamera = GetComponent<Camera>(); // 현재 오브젝트에 부착된 카메라 컴포넌트를 가져옵니다.
         selectionUI.SetActive(false); // 시작 시 UI 패널을 비활성화합니다.
                                       // "확인" 버튼 이벤트
-        confirmButton.onClick.AddListener(() => {
-            PlaceMarker(positionToPlaceMarker);
-            selectionUI.SetActive(false); // 패널을 비활성화합니다.
-        });
+
 
         // "취소" 버튼 이벤트
         cancelButton.onClick.AddListener(() => {
+            ResetInputFields(); // 입력 필드와 드롭다운 초기화
             selectionUI.SetActive(false); // 패널을 비활성화합니다.
         });
         // Firebase 초기화 및 Firestore 인스턴스 가져오기
@@ -54,24 +56,35 @@ public class MarkerPlacer : MonoBehaviour
             }
         }
     }
-
+    void ResetInputFields()
+    {
+        informationInputField.text = ""; // 정보 입력 필드 초기화
+        levelInputField.value = 0; // 레벨 드롭다운 초기화 (0이 첫 번째 옵션)
+    }
     void ShowSelectionUI(Vector3 hitPoint)
     {
         selectionUI.SetActive(true); // 사용자 선택 UI를 활성화합니다.
         Button confirmButton = selectionUI.GetComponentInChildren<Button>();
         confirmButton.onClick.RemoveAllListeners(); // 기존의 모든 리스너를 제거합니다.
-        confirmButton.onClick.AddListener(() => PlaceMarker(hitPoint)); // 새로운 리스너를 추가합니다.
+        confirmButton.onClick.AddListener(() => {
+            string information = informationInputField.text;
+            int level = levelInputField.value; 
+            PlaceMarker(hitPoint, information, level);
+            ResetInputFields();
+            selectionUI.SetActive(false);
+        }); // 새로운 리스너를 추가합니다.
     }
 
-    void PlaceMarker(Vector3 hitPoint)
+    void PlaceMarker(Vector3 hitPoint, string information, int level)
     {
         Vector3 placePosition = hitPoint;
 
         GameObject markerInstance = Instantiate(markerPrefab, placePosition, Quaternion.identity); // 표식을 생성합니다.
+        
         MarkerClickDetector clickDetector = markerInstance.AddComponent<MarkerClickDetector>();
         clickDetector.informationPanel = informationPanel;
         clickDetector.informationManager = this.informationManager;
-        MarkerData markerData = new MarkerData(placePosition, ""); // 정보는 나중에 추가
+        MarkerData markerData = new MarkerData(placePosition, information, level);
         clickDetector.markerId = markerData.id;
         Dictionary<string, object> markerDict = new Dictionary<string, object>
         {
@@ -81,8 +94,11 @@ public class MarkerPlacer : MonoBehaviour
                 { "y", placePosition.y },
                 { "z", placePosition.z }
             }},
-            { "information", markerData.information }
+            {"information", markerData.information},
+            {"level", markerData.level},
+            {"creationTime", Timestamp.FromDateTime(DateTime.UtcNow)} // DateTime 객체 직접 사용
         };
+        markerInstance.name = markerData.id;
         db.Collection("markers").Document(markerData.id).SetAsync(markerDict);
         selectionUI.SetActive(false); // 표식 생성 후 UI 패널을 비활성화합니다.
     }
@@ -104,18 +120,30 @@ public class MarkerPlacer : MonoBehaviour
                         Convert.ToSingle(positionData["y"]),
                         Convert.ToSingle(positionData["z"])
                     );
-                    string information = markerData["information"] != null ? markerData["information"].ToString() : "";
-                    // 마커 프리팹을 인스턴스화하고 위치 설정
-                    GameObject markerInstance = Instantiate(markerPrefab, position, Quaternion.identity);
 
-                    // 필요한 경우, 마커 인스턴스에 추가 정보 설정
-                    // 예: 마커 인스턴스에 MarkerClickDetector 컴포넌트가 추가되어 있으면 정보 패널 참조 설정
+                    // 정보, 레벨, 생성 시간 추출
+                    string information = markerData["information"] != null ? markerData["information"].ToString() : "";
+                    int level = markerData.ContainsKey("level") ? int.Parse(markerData["level"].ToString()) : 1; // 기본 레벨을 0으로 가정
+                    DateTime creationTime;
+                    if (markerData.ContainsKey("creationTime") && markerData["creationTime"] is Timestamp timestamp)
+                    {
+                        creationTime = timestamp.ToDateTime();
+                    }
+                    else
+                    {
+                        creationTime = DateTime.UtcNow; // 기본값으로 현재 시간을 사용
+                    }
+                    GameObject markerInstance = Instantiate(markerPrefab, position, Quaternion.identity);
+                    markerInstance.name = document.Id;
                     MarkerClickDetector clickDetector = markerInstance.AddComponent<MarkerClickDetector>();
                     if (clickDetector != null)
                     {
                         clickDetector.informationPanel = informationPanel;
-                        clickDetector.markerId = document.Id; // 마커 ID 설정
+                        clickDetector.markerId = document.Id;
                         clickDetector.informationManager = this.informationManager;
+
+                        // 추가 정보 설정
+                        clickDetector.SetMarkerDetails(information, level, creationTime);
                     }
                 }
             }
@@ -125,6 +153,7 @@ public class MarkerPlacer : MonoBehaviour
             }
         });
     }
+
 
 
 }
