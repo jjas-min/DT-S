@@ -30,16 +30,6 @@ public class MarkerClickDetector : MonoBehaviour
     }
     private void DisplayInformation()
     {
-        /*// InformationManager를 통해 정보를 UI에 표시
-        if (informationManager != null)
-        {
-            informationManager.DisplayInformation($"Information: {information}\nLevel: {level}\nCreated: {creationTime.ToString("yyyy-MM-dd HH:mm:ss")}");
-        }
-        else
-        {
-            Debug.LogError("InformationManager is not assigned.");
-        }
-*/
         // 정보 패널 활성화
         if (informationPanel != null)
         {

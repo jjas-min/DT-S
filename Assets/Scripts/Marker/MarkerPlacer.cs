@@ -22,6 +22,8 @@ public class MarkerPlacer : MonoBehaviour
     public InformationManager informationManager; // InformationManager 참조 추가
     public TMP_InputField informationInputField; // Information 입력 필드
     public TMP_Dropdown levelInputField; // Level 입력 필드 또는 Dropdown 컴포넌트
+    public GameObject markerContainer; // MarkerInstance GameObject에 대한 참조
+
 
     void Start()
     {
@@ -44,6 +46,7 @@ public class MarkerPlacer : MonoBehaviour
 
     void Update()
     {
+        if (!currentCamera.enabled) return;
         // 마우스 우클릭을 감지합니다.
         if (Input.GetMouseButtonDown(1))
         {
@@ -79,7 +82,7 @@ public class MarkerPlacer : MonoBehaviour
     {
         Vector3 placePosition = hitPoint;
 
-        GameObject markerInstance = Instantiate(markerPrefab, placePosition, Quaternion.identity); // 표식을 생성합니다.
+        GameObject markerInstance = Instantiate(markerPrefab, placePosition, Quaternion.identity, markerContainer.transform); // 표식을 생성합니다.
         
         MarkerClickDetector clickDetector = markerInstance.AddComponent<MarkerClickDetector>();
         clickDetector.informationPanel = informationPanel;
@@ -137,7 +140,7 @@ public class MarkerPlacer : MonoBehaviour
                     {
                         creationTime = DateTime.UtcNow; // 기본값으로 현재 시간을 사용
                     }
-                    GameObject markerInstance = Instantiate(markerPrefab, position, Quaternion.identity);
+                    GameObject markerInstance = Instantiate(markerPrefab, position, Quaternion.identity, markerContainer.transform);
                     markerInstance.name = document.Id;
                     MarkerClickDetector clickDetector = markerInstance.AddComponent<MarkerClickDetector>();
                     if (clickDetector != null)
