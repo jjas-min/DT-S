@@ -8,6 +8,7 @@ public class SensorController : MonoBehaviour
 {
     UduinoManager UduManager;
 
+    // Input
     public int temperatureF;
     public double temperatureC;
     public int light;
@@ -15,6 +16,10 @@ public class SensorController : MonoBehaviour
     public int flame;
     public int humanDetected;
     public int buttonPressed;
+    public int soundLevel;
+    // public float distance = 0;
+
+    // Output
     [Range(0, 255)] public int redIntensity;
     [Range(0, 255)] public int greenIntensity;
     [Range(0, 255)] public int blueIntensity;
@@ -38,15 +43,20 @@ public class SensorController : MonoBehaviour
         UduManager.pinMode(AnalogPin.A3, PinMode.Input);
 
         // Human Detection Sensor : Pin 2
-        UduManager.pinMode(2, PinMode.Input_pullup);
+        UduManager.pinMode(2, PinMode.Input_pullup); 
 
         // Button : Pin 4
         UduManager.pinMode(4, PinMode.Input_pullup);
+
+        // Sound Sensor : Pin A4
+        UduManager.pinMode(AnalogPin.A4, PinMode.Input);
 
         // RGB LED : Pin 9, 10, 11
         UduManager.pinMode(9, PinMode.Output);
         UduManager.pinMode(10, PinMode.Output);
         UduManager.pinMode(11, PinMode.Output);
+
+        // UduinoManager.Instance.OnDataReceived += DataReceived;
 
         // // Temperature + Humidity Sensor : Serial
         // UduManager.OnDataReceived += DataReceived;
@@ -79,15 +89,23 @@ public class SensorController : MonoBehaviour
         // Button
         buttonPressed = UduManager.digitalRead(4);
 
+        // Sound Sensor
+        soundLevel = UduManager.analogRead(AnalogPin.A4);
+
         // RGB LED
         UduManager.analogWrite(9, redIntensity);
         UduManager.analogWrite(10, greenIntensity);
         UduManager.analogWrite(11, blueIntensity);
 
         // Result Log
-        resultLog = "Temperature: " + temperatureC + " || Light: " + light + " || Water: " + waterLevel + " || Flame: " + flame + " || Human: " + humanDetected + " || Button: " + buttonPressed;
+        resultLog = "Temperature: " + temperatureC + " || Light: " + light + " || Water: " + waterLevel + " || Flame: " + flame + " || Human: " + humanDetected + " || Button: " + buttonPressed + " || Sound: " + soundLevel;
         Debug.Log(resultLog);
     }
+
+    // void DataReceived(string data, UduinoDevice baord)
+    // {
+    //     bool ok = float.TryParse(data, out distance);
+    // }
 }
 
 
