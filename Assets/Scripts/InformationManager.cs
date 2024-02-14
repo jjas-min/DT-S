@@ -66,27 +66,52 @@ public class InformationManager : MonoBehaviour
     {
         informationPanel.SetActive(false); // X 버튼 클릭 시 Information Panel 비활성화
     }
-
-   /* public void DisplayInformation()
+    public void DisplayInformation()
     {
-        var docRef = db.Collection("markers").Document(selectedMarkerId);
+        if (string.IsNullOrEmpty(selectedMarkerId))
+        {
+            Debug.LogError("Selected marker ID is not set.");
+            return;
+        }
+
+        // Firestore로부터 선택된 마커의 정보 조회
+        DocumentReference docRef = db.Collection("markers").Document(selectedMarkerId);
         docRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
         {
             if (task.IsCompleted && !task.IsFaulted)
             {
-                var snapshot = task.Result;
+                DocumentSnapshot snapshot = task.Result;
                 if (snapshot.Exists)
                 {
+                    // Firestore에서 가져온 데이터를 딕셔너리로 변환
                     Dictionary<string, object> markerData = snapshot.ToDictionary();
-                    string information = markerData.ContainsKey("information") ? markerData["information"].ToString() : "N/A";
-                    int level = markerData.ContainsKey("level") ? int.Parse(markerData["level"].ToString()) : 0;
-                    Timestamp creationTime = markerData.ContainsKey("creationTime") ? (Timestamp)markerData["creationTime"] : Timestamp.GetCurrentTimestamp();
+                    string information = markerData.ContainsKey("information") ? markerData["information"].ToString() : "No information";
+                    string level = markerData.ContainsKey("level") ? markerData["level"].ToString() : "No level";
+                    DateTime creationTime;
+                    if (markerData.ContainsKey("creationTime") && markerData["creationTime"] is Timestamp timestamp)
+                    {
+                        creationTime = timestamp.ToDateTime();
+                    }
+                    else
+                    {
+                        creationTime = DateTime.UtcNow; // 기본값으로 현재 시간을 사용
+                    }
 
+                    // UI 컴포넌트에 데이터 표시
                     informationText.text = $"Information: {information}";
                     levelText.text = $"Level: {level}";
-                    timestampText.text = $"Created: {creationTime.ToDateTime():yyyy-MM-dd HH:mm:ss}";
+                    timestampText.text = $"Created: {creationTime.ToString("yyyy-MM-dd HH:mm:ss")}";
+                }
+                else
+                {
+                    Debug.LogError("Marker data not found.");
                 }
             }
+            else
+            {
+                Debug.LogError("Failed to fetch marker information from Firestore.");
+            }
         });
-    }*/
+    }
+
 }
