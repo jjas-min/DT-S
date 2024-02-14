@@ -68,14 +68,14 @@ public class MarkerPlacer : MonoBehaviour
         confirmButton.onClick.RemoveAllListeners(); // 기존의 모든 리스너를 제거합니다.
         confirmButton.onClick.AddListener(() => {
             string information = informationInputField.text;
-            int level = levelInputField.value; 
-            PlaceMarker(hitPoint, information, level);
+            int levelIndex = levelInputField.value; 
+            PlaceMarker(hitPoint, information, levelIndex);
             ResetInputFields();
             selectionUI.SetActive(false);
         }); // 새로운 리스너를 추가합니다.
     }
 
-    void PlaceMarker(Vector3 hitPoint, string information, int level)
+    void PlaceMarker(Vector3 hitPoint, string information, int levelIndex)
     {
         Vector3 placePosition = hitPoint;
 
@@ -84,8 +84,12 @@ public class MarkerPlacer : MonoBehaviour
         MarkerClickDetector clickDetector = markerInstance.AddComponent<MarkerClickDetector>();
         clickDetector.informationPanel = informationPanel;
         clickDetector.informationManager = this.informationManager;
-        MarkerData markerData = new MarkerData(placePosition, information, level);
+
+        int actualLevel = levelIndex + 1;
+
+        MarkerData markerData = new MarkerData(placePosition, information, actualLevel);
         clickDetector.markerId = markerData.id;
+
         Dictionary<string, object> markerDict = new Dictionary<string, object>
         {
             { "id", markerData.id },
@@ -95,7 +99,7 @@ public class MarkerPlacer : MonoBehaviour
                 { "z", placePosition.z }
             }},
             {"information", markerData.information},
-            {"level", markerData.level},
+            {"level", actualLevel},
             {"creationTime", Timestamp.FromDateTime(DateTime.UtcNow)} // DateTime 객체 직접 사용
         };
         markerInstance.name = markerData.id;

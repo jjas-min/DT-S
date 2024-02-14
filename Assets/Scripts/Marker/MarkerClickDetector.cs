@@ -16,6 +16,7 @@ public class MarkerClickDetector : MonoBehaviour
         if (informationManager != null)
         {
             informationManager.SetSelectedMarkerId(markerId);
+            informationManager.DisplayInformation();
             // InformationManager를 통해 Firestore에서 정보를 조회하고 UI에 표시
         }
         // 마커 클릭 시 정보를 UI에 표시
