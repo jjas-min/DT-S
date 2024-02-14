@@ -10,6 +10,7 @@ public class MarkerClickDetector : MonoBehaviour
     public string information; // 현재 마커에 저장된 정보
     private int level;
     private DateTime creationTime;
+    private string location;
     public InformationManager informationManager;
     void OnMouseDown()
     {
@@ -22,11 +23,12 @@ public class MarkerClickDetector : MonoBehaviour
         // 마커 클릭 시 정보를 UI에 표시
         DisplayInformation();
     }
-    public void SetMarkerDetails(string information, int level, DateTime creationTime)
+    public void SetMarkerDetails(string information, int level, DateTime creationTime, string location)
     {
         this.information = information;
         this.level = level;
         this.creationTime = creationTime;
+        this.location = location;
     }
     private void DisplayInformation()
     {

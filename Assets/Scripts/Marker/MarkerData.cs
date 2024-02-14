@@ -10,14 +10,16 @@ public class MarkerData
     public string information;
     public int level;
     public DateTime creationTime; // 생성 시간
+    public string location;
 
-    public MarkerData(Vector3 position, string information, int level)
+    public MarkerData(Vector3 position, string information, int level, string location)
     {
         this.id = System.Guid.NewGuid().ToString();
         this.position = position;
         this.information = information;
         this.level = level;
         this.creationTime = DateTime.UtcNow; // 현재 UTC 시간
+        this.location = location;
     }
 }
 

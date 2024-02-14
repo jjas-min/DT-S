@@ -14,6 +14,7 @@ public class InformationManager : MonoBehaviour
     public TMP_Text informationText; // 마커 정보를 표시할 텍스트 필드
     public TMP_Text levelText; // 마커 레벨을 표시할 텍스트 필드
     public TMP_Text timestampText; // 생성 시간을 표시할 텍스트 필드
+    public TMP_Text locationText;
 
     void Start()
     {
@@ -96,11 +97,12 @@ public class InformationManager : MonoBehaviour
                     {
                         creationTime = DateTime.UtcNow; // 기본값으로 현재 시간을 사용
                     }
-
+                    string location = markerData.ContainsKey("location") ? markerData["location"].ToString() : "No location";
                     // UI 컴포넌트에 데이터 표시
                     informationText.text = $"Information: {information}";
                     levelText.text = $"Level: {level}";
                     timestampText.text = $"Created: {creationTime.ToString("yyyy-MM-dd HH:mm:ss")}";
+                    locationText.text = $"location: {location}";
                 }
                 else
                 {

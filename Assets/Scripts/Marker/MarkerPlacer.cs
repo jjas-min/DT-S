@@ -40,7 +40,6 @@ public class MarkerPlacer : MonoBehaviour
         });
         // Firebase 초기화 및 Firestore 인스턴스 가져오기
         db = FirebaseFirestore.DefaultInstance;
-        LoadMarkersFromFirestore(); // 게임 시작 시 Firestore로부터 마커 로드
 
     }
 
@@ -55,7 +54,7 @@ public class MarkerPlacer : MonoBehaviour
             if (Physics.Raycast(ray, out hit))
             {
                 // Raycast가 오브젝트에 닿으면 해당 위치에 표식을 남길 수 있는지 사용자에게 묻습니다.
-                ShowSelectionUI(hit.point);
+                ShowSelectionUI(hit.point, hit);
             }
         }
     }
@@ -64,7 +63,7 @@ public class MarkerPlacer : MonoBehaviour
         informationInputField.text = ""; // 정보 입력 필드 초기화
         levelInputField.value = 0; // 레벨 드롭다운 초기화 (0이 첫 번째 옵션)
     }
-    void ShowSelectionUI(Vector3 hitPoint)
+    void ShowSelectionUI(Vector3 hitPoint, RaycastHit hit)
     {
         selectionUI.SetActive(true); // 사용자 선택 UI를 활성화합니다.
         Button confirmButton = selectionUI.GetComponentInChildren<Button>();
@@ -72,16 +71,16 @@ public class MarkerPlacer : MonoBehaviour
         confirmButton.onClick.AddListener(() => {
             string information = informationInputField.text;
             int levelIndex = levelInputField.value; 
-            PlaceMarker(hitPoint, information, levelIndex);
+            PlaceMarker(hitPoint, information, levelIndex, hit);
             ResetInputFields();
             selectionUI.SetActive(false);
         }); // 새로운 리스너를 추가합니다.
     }
 
-    void PlaceMarker(Vector3 hitPoint, string information, int levelIndex)
+    void PlaceMarker(Vector3 hitPoint, string information, int levelIndex, RaycastHit hit)
     {
         Vector3 placePosition = hitPoint;
-
+        string location = hit.collider.gameObject.name;
         GameObject markerInstance = Instantiate(markerPrefab, placePosition, Quaternion.identity, markerContainer.transform); // 표식을 생성합니다.
         
         MarkerClickDetector clickDetector = markerInstance.AddComponent<MarkerClickDetector>();
@@ -90,7 +89,7 @@ public class MarkerPlacer : MonoBehaviour
 
         int actualLevel = levelIndex + 1;
 
-        MarkerData markerData = new MarkerData(placePosition, information, actualLevel);
+        MarkerData markerData = new MarkerData(placePosition, information, actualLevel, location);
         clickDetector.markerId = markerData.id;
 
         Dictionary<string, object> markerDict = new Dictionary<string, object>
@@ -103,63 +102,14 @@ public class MarkerPlacer : MonoBehaviour
             }},
             {"information", markerData.information},
             {"level", actualLevel},
-            {"creationTime", Timestamp.FromDateTime(DateTime.UtcNow)} // DateTime 객체 직접 사용
+            {"creationTime", Timestamp.FromDateTime(DateTime.UtcNow)}, // DateTime 객체 직접 사용
+            {"location", location }
         };
         markerInstance.name = markerData.id;
         db.Collection("markers").Document(markerData.id).SetAsync(markerDict);
         selectionUI.SetActive(false); // 표식 생성 후 UI 패널을 비활성화합니다.
     }
-    void LoadMarkersFromFirestore()
-    {
-        db.Collection("markers").GetSnapshotAsync().ContinueWithOnMainThread(task =>
-        {
-            if (task.IsCompleted && !task.IsFaulted)
-            {
-                foreach (DocumentSnapshot document in task.Result.Documents)
-                {
-                    // 마커 데이터를 딕셔너리로 변환
-                    Dictionary<string, object> markerData = document.ToDictionary();
-                    // 딕셔너리에서 위치 데이터 추출
-                    Dictionary<string, object> positionData = markerData["position"] as Dictionary<string, object>;
-                    // 위치 데이터를 사용하여 Vector3 객체 생성
-                    Vector3 position = new Vector3(
-                        Convert.ToSingle(positionData["x"]),
-                        Convert.ToSingle(positionData["y"]),
-                        Convert.ToSingle(positionData["z"])
-                    );
-
-                    // 정보, 레벨, 생성 시간 추출
-                    string information = markerData["information"] != null ? markerData["information"].ToString() : "";
-                    int level = markerData.ContainsKey("level") ? int.Parse(markerData["level"].ToString()) : 1; // 기본 레벨을 0으로 가정
-                    DateTime creationTime;
-                    if (markerData.ContainsKey("creationTime") && markerData["creationTime"] is Timestamp timestamp)
-                    {
-                        creationTime = timestamp.ToDateTime();
-                    }
-                    else
-                    {
-                        creationTime = DateTime.UtcNow; // 기본값으로 현재 시간을 사용
-                    }
-                    GameObject markerInstance = Instantiate(markerPrefab, position, Quaternion.identity, markerContainer.transform);
-                    markerInstance.name = document.Id;
-                    MarkerClickDetector clickDetector = markerInstance.AddComponent<MarkerClickDetector>();
-                    if (clickDetector != null)
-                    {
-                        clickDetector.informationPanel = informationPanel;
-                        clickDetector.markerId = document.Id;
-                        clickDetector.informationManager = this.informationManager;
-
-                        // 추가 정보 설정
-                        clickDetector.SetMarkerDetails(information, level, creationTime);
-                    }
-                }
-            }
-            else
-            {
-                Debug.LogError("Failed to load marker data from Firestore.");
-            }
-        });
-    }
+    
 
 
 
