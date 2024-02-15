@@ -17,22 +17,10 @@ public class MarkerClickDetector : MonoBehaviour
         if (informationManager != null)
         {
             informationManager.SetSelectedMarkerId(markerId);
-            informationManager.DisplayInformation();
+            informationManager.DisplayInformation(information, level, creationTime, location);
             // InformationManager를 통해 Firestore에서 정보를 조회하고 UI에 표시
+
         }
-        // 마커 클릭 시 정보를 UI에 표시
-        DisplayInformation();
-    }
-    public void SetMarkerDetails(string information, int level, DateTime creationTime, string location)
-    {
-        this.information = information;
-        this.level = level;
-        this.creationTime = creationTime;
-        this.location = location;
-    }
-    private void DisplayInformation()
-    {
-        // 정보 패널 활성화
         if (informationPanel != null)
         {
             informationPanel.SetActive(true);
@@ -42,4 +30,11 @@ public class MarkerClickDetector : MonoBehaviour
             Debug.LogError("Information Panel is not assigned.");
         }
     }
-}
+        public void SetMarkerDetails(string information, int level, DateTime creationTime, string location)
+        {
+            this.information = information;
+            this.level = level;
+            this.creationTime = creationTime;
+            this.location = location;
+        }
+    }
