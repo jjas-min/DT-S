@@ -14,6 +14,7 @@ public class InformationManager : MonoBehaviour
     public TMP_Text informationText; // 마커 정보를 표시할 텍스트 필드
     public TMP_Text levelText; // 마커 레벨을 표시할 텍스트 필드
     public TMP_Text timestampText; // 생성 시간을 표시할 텍스트 필드
+    public TMP_Text locationText;
 
     void Start()
     {
@@ -66,27 +67,15 @@ public class InformationManager : MonoBehaviour
     {
         informationPanel.SetActive(false); // X 버튼 클릭 시 Information Panel 비활성화
     }
-
-   /* public void DisplayInformation()
+    public void DisplayInformation(string information, int level, DateTime creationTime, string location)
     {
-        var docRef = db.Collection("markers").Document(selectedMarkerId);
-        docRef.GetSnapshotAsync().ContinueWithOnMainThread(task =>
-        {
-            if (task.IsCompleted && !task.IsFaulted)
-            {
-                var snapshot = task.Result;
-                if (snapshot.Exists)
-                {
-                    Dictionary<string, object> markerData = snapshot.ToDictionary();
-                    string information = markerData.ContainsKey("information") ? markerData["information"].ToString() : "N/A";
-                    int level = markerData.ContainsKey("level") ? int.Parse(markerData["level"].ToString()) : 0;
-                    Timestamp creationTime = markerData.ContainsKey("creationTime") ? (Timestamp)markerData["creationTime"] : Timestamp.GetCurrentTimestamp();
+        informationText.text = $"Information: {information}";
+        levelText.text = $"Level: {level}";
+        timestampText.text = $"Created: {creationTime.ToString("yyyy-MM-dd HH:mm:ss")}";
+        locationText.text = $"Location: {location}";
 
-                    informationText.text = $"Information: {information}";
-                    levelText.text = $"Level: {level}";
-                    timestampText.text = $"Created: {creationTime.ToDateTime():yyyy-MM-dd HH:mm:ss}";
-                }
-            }
-        });
-    }*/
-}
+        // 정보 패널 활성화
+        informationPanel.SetActive(true);
+    }
+
+   }
