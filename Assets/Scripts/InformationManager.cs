@@ -4,71 +4,78 @@ using Firebase.Firestore;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Firebase.Extensions;
 
 public class InformationManager : MonoBehaviour
 {
-    public GameObject informationPanel; // Information Panel
-    public GameObject addInformationPanel; // Information 추가 패널
-    public TextMeshProUGUI informationText; // Information을 표시하는 Text 컴포넌트
+    public GameObject informationPanel; 
     private FirebaseFirestore db;
-    public string selectedMarkerId; // 현재 선택된 마커의 ID
+    public string selectedMarkerId;
+    public TMP_Text informationText; // 마커 정보를 표시할 텍스트 필드
+    public TMP_Text levelText; // 마커 레벨을 표시할 텍스트 필드
+    public TMP_Text timestampText; // 생성 시간을 표시할 텍스트 필드
+    public TMP_Text locationText;
 
     void Start()
     {
         db = FirebaseFirestore.DefaultInstance;
         informationPanel.SetActive(false); // 시작 시 Information Panel을 비활성화
-        addInformationPanel.SetActive(false); // 시작 시 Add Information Panel을 비활성화
+
     }
 
-    public void OnAddButtonClicked()
+    public void OnEditButtonClicked()
     {
-        addInformationPanel.SetActive(true); // Add 버튼 클릭 시 Information 추가 패널 활성화
+
     }
 
     public void OnDeleteButtonClicked()
     {
-        // Information Text에서 마지막 줄 삭제
-        if (!string.IsNullOrEmpty(informationText.text))
+        // Firestore에서 마커 데이터 삭제
+        db.Collection("markers").Document(selectedMarkerId).DeleteAsync().ContinueWithOnMainThread(task =>
         {
-            string[] lines = informationText.text.Split('\n');
-            if (lines.Length > 1)
+            if (task.IsCompleted && !task.IsFaulted)
             {
-                informationText.text = string.Join("\n", lines, 0, lines.Length - 2) + "\n";
+                Debug.Log($"Marker {selectedMarkerId} deleted successfully from Firestore.");
+
+                // Unity 씬에서 마커 GameObject 삭제
+                GameObject markerGameObject = GameObject.Find(selectedMarkerId); // 예제로 Find 사용, 실제로는 더 효율적인 관리 방법 사용
+                if (markerGameObject != null)
+                {
+                    Destroy(markerGameObject);
+                    Debug.Log($"Marker GameObject {selectedMarkerId} destroyed.");
+                }
+                else
+                {
+                    Debug.LogError("Failed to find Marker GameObject to destroy.");
+                }
+
+                informationPanel.SetActive(false); // 정보 패널 비활성화
             }
             else
             {
-                informationText.text = "";
+                Debug.LogError("Error deleting marker from Firestore.");
             }
-        }
+        });
     }
+
     public void SetSelectedMarkerId(string id)
     {
         selectedMarkerId = id;
     }
+
     public void OnCloseButtonClicked()
     {
         informationPanel.SetActive(false); // X 버튼 클릭 시 Information Panel 비활성화
     }
+    public void DisplayInformation(string information, int level, DateTime creationTime, string location)
+    {
+        informationText.text = $"Information: {information}";
+        levelText.text = $"Level: {level}";
+        timestampText.text = $"Created: {creationTime.ToString("yyyy-MM-dd HH:mm:ss")}";
+        locationText.text = $"Location: {location}";
 
-    public void AddInformation(string info)
-    {
-        informationText.text += info + "\n"; // 정보 추가
-        if (string.IsNullOrEmpty(selectedMarkerId))
-        {
-            Debug.LogError("Selected marker ID is not set or empty.");
-            return; // 유효하지 않은 경우 추가 동작 중지
-        }
-        // Firestore에 정보 추가
-        DocumentReference docRef = db.Collection("markers").Document(selectedMarkerId);
-        Dictionary<string, object> update = new Dictionary<string, object>
-        {
-            { "information", informationText.text }
-        };
-        docRef.SetAsync(update, SetOptions.MergeAll);
-        db.Collection("markers").Document(selectedMarkerId).SetAsync(update, SetOptions.MergeAll);
+        // 정보 패널 활성화
+        informationPanel.SetActive(true);
     }
-    public void DisplayInformation(string info)
-    {
-        informationText.text = info;
-    }
-}
+
+   }

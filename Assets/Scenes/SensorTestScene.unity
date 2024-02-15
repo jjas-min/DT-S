@@ -235,6 +235,14 @@ MonoBehaviour:
   temperatureF: 0
   temperatureC: 0
   light: 0
+  waterLevel: 0
+  flame: 0
+  humanDetected: 0
+  buttonPressed: 0
+  soundLevel: 0
+  redIntensity: 0
+  greenIntensity: 0
+  blueIntensity: 0
 --- !u!1001 &1150155788
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -286,6 +294,10 @@ PrefabInstance:
     - target: {fileID: 4720884688345560, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
+      propertyPath: baudRate
+      value: 9600
       objectReference: {fileID: 0}
     - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: ManagerState
