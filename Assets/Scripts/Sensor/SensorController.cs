@@ -7,13 +7,15 @@ using Uduino;
 public class SensorController : MonoBehaviour
 {
     UduinoManager UduManager;
+    UduinoDevice firstDevice = null;
+    UduinoDevice secondDevice = null;
 
     // Input
     public int temperatureF;
     public double temperatureC;
-    public int light;
+    public int lightLevel;
     public int waterLevel;
-    public int flame;
+    public int flameDetected;
     public int humanDetected;
     public int buttonPressed;
     public int soundLevel;
@@ -23,38 +25,22 @@ public class SensorController : MonoBehaviour
     [Range(0, 255)] public int redIntensity;
     [Range(0, 255)] public int greenIntensity;
     [Range(0, 255)] public int blueIntensity;
+
+    // UI Components
+    [SerializeField] private Text temperatureText;
+    [SerializeField] private Text lightLevelText;
+    [SerializeField] private Text waterLevelText;
+    [SerializeField] private Text flameDetectedText;
+    [SerializeField] private Text humanDetectedText;
+    [SerializeField] private Text buttonPressedText;
+    [SerializeField] private Text soundLevelText;
+
     private string resultLog;
 
     // Start is called before the first frame update
     void Start()
     {
         UduManager = UduinoManager.Instance;
-
-        // Temperature Sensor : Pin A0
-        UduManager.pinMode(AnalogPin.A0, PinMode.Input);
-        
-        // Light Sensor : Pin A1
-        UduManager.pinMode(AnalogPin.A1, PinMode.Input);
-
-        // Water Sensor : Pin A2
-        UduManager.pinMode(AnalogPin.A2, PinMode.Input);
-
-        // Flame Sensor : Pin A3
-        UduManager.pinMode(AnalogPin.A3, PinMode.Input);
-
-        // Human Detection Sensor : Pin 2
-        UduManager.pinMode(2, PinMode.Input_pullup); 
-
-        // Button : Pin 4
-        UduManager.pinMode(4, PinMode.Input_pullup);
-
-        // Sound Sensor : Pin A4
-        UduManager.pinMode(AnalogPin.A4, PinMode.Input);
-
-        // RGB LED : Pin 9, 10, 11
-        UduManager.pinMode(9, PinMode.Output);
-        UduManager.pinMode(10, PinMode.Output);
-        UduManager.pinMode(11, PinMode.Output);
 
         // UduinoManager.Instance.OnDataReceived += DataReceived;
 
@@ -70,36 +56,153 @@ public class SensorController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Temperature Sensor
-        temperatureF = UduManager.analogRead(AnalogPin.A0);
-        temperatureC = temperatureF * 0.48828125;
+        if (UduinoManager.Instance.hasBoardConnected())
+        {
+            firstDevice = UduinoManager.Instance.GetBoard("firstArduino");
+            secondDevice = UduinoManager.Instance.GetBoard("secondArduino");
 
-        // Light Sensor
-        light = UduManager.analogRead(AnalogPin.A1);
+            // UduManager.sendCommand(secondDevice, "DisplayData");
+            // UduinoManager.Instance.sendCommand(firstDevice, "GetVariable");
+            // UduinoManager.Instance.sendCommand(secondDevice, "GetVariable");
+            // Debug.Log("Variable of the first board:" + sensorOne);
+            // Debug.Log("Variable of the second board:" + sensorTwo);
 
-        // Water Sensor
-        waterLevel = UduManager.analogRead(AnalogPin.A2);
+            // Check if the board is connected
+            if (firstDevice != null)
+            {
+                Debug.Log("Board1 is connected");
 
-        // Flame Sensor
-        flame = UduManager.analogRead(AnalogPin.A3);
+                // Temperature Sensor : Pin A0
+                UduManager.pinMode(firstDevice, AnalogPin.A0, PinMode.Input);
 
-        // Human Detection Sensor
-        humanDetected = UduManager.digitalRead(2);
+                // Light Sensor : Pin A1
+                UduManager.pinMode(firstDevice, AnalogPin.A1, PinMode.Input);
 
-        // Button
-        buttonPressed = UduManager.digitalRead(4);
+                // Water Sensor : Pin A2
+                UduManager.pinMode(firstDevice, AnalogPin.A2, PinMode.Input);
 
-        // Sound Sensor
-        soundLevel = UduManager.analogRead(AnalogPin.A4);
+                // Flame Sensor : Pin A3
+                UduManager.pinMode(firstDevice, AnalogPin.A3, PinMode.Input);
 
-        // RGB LED
-        UduManager.analogWrite(9, redIntensity);
-        UduManager.analogWrite(10, greenIntensity);
-        UduManager.analogWrite(11, blueIntensity);
+                // Human Detection Sensor : Pin 2
+                UduManager.pinMode(firstDevice, 2, PinMode.Input_pullup);
 
-        // Result Log
-        resultLog = "Temperature: " + temperatureC + " || Light: " + light + " || Water: " + waterLevel + " || Flame: " + flame + " || Human: " + humanDetected + " || Button: " + buttonPressed + " || Sound: " + soundLevel;
-        Debug.Log(resultLog);
+                // Button : Pin 4
+                UduManager.pinMode(firstDevice, 4, PinMode.Input_pullup);
+
+                // Sound Sensor : Pin A4
+                UduManager.pinMode(firstDevice, AnalogPin.A4, PinMode.Input);
+
+                // Temperature Sensor
+                temperatureF = UduManager.analogRead(firstDevice, AnalogPin.A0);
+                temperatureC = System.Math.Round(temperatureF * 0.48828125, 1);
+
+                // Light Sensor
+                lightLevel = UduManager.analogRead(firstDevice, AnalogPin.A1);
+
+                // Water Sensor
+                waterLevel = UduManager.analogRead(firstDevice, AnalogPin.A2);
+
+                // Flame Sensor
+                flameDetected = UduManager.analogRead(firstDevice, AnalogPin.A3);
+
+                // Human Detection Sensor
+                humanDetected = UduManager.digitalRead(firstDevice, 2);
+
+                // Button
+                buttonPressed = UduManager.digitalRead(firstDevice, 4);
+
+                // Sound Sensor
+                soundLevel = UduManager.analogRead(firstDevice, AnalogPin.A4);
+
+                // Result Log
+                resultLog = "Temperature: " + temperatureC + " || Light: " + lightLevel + " || Water: " + waterLevel + " || Flame: " + flameDetected + " || Human: " + humanDetected + " || Button: " + buttonPressed + " || Sound: " + soundLevel;
+                Debug.Log(resultLog);
+            }
+            if (secondDevice != null)
+            {
+                Debug.Log("Board2 is connected");
+
+                // RGB LED : Pin 9, 10, 11
+                UduManager.pinMode(secondDevice, 9, PinMode.Output);
+                UduManager.pinMode(secondDevice, 10, PinMode.Output);
+                UduManager.pinMode(secondDevice, 11, PinMode.Output);
+
+                // RGB LED
+                UduManager.analogWrite(secondDevice, 9, redIntensity);
+                UduManager.analogWrite(secondDevice, 10, greenIntensity);
+                UduManager.analogWrite(secondDevice, 11, blueIntensity);
+
+                // LCD Display
+                // lightLevel을 3자리 숫자로 변환하여 displayValue에 저장
+                string displayMessage = "DisplayData";
+
+                // Display Light Level
+                displayMessage += " " + "L:";
+                if (lightLevel.ToString().Length < 3)
+                {
+                    displayMessage += lightLevel.ToString().PadLeft(3, '0');
+                }
+                else
+                {
+                    displayMessage += lightLevel;
+                }
+
+                // Display Temperature
+                displayMessage += " " + "T:";
+                displayMessage += temperatureC;
+                
+                // Display Water Level
+                displayMessage += " " + "W:";
+                if (waterLevel.ToString().Length < 3)
+                {
+                    displayMessage += waterLevel.ToString().PadLeft(3, '0');
+                }
+                else
+                {
+                    displayMessage += waterLevel;
+                }
+                
+                Debug.Log("Display Value: " + displayMessage);
+
+                UduManager.sendCommand(secondDevice, displayMessage);
+            }
+        }
+        else
+        {
+            Debug.Log("The boards have not been detected");
+        }
+
+        // // Temperature Sensor
+        // temperatureF = UduManager.analogRead(firstDevice, AnalogPin.A0);
+        // temperatureC = temperatureF * 0.48828125;
+
+        // // Light Sensor
+        // lightLevel = UduManager.analogRead(firstDevice, AnalogPin.A1);
+
+        // // Water Sensor
+        // waterLevel = UduManager.analogRead(firstDevice, AnalogPin.A2);
+
+        // // Flame Sensor
+        // flame = UduManager.analogRead(firstDevice, AnalogPin.A3);
+
+        // // Human Detection Sensor
+        // humanDetected = UduManager.digitalRead(firstDevice, 2);
+
+        // // Button
+        // buttonPressed = UduManager.digitalRead(firstDevice, 4);
+
+        // // Sound Sensor
+        // soundLevel = UduManager.analogRead(firstDevice, AnalogPin.A4);
+
+        // // RGB LED
+        // UduManager.analogWrite(secondDevice, 9, redIntensity);
+        // UduManager.analogWrite(secondDevice, 10, greenIntensity);
+        // UduManager.analogWrite(secondDevice, 11, blueIntensity);
+
+        // // Result Log
+        // resultLog = "Temperature: " + temperatureC + " || Light: " + lightLevel + " || Water: " + waterLevel + " || Flame: " + flame + " || Human: " + humanDetected + " || Button: " + buttonPressed + " || Sound: " + soundLevel;
+        // Debug.Log(resultLog);
     }
 
     // void DataReceived(string data, UduinoDevice baord)
@@ -107,5 +210,3 @@ public class SensorController : MonoBehaviour
     //     bool ok = float.TryParse(data, out distance);
     // }
 }
-
-
