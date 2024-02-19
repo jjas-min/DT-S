@@ -14,12 +14,12 @@ public class SensorLoader : MonoBehaviour
     [SerializeField] private string sensorPackageID;
 
     // Sensor Data
-    public int temperature;
+    public double temperature;
     public int lightLevel;
     public int waterLevel;
     public int flameDetected;
-    public int humanDetected;
-    public int buttonPressed;
+    public double humanDetected;
+    // public int buttonPressed;
 
     // Start is called before the first frame update
     void Start()
@@ -51,11 +51,11 @@ public class SensorLoader : MonoBehaviour
             {
                 Dictionary<string, object> sensorData = documentSnapshot.ToDictionary();
 
-                temperature = Convert.ToInt32(sensorData["temperature"]);
+                temperature = Convert.ToDouble(sensorData["temperature"]);
                 lightLevel = Convert.ToInt32(sensorData["lightLevel"]);
                 waterLevel = Convert.ToInt32(sensorData["waterLevel"]);
                 flameDetected = Convert.ToInt32(sensorData["flameDetected"]);
-                humanDetected = Convert.ToInt32(sensorData["humanDetected"]);
+                humanDetected = Convert.ToDouble(sensorData["humanDetected"]);
                 // buttonPressed = Convert.ToInt32(sensorData["buttonPressed"]);
 
                 Debug.Log("New sensor data received: " + temperature + " " + lightLevel + " " + waterLevel + " " + flameDetected + " " + humanDetected);
