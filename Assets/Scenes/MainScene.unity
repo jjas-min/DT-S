@@ -1639,10 +1639,8 @@ GameObject:
   - component: {fileID: 573116542}
   - component: {fileID: 573116541}
   - component: {fileID: 573116540}
-  - component: {fileID: 573116544}
   - component: {fileID: 573116543}
   - component: {fileID: 573116545}
-  - component: {fileID: 573116546}
   - component: {fileID: 573116547}
   - component: {fileID: 573116548}
   m_Layer: 0
@@ -1740,18 +1738,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   rotateSpeed: 100
---- !u!114 &573116544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 573116538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: add89294e2226374e8eed9e46c5072e5, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &573116545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1881,18 +1867,6 @@ MonoBehaviour:
       enableFptlForForwardOpaque: 0
       enableBigTilePrepass: 0
       isFptlEnabled: 0
---- !u!114 &573116546
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 573116538}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b60ba64886574d4fb9c00682b551a6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!54 &573116547
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -3274,7 +3248,6 @@ GameObject:
   - component: {fileID: 963194226}
   - component: {fileID: 963194229}
   - component: {fileID: 963194230}
-  - component: {fileID: 963194231}
   m_Layer: 0
   m_Name: TopViewCamera
   m_TagString: MainCamera
@@ -3501,18 +3474,6 @@ MonoBehaviour:
       enableFptlForForwardOpaque: 0
       enableBigTilePrepass: 0
       isFptlEnabled: 0
---- !u!114 &963194231
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3b60ba64886574d4fb9c00682b551a6c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &985258686
 GameObject:
   m_ObjectHideFlags: 0
@@ -3896,7 +3857,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 857593924}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.81333333
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
