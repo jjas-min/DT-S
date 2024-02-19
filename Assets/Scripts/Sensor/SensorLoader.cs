@@ -24,13 +24,12 @@ public class SensorLoader : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        db = FirebaseFirestore.DefaultInstance;
+        // Set sensorPackageID to the name of this GameObject
+        sensorPackageID = this.gameObject.name;
 
         // Get a reference to the sensors collection
+        db = FirebaseFirestore.DefaultInstance;
         sensorDataCollection = db.Collection("SensorPackages").Document(sensorPackageID).Collection("SensorData");
-
-        // Set sensorPackageID to the name of this GameObject
-        // sensorPackageID = this.gameObject.name;
         
         // Listen for changes in the sensor data
         ListenForSensorData();
@@ -51,7 +50,7 @@ public class SensorLoader : MonoBehaviour
             foreach (DocumentSnapshot documentSnapshot in snapshot.Documents)
             {
                 Dictionary<string, object> sensorData = documentSnapshot.ToDictionary();
-                
+
                 temperature = Convert.ToInt32(sensorData["temperature"]);
                 lightLevel = Convert.ToInt32(sensorData["lightLevel"]);
                 waterLevel = Convert.ToInt32(sensorData["waterLevel"]);
