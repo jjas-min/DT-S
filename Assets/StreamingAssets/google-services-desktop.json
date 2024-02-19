@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1074610492681",
+    "project_id": "dt-s-9097c",
+    "storage_bucket": "dt-s-9097c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1074610492681:android:dcbf2fb16018b1c550afd8",
+        "android_client_info": {
+          "package_name": "com.DTS.safe"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD0KqcD8CT4ousmWiGrzEmhDAiwNb1Z3ys"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
