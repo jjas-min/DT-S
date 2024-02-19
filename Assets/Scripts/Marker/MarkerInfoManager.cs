@@ -6,21 +6,22 @@ using System.Collections;
 using System.Collections.Generic;
 using Firebase.Extensions;
 
-public class InformationManager : MonoBehaviour
+public class MarkerInfoManager : MonoBehaviour
 {
-    public GameObject informationPanel; 
+    public GameObject informationPanel;
     private FirebaseFirestore db;
-    public string selectedMarkerId;
+
     public TMP_Text informationText; // 마커 정보를 표시할 텍스트 필드
     public TMP_Text levelText; // 마커 레벨을 표시할 텍스트 필드
     public TMP_Text timestampText; // 생성 시간을 표시할 텍스트 필드
     public TMP_Text locationText;
 
+    private MarkerData markerData;
+
     void Start()
     {
         db = FirebaseFirestore.DefaultInstance;
         informationPanel.SetActive(false); // 시작 시 Information Panel을 비활성화
-
     }
 
     public void OnEditButtonClicked()
@@ -30,19 +31,20 @@ public class InformationManager : MonoBehaviour
 
     public void OnDeleteButtonClicked()
     {
-        // Firestore에서 마커 데이터 삭제
-        db.Collection("markers").Document(selectedMarkerId).DeleteAsync().ContinueWithOnMainThread(task =>
+        string id = markerData.id;
+
+        db.Collection("markers").Document(id).DeleteAsync().ContinueWithOnMainThread(task =>
         {
             if (task.IsCompleted && !task.IsFaulted)
             {
-                Debug.Log($"Marker {selectedMarkerId} deleted successfully from Firestore.");
+                Debug.Log($"Marker {id} deleted successfully from Firestore.");
 
-                // Unity 씬에서 마커 GameObject 삭제
-                GameObject markerGameObject = GameObject.Find(selectedMarkerId); // 예제로 Find 사용, 실제로는 더 효율적인 관리 방법 사용
+
+                GameObject markerGameObject = GameObject.Find(id);
                 if (markerGameObject != null)
                 {
                     Destroy(markerGameObject);
-                    Debug.Log($"Marker GameObject {selectedMarkerId} destroyed.");
+                    Debug.Log($"Marker GameObject {id} destroyed.");
                 }
                 else
                 {
@@ -58,24 +60,20 @@ public class InformationManager : MonoBehaviour
         });
     }
 
-    public void SetSelectedMarkerId(string id)
-    {
-        selectedMarkerId = id;
-    }
 
     public void OnCloseButtonClicked()
     {
         informationPanel.SetActive(false); // X 버튼 클릭 시 Information Panel 비활성화
     }
-    public void DisplayInformation(string information, int level, DateTime creationTime, string location)
-    {
-        informationText.text = $"Information: {information}";
-        levelText.text = $"Level: {level}";
-        timestampText.text = $"Created: {creationTime.ToString("yyyy-MM-dd HH:mm:ss")}";
-        locationText.text = $"Location: {location}";
 
-        // 정보 패널 활성화
+    public void DisplayInformation(MarkerData markerData)
+    {
+        this.markerData = markerData;
+        informationText.text = $"Information: {markerData.information}";
+        levelText.text = $"Level: {markerData.level}";
+        timestampText.text = $"Created: {markerData.creationTime.ToString("yyyy-MM-dd HH:mm:ss")}";
+        locationText.text = $"Location: {markerData.location}";
+
         informationPanel.SetActive(true);
     }
-
    }
