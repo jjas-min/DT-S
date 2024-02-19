@@ -52,7 +52,7 @@ public class MarkerManager : MonoBehaviour
         return null;
     }
 
-    void positionSelector() //¸¶¿ì½º ¿ìÅ¬¸¯ ½Ã ÇØ´ç ÁöÁ¡ÀÇ Æ÷ÀÎÆ®¸¦ ±âÁØÀ¸·Î ¸¶Ä¿ »ý¼º UI Ç¥½Ã
+    void positionSelector() //ï¿½ï¿½ï¿½ì½º ï¿½ï¿½Å¬ï¿½ï¿½ ï¿½ï¿½ ï¿½Ø´ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ UI Ç¥ï¿½ï¿½
     {
         Camera activeCamera = FindActiveCamera();
         if (Input.GetMouseButtonDown(1))
@@ -66,7 +66,7 @@ public class MarkerManager : MonoBehaviour
         }
     }
 
-    void ShowSelectionUI(Vector3 hitPoint, RaycastHit hit) //UI Ç¥½Ã ¹× Á¤º¸ Àü´Þ
+    void ShowSelectionUI(Vector3 hitPoint, RaycastHit hit) //UI Ç¥ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     {
         selectionUI.SetActive(true); 
         Button confirmButton = selectionUI.GetComponentInChildren<Button>();
@@ -82,7 +82,7 @@ public class MarkerManager : MonoBehaviour
         });
     }
 
-    void MarkerCreator(Vector3 hitPoint, string information, int levelIndex, RaycastHit hit) //»ý¼ºµÈ ¸¶Ä¿ Á¤º¸¸¦ DB¿¡ ÀúÀå
+    void MarkerCreator(Vector3 hitPoint, string information, int levelIndex, RaycastHit hit) //ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ DBï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
     {
         Vector3 placePosition = hitPoint;
         string location = hit.collider.gameObject.name;
@@ -103,7 +103,7 @@ public class MarkerManager : MonoBehaviour
             {"location", location }
         };
 
-        db.Collection("markers").Document(markerId).SetAsync(markerDict);
+        db.Collection("Markers").Document(markerId).SetAsync(markerDict);
         selectionUI.SetActive(false);
     }
     void MarkerLoader()

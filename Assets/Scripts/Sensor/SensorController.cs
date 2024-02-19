@@ -15,8 +15,6 @@ public class SensorController : MonoBehaviour
     UduinoDevice firstDevice = null;
     UduinoDevice secondDevice = null;
 
-    [SerializeField] private string sensorPackageID;
-
     // Input
     public int temperatureF;
     public double temperatureC;
@@ -25,7 +23,6 @@ public class SensorController : MonoBehaviour
     public int flameDetected;
     public double humanDetected;
     public int buttonPressed;
-    public int soundLevel;
     // public float distance = 0;
 
     // Output
@@ -40,7 +37,6 @@ public class SensorController : MonoBehaviour
     [SerializeField] private Text flameDetectedText;
     [SerializeField] private Text humanDetectedText;
     [SerializeField] private Text buttonPressedText;
-    [SerializeField] private Text soundLevelText;
 
     private string resultLog;
 
@@ -72,7 +68,7 @@ public class SensorController : MonoBehaviour
             // Check if the board is connected
             if (firstDevice != null)
             {
-                //Debug.Log("Board1 is connected");
+                // Debug.Log("Board1 is connected");
 
                 // Temperature Sensor : Pin A0
                 UduManager.pinMode(firstDevice, AnalogPin.A0, PinMode.Input);
@@ -91,9 +87,6 @@ public class SensorController : MonoBehaviour
 
                 // Button : Pin 4
                 UduManager.pinMode(firstDevice, 4, PinMode.Input_pullup);
-
-                // Sound Sensor : Pin A4
-                UduManager.pinMode(firstDevice, AnalogPin.A4, PinMode.Input);
 
                 // Temperature Sensor
                 temperatureF = UduManager.analogRead(firstDevice, AnalogPin.A0);
@@ -114,9 +107,6 @@ public class SensorController : MonoBehaviour
                 // Button
                 buttonPressed = UduManager.digitalRead(firstDevice, 4);
 
-                // Sound Sensor
-                soundLevel = UduManager.analogRead(firstDevice, AnalogPin.A4);
-
                 // Result Log
                 resultLog = "Temperature: " + temperatureC + " || Light: " + lightLevel + " || Water: " + waterLevel + " || Flame: " + flameDetected + " || Human: " + humanDetected + " || Button: " + buttonPressed;
 
@@ -124,7 +114,7 @@ public class SensorController : MonoBehaviour
             }
             if (secondDevice != null)
             {
-                Debug.Log("Board2 is connected");
+                // Debug.Log("Board2 is connected");
 
                 // RGB LED : Pin 9, 10, 11
                 UduManager.pinMode(secondDevice, 9, PinMode.Output);
