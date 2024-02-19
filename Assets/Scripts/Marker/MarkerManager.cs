@@ -122,7 +122,6 @@ public class MarkerManager : MonoBehaviour
                         Convert.ToSingle(positionData["y"]),
                         Convert.ToSingle(positionData["z"])
                     );
-                    Debug.Log($"Creating marker at position: {position}");
                     GameObject markerInstance = Instantiate(markerPrefab, position, Quaternion.identity, markerContainer.transform);
                     markerInstance.name = document.Id;
 
@@ -143,10 +142,6 @@ public class MarkerManager : MonoBehaviour
                     MarkerInfoManager infoManager = FindObjectOfType<MarkerInfoManager>();
                     clickDetector.markerInfoManager = infoManager;
                 }
-            }
-            else
-            {
-                Debug.LogError("Failed to load marker data from Firestore: " + task.Exception.ToString());
             }
         });
     }
