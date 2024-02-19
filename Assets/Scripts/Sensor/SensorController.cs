@@ -26,16 +26,6 @@ public class SensorController : MonoBehaviour
     public double humanDetected;
     public int buttonPressed;
     public int soundLevel;
-
-    public List<int> temperatureFs = new List<int>();
-    public List<double> temperatureCs = new List<double>();
-    public List<int> lightLevels = new List<int>();
-    public List<int> waterLevels = new List<int>();
-    public List<int> flameDetecteds = new List<int>();
-    public List<double> humanDetecteds = new List<double>();
-    public List<int> buttonPresseds = new List<int>();
-
-
     // public float distance = 0;
 
     // Output
@@ -129,7 +119,7 @@ public class SensorController : MonoBehaviour
 
                 // Result Log
                 resultLog = "Temperature: " + temperatureC + " || Light: " + lightLevel + " || Water: " + waterLevel + " || Flame: " + flameDetected + " || Human: " + humanDetected + " || Button: " + buttonPressed;
-                Datawrite(temperatureC, lightLevel, waterLevel, flameDetected, humanDetected);
+
                 //Debug.Log(resultLog);
             }
             if (secondDevice != null)
@@ -183,9 +173,8 @@ public class SensorController : MonoBehaviour
         }
         else
         {
-            //Debug.Log("The boards have not been detected");
+            Debug.Log("The boards have not been detected");
         }
-        if (firstDevice != null && temperatureCs.Count == 300) uploadToDB();
 
     }
 
@@ -193,66 +182,5 @@ public class SensorController : MonoBehaviour
     //{
     //    bool ok = float.TryParse(data, out distance);
     //}
-
-    private void Datawrite(double temperatureC, int lightLevel, int waterLevel, int flameDetected, double humanDetected)
-    {
-        temperatureCs.Add(temperatureC);
-        lightLevels.Add(lightLevel);
-        waterLevels.Add(waterLevel);
-        flameDetecteds.Add(flameDetected);
-        humanDetecteds.Add(humanDetected);
-        return;
-    }
-
-    private void uploadToDB()
-    {
-        Debug.Log("DB Uploading..");
-        Timestamp tm = Timestamp.FromDateTime(DateTime.UtcNow);
-        Dictionary<string, object> sensorDict = new Dictionary<string, object>
-        {
-            {"createdTime",     tm}, // DateTime ???? ???? ????
-            {"temperature",     (GetAverage(temperatureCs) * 100) / 100 },
-            {"lightLevel",      GetAverage(lightLevels) },
-            {"waterLevel",      GetAverage(waterLevels) },
-            {"flameDetected",   GetAverage(flameDetecteds) },
-            {"humanDetected",   (GetAverage(humanDetecteds) * 100) / 100 },
-        };
-        db.Collection("sensorPackages").Document(sensorPackageID).Collection("sensorData").Document(tm.ToString()).SetAsync(sensorDict);
-        resetLists();
-        return;
-    }
-
-    private double GetAverage(List<double> list)
-    {
-        double result = 0;
-        foreach (var itm in list)
-        {
-            result += itm;
-        }
-
-        result /= list.Count;
-        return result;
-    }
-
-    private int GetAverage(List<int> list)
-    {
-        int result = 0;
-        foreach (var itm in list)
-        {
-            result += itm;
-        }
-
-        result /= list.Count;
-        return result;
-    }
-
-    private void resetLists() {
-        temperatureCs.Clear();
-        waterLevels.Clear();
-        lightLevels.Clear();
-        flameDetecteds.Clear();
-        humanDetecteds.Clear();
-        return;
-    }
     
 }

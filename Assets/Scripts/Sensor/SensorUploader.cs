@@ -134,7 +134,7 @@ public class SensorUploader : MonoBehaviour
             }
             if (secondDevice != null)
             {
-                Debug.Log("Board2 is connected");
+                // Debug.Log("Board2 is connected");
 
                 // RGB LED : Pin 9, 10, 11
                 UduManager.pinMode(secondDevice, 9, PinMode.Output);
@@ -176,7 +176,7 @@ public class SensorUploader : MonoBehaviour
                     displayMessage += waterLevel;
                 }
 
-                Debug.Log("Display Value: " + displayMessage);
+                // Debug.Log("Display Value: " + displayMessage);
 
                 UduManager.sendCommand(secondDevice, displayMessage);
             }
