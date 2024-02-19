@@ -8,7 +8,7 @@ using Firebase;
 using Firebase.Firestore;
 using Firebase.Extensions;
 
-public class SensorController : MonoBehaviour
+public class SensorUploader : MonoBehaviour
 {
     private FirebaseFirestore db;
     UduinoManager UduManager;
