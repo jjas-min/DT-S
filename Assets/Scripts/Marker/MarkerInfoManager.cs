@@ -33,24 +33,11 @@ public class MarkerInfoManager : MonoBehaviour
     {
         string id = markerData.id;
 
-        db.Collection("markers").Document(id).DeleteAsync().ContinueWithOnMainThread(task =>
+        db.Collection("Markers").Document(id).DeleteAsync().ContinueWithOnMainThread(task =>
         {
             if (task.IsCompleted && !task.IsFaulted)
             {
                 Debug.Log($"Marker {id} deleted successfully from Firestore.");
-
-
-                GameObject markerGameObject = GameObject.Find(id);
-                if (markerGameObject != null)
-                {
-                    Destroy(markerGameObject);
-                    Debug.Log($"Marker GameObject {id} destroyed.");
-                }
-                else
-                {
-                    Debug.LogError("Failed to find Marker GameObject to destroy.");
-                }
-
                 informationPanel.SetActive(false); // 정보 패널 비활성화
             }
             else
