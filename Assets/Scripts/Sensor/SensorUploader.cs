@@ -34,7 +34,7 @@ public class SensorUploader : MonoBehaviour
     public List<int> flameDetecteds = new List<int>();
     public List<double> humanDetecteds = new List<double>();
     public List<int> buttonPresseds = new List<int>();
-
+    private float elapsedTime = 0f;
 
     // public float distance = 0;
 
@@ -185,8 +185,13 @@ public class SensorUploader : MonoBehaviour
         {
             //Debug.Log("The boards have not been detected");
         }
-        if (firstDevice != null && temperatureCs.Count == 3000) uploadToDB();
+        if (firstDevice != null && elapsedTime >= 10f)
+        {
+            uploadToDB();
+            elapsedTime = 0f;
+        }
 
+        elapsedTime += Time.deltaTime;
     }
 
     //void DataReceived(string data, UduinoDevice baord)
