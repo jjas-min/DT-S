@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 2759.214, g: 2100.7444, b: 2272.762, a: 1}
+  m_IndirectSpecularColor: {r: 2520.8235, g: 1788.8303, b: 1609.6917, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1795,15 +1795,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b60ba64886574d4fb9c00682b551a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markerPrefab: {fileID: 1955557008961681151, guid: d8c0632d195a4ba43b964738d519748a, type: 3}
-  selectionUI: {fileID: 1813440576}
-  confirmButton: {fileID: 1455975314}
-  cancelButton: {fileID: 582463083}
-  informationPanel: {fileID: 1957513902}
-  informationManager: {fileID: 1270499679}
-  informationInputField: {fileID: 217914401}
-  levelInputField: {fileID: 1314806633}
-  markerContainer: {fileID: 33014850}
 --- !u!54 &573116547
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -1882,7 +1873,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1270499680}
-  - {fileID: 1447060244}
+  - {fileID: 1579712267}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &582463081
@@ -3468,15 +3459,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b60ba64886574d4fb9c00682b551a6c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  markerPrefab: {fileID: 1955557008961681151, guid: d8c0632d195a4ba43b964738d519748a, type: 3}
-  selectionUI: {fileID: 1813440576}
-  confirmButton: {fileID: 1455975314}
-  cancelButton: {fileID: 582463083}
-  informationPanel: {fileID: 1957513902}
-  informationManager: {fileID: 1270499679}
-  informationInputField: {fileID: 217914401}
-  levelInputField: {fileID: 1314806633}
-  markerContainer: {fileID: 33014850}
 --- !u!1 &985258686
 GameObject:
   m_ObjectHideFlags: 0
@@ -4429,57 +4411,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1447060243
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1447060244}
-  - component: {fileID: 1447060245}
-  m_Layer: 0
-  m_Name: MarkerManager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1447060244
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1447060243}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 577898087}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1447060245
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1447060243}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9ca1cfe03bfb5644badc026706271d37, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  selectionUI: {fileID: 1813440576}
-  confirmButton: {fileID: 1455975314}
-  cancelButton: {fileID: 582463083}
-  informationInputField: {fileID: 217914401}
-  levelInputField: {fileID: 1314806633}
-  markerContainer: {fileID: 33014850}
-  markerPrefab: {fileID: 1955557008961681151, guid: d8c0632d195a4ba43b964738d519748a, type: 3}
 --- !u!1 &1455975312
 GameObject:
   m_ObjectHideFlags: 0
@@ -4885,6 +4816,57 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1556854493}
   m_CullTransparentMesh: 1
+--- !u!1 &1579712266
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1579712267}
+  - component: {fileID: 1579712268}
+  m_Layer: 0
+  m_Name: MarkerManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1579712267
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579712266}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 577898087}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1579712268
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1579712266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ca1cfe03bfb5644badc026706271d37, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionUI: {fileID: 1813440576}
+  confirmButton: {fileID: 1455975314}
+  cancelButton: {fileID: 582463083}
+  informationInputField: {fileID: 217914401}
+  levelInputField: {fileID: 1314806633}
+  markerContainer: {fileID: 33014850}
+  markerPrefab: {fileID: 1955557008961681151, guid: d8c0632d195a4ba43b964738d519748a, type: 3}
 --- !u!1 &1692523584
 GameObject:
   m_ObjectHideFlags: 0
@@ -4969,7 +4951,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1270499679}
-        m_TargetAssemblyTypeName: InformationManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: MarkerInfoManager, Assembly-CSharp
         m_MethodName: OnCloseButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -5236,7 +5218,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1270499679}
-        m_TargetAssemblyTypeName: InformationManager, Assembly-CSharp
+        m_TargetAssemblyTypeName: MarkerInfoManager, Assembly-CSharp
         m_MethodName: OnDeleteButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -5334,7 +5316,7 @@ GameObject:
   - component: {fileID: 1813440578}
   - component: {fileID: 1813440577}
   m_Layer: 5
-  m_Name: MarkerUI
+  m_Name: MarkerInputUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
