@@ -1,25 +1,23 @@
 using UnityEngine;
 using System;
-using System.Collections;
-using System.Collections.Generic;
-[System.Serializable]
-public class MarkerData
+
+public class MarkerData : MonoBehaviour
 {
     public string id;
     public Vector3 position;
     public string information;
     public int level;
-    public DateTime creationTime; // 생성 시간
+    public DateTime creationTime;
     public string location;
 
-    public MarkerData(Vector3 position, string information, int level, string location)
+
+    public void SetData(string id, Vector3 position, string information, int level, DateTime creationTime, string location)
     {
-        this.id = System.Guid.NewGuid().ToString();
+        this.id = id;
         this.position = position;
         this.information = information;
         this.level = level;
-        this.creationTime = DateTime.UtcNow; // 현재 UTC 시간
+        this.creationTime = creationTime;
         this.location = location;
     }
 }
-
