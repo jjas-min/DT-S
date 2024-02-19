@@ -25,7 +25,6 @@ public class SensorUploader : MonoBehaviour
     public int flameDetected;
     public double humanDetected;
     public int buttonPressed;
-    public int soundLevel;
 
     public List<int> temperatureFs = new List<int>();
     public List<double> temperatureCs = new List<double>();
@@ -42,15 +41,6 @@ public class SensorUploader : MonoBehaviour
     [Range(0, 255)] public int redIntensity;
     [Range(0, 255)] public int greenIntensity;
     [Range(0, 255)] public int blueIntensity;
-
-    // UI Components
-    [SerializeField] private Text temperatureText;
-    [SerializeField] private Text lightLevelText;
-    [SerializeField] private Text waterLevelText;
-    [SerializeField] private Text flameDetectedText;
-    [SerializeField] private Text humanDetectedText;
-    [SerializeField] private Text buttonPressedText;
-    [SerializeField] private Text soundLevelText;
 
     private string resultLog;
 
@@ -102,9 +92,6 @@ public class SensorUploader : MonoBehaviour
                 // Button : Pin 4
                 UduManager.pinMode(firstDevice, 4, PinMode.Input_pullup);
 
-                // Sound Sensor : Pin A4
-                UduManager.pinMode(firstDevice, AnalogPin.A4, PinMode.Input);
-
                 // Temperature Sensor
                 temperatureF = UduManager.analogRead(firstDevice, AnalogPin.A0);
                 temperatureC = System.Math.Round(temperatureF * 0.48828125, 1);
@@ -123,9 +110,6 @@ public class SensorUploader : MonoBehaviour
 
                 // Button
                 buttonPressed = UduManager.digitalRead(firstDevice, 4);
-
-                // Sound Sensor
-                soundLevel = UduManager.analogRead(firstDevice, AnalogPin.A4);
 
                 // Result Log
                 resultLog = "Temperature: " + temperatureC + " || Light: " + lightLevel + " || Water: " + waterLevel + " || Flame: " + flameDetected + " || Human: " + humanDetected + " || Button: " + buttonPressed;
