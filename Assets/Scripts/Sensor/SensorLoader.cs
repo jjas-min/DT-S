@@ -28,33 +28,36 @@ public class SensorLoader : MonoBehaviour
 
         // Get a reference to the sensors collection
         sensorDataCollection = db.Collection("SensorPackages").Document(sensorPackageID).Collection("SensorData");
+
+        // Set sensorPackageID to the name of this GameObject
+        sensorPackageID = this.gameObject.name;
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     // Listen for changes in the sensor data
     public void ListenForSensorData()
     {
-        sensorDataCollection.Listen(snapshot =>
+        Query query = sensorDataCollection.OrderByDescending("createdTime").Limit(1);
+        ListenerRegistration listener = query.Listen(snapshot =>
         {
-            foreach (DocumentChange change in snapshot.DocumentChanges)
+            foreach (DocumentSnapshot documentSnapshot in snapshot.Documents)
             {
-                if (change.Type == DocumentChange.Type.Added)
-                {
-                    Debug.Log("New Sensor Data: " + change.Document.Data);
-                    Dictionary<string, object> sensorData = change.Document.ToDictionary();
-                    temperature = Convert.ToInt32(sensorData["temperature"]);
-                    lightLevel = Convert.ToInt32(sensorData["lightLevel"]);
-                    waterLevel = Convert.ToInt32(sensorData["waterLevel"]);
-                    flameDetected = Convert.ToInt32(sensorData["flameDetected"]);
-                    humanDetected = Convert.ToInt32(sensorData["humanDetected"]);
-                    // buttonPressed = Convert.ToInt32(sensorData["buttonPressed"]);
-                }
+                Dictionary<string, object> sensorData = documentSnapshot.ToDictionary();
+                temperature = Convert.ToInt32(sensorData["temperature"]);
+                lightLevel = Convert.ToInt32(sensorData["lightLevel"]);
+                waterLevel = Convert.ToInt32(sensorData["waterLevel"]);
+                flameDetected = Convert.ToInt32(sensorData["flameDetected"]);
+                humanDetected = Convert.ToInt32(sensorData["humanDetected"]);
+                // buttonPressed = Convert.ToInt32(sensorData["buttonPressed"]);
+
+                Debug.Log("New sensor data received: " + temperature + " " + lightLevel + " " + waterLevel + " " + flameDetected + " " + humanDetected);
             }
         });
     }
 }
+

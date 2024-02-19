@@ -220,7 +220,7 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 1169019389771402, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
   m_PrefabInstance: {fileID: 1150155788}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &778264508
+--- !u!114 &778264511
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -229,20 +229,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 778264505}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d9bd6662dc9f6864e80f0dc11662a28f, type: 3}
+  m_Script: {fileID: 11500000, guid: e0f54ae3ea663524aae1e2ebf037476d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  temperatureF: 0
-  temperatureC: 0
-  light: 0
+  sensorPackageID: Hallway_1
+  temperature: 0
+  lightLevel: 0
   waterLevel: 0
-  flame: 0
+  flameDetected: 0
   humanDetected: 0
   buttonPressed: 0
-  soundLevel: 0
-  redIntensity: 0
-  greenIntensity: 0
-  blueIntensity: 0
 --- !u!1001 &1150155788
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -325,7 +321,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 1169019389771402, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 778264508}
+      addedObject: {fileID: 778264511}
   m_SourcePrefab: {fileID: 100100000, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
 --- !u!1 &1427051098
 GameObject:
