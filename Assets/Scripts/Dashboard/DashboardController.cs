@@ -5,37 +5,39 @@ public class DashboardController : MonoBehaviour
     public GameObject markerPanel;
     public GameObject issuePanel;
     private bool isDashboardVisible = false;
-
+    public GameObject DashboardButton;
     // Start is called before the first frame update
     void Start()
     {
-        // Dashboard PanelÀ» Ã³À½¿¡´Â ¼û±è
+        // Dashboard Panelï¿½ï¿½ Ã³ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         markerPanel.SetActive(false);
         issuePanel.SetActive(false);
     }
 
-    // Dashboard ¹öÆ°À» ´©¸¦ ¶§ È£ÃâµÇ´Â ÇÔ¼ö
+    // Dashboard ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ È£ï¿½ï¿½Ç´ï¿½ ï¿½Ô¼ï¿½
     public void OnClickDashboardButton()
     {
-        // Dashboard PanelÀÌ ÇöÀç º¸¿©Áö´ÂÁö È®ÀÎ
+        // Dashboard Panelï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         if (!isDashboardVisible)
         {
-            // Marker PanelÀ» º¸¿©ÁÜ
+            // Marker Panelï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
             isDashboardVisible = true;
             markerPanel.SetActive(true);
+            DashboardButton.SetActive(false);
         }
     }
 
-    // Close ¹öÆ°À» ´©¸£¸é È£ÃâµÇ´Â ÇÔ¼ö
+    // Close ï¿½ï¿½Æ°ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ È£ï¿½ï¿½Ç´ï¿½ ï¿½Ô¼ï¿½
     public void CloseDashboard()
     {
-        // Dashboard PanelÀ» ¼û±è
+        // Dashboard Panelï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         isDashboardVisible = false;
         markerPanel.SetActive(false);
         issuePanel.SetActive(false);
+        DashboardButton.SetActive(true);
     }
 
-    // Panel ¹Ù²ãÁÖ´Â ÇÔ¼ö
+    // Panel ï¿½Ù²ï¿½ï¿½Ö´ï¿½ ï¿½Ô¼ï¿½
     public void ToggleDashboard()
     {
         // Toggle Panel
