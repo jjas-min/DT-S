@@ -105,7 +105,7 @@ public class SensorUploader : MonoBehaviour
     private void UploadToDB()
     {
         Debug.Log("DB Uploading...");
-        Timestamp createdTime = Timestamp.FromDateTime(DateTime.UtcNow);
+        Timestamp createdTime = Timestamp.FromDateTime(DateTime.Now);
 
         Dictionary<string, object> sensorDict = new Dictionary<string, object>
         {
@@ -176,7 +176,7 @@ public class SensorUploader : MonoBehaviour
 
             alertLog += "Flame: " + sensorDict["flameDetected"] + " ";
         }
-        
+
         if (Convert.ToDouble(sensorDict["humanDetected"]) > 0.5)
         {
             alertDict.Add("humanDetected", Convert.ToDouble(sensorDict["humanDetected"]));
