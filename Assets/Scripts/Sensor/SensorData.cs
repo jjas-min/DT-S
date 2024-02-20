@@ -4,11 +4,19 @@ using UnityEngine;
 
 public class SensorData : MonoBehaviour
 {
+    // Sensor data
     [SerializeField] private double temperature;
     [SerializeField] private int lightLevel;
     [SerializeField] private int waterLevel;
     [SerializeField] private int flameDetected;
     [SerializeField] private double humanDetected;
+
+    private string sensorPackageID;
+
+    void Start()
+    {
+        sensorPackageID = this.gameObject.name;
+    }
 
     // Getters
     public double GetTemperature()
@@ -34,6 +42,11 @@ public class SensorData : MonoBehaviour
     public double GetHumanDetected()
     {
         return humanDetected;
+    }
+
+    public string GetSensorPackageID()
+    {
+        return sensorPackageID;
     }
 
     // Set the sensor data
