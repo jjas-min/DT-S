@@ -16,20 +16,16 @@ public class SensorLoader : MonoBehaviour
     UduinoManager UduManager;
 
     [SerializeField] private string sensorPackageID;
-
-    // Sensor Data
-    [SerializeField] private double temperature;
-    [SerializeField] private int lightLevel;
-    [SerializeField] private int waterLevel;
-    [SerializeField] private int flameDetected;
-    [SerializeField] private double humanDetected;
-    // public int buttonPressed;
+    private SensorData sensorData;
 
     // Start is called before the first frame update
     void Start()
     {
         // Set sensorPackageID to the name of this GameObject
         sensorPackageID = this.gameObject.name;
+
+        // Find the SensorData component
+        sensorData = GetComponent<SensorData>();
 
         // Get a reference to the sensors collection
         db = FirebaseFirestore.DefaultInstance;
@@ -55,16 +51,15 @@ public class SensorLoader : MonoBehaviour
         {
             foreach (DocumentSnapshot documentSnapshot in snapshot.Documents)
             {
-                Dictionary<string, object> sensorData = documentSnapshot.ToDictionary();
+                Dictionary<string, object> receivedSensorData = documentSnapshot.ToDictionary();
 
-                temperature = Convert.ToDouble(sensorData["temperature"]);
-                lightLevel = Convert.ToInt32(sensorData["lightLevel"]);
-                waterLevel = Convert.ToInt32(sensorData["waterLevel"]);
-                flameDetected = Convert.ToInt32(sensorData["flameDetected"]);
-                humanDetected = Convert.ToDouble(sensorData["humanDetected"]);
-                // buttonPressed = Convert.ToInt32(sensorData["buttonPressed"]);
+                sensorData.SetSensorData(temperature: Convert.ToDouble(receivedSensorData["temperature"], System.Globalization.CultureInfo.InvariantCulture),
+                                        lightLevel: Convert.ToInt32(receivedSensorData["lightLevel"]),
+                                        waterLevel: Convert.ToInt32(receivedSensorData["waterLevel"]),
+                                        flameDetected: Convert.ToInt32(receivedSensorData["flameDetected"]),
+                                        humanDetected: Convert.ToDouble(receivedSensorData["humanDetected"], System.Globalization.CultureInfo.InvariantCulture));
 
-                Debug.Log("New sensor data received: " + temperature + " " + lightLevel + " " + waterLevel + " " + flameDetected + " " + humanDetected);
+                Debug.Log("New sensor data received: " + receivedSensorData["temperature"] + " " + receivedSensorData["lightLevel"] + " " + receivedSensorData["waterLevel"] + " " + receivedSensorData["flameDetected"] + " " + receivedSensorData["humanDetected"]);
             
                 if (outputDevice != null)
                 {
@@ -96,28 +91,28 @@ public class SensorLoader : MonoBehaviour
 
         // Display Light Level
         displayMessage += " " + "L:";
-        if (lightLevel.ToString().Length < 3)
+        if (sensorData.GetLightLevel().ToString().Length < 3)
         {
-            displayMessage += lightLevel.ToString().PadLeft(3, '0');
+            displayMessage += sensorData.GetLightLevel().ToString().PadLeft(3, '0');
         }
         else
         {
-            displayMessage += lightLevel;
+            displayMessage += sensorData.GetLightLevel();
         }
 
         // Display Temperature
         displayMessage += " " + "T:";
-        displayMessage += temperature;
+        displayMessage += sensorData.GetTemperature();
 
         // Display Water Level
         displayMessage += " " + "W:";
-        if (waterLevel.ToString().Length < 3)
+        if (sensorData.GetWaterLevel().ToString().Length < 3)
         {
-            displayMessage += waterLevel.ToString().PadLeft(3, '0');
+            displayMessage += sensorData.GetWaterLevel().ToString().PadLeft(3, '0');
         }
         else
         {
-            displayMessage += waterLevel;
+            displayMessage += sensorData.GetWaterLevel();
         }
 
         // Debug.Log("Display Value: " + displayMessage);
