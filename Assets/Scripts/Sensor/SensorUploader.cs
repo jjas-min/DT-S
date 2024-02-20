@@ -11,9 +11,11 @@ using Firebase.Extensions;
 public class SensorUploader : MonoBehaviour
 {
     private FirebaseFirestore db;
+    private float elapsedTime = 0f;
+
     UduinoManager UduManager;
-    UduinoDevice firstDevice = null;
-    UduinoDevice secondDevice = null;
+    UduinoDevice inputDevice = null;
+    UduinoDevice outputDevice = null;
 
     [SerializeField] private string sensorPackageID;
 
@@ -33,7 +35,6 @@ public class SensorUploader : MonoBehaviour
     public List<int> flameDetecteds = new List<int>();
     public List<double> humanDetecteds = new List<double>();
     public List<int> buttonPresseds = new List<int>();
-    private float elapsedTime = 0f;
 
     // public float distance = 0;
 
@@ -50,10 +51,8 @@ public class SensorUploader : MonoBehaviour
         db = FirebaseFirestore.DefaultInstance;
         UduManager = UduinoManager.Instance;
 
+        sensorPackageID = this.gameObject.name;
         // UduinoManager.Instance.OnDataReceived += DataReceived;
-
-        // // Temperature + Humidity Sensor : Serial
-        // UduManager.OnDataReceived += DataReceived;
     }
 
     // void DataReceived(string value, UduinoDevice board)
@@ -66,112 +65,22 @@ public class SensorUploader : MonoBehaviour
     {
         if (UduinoManager.Instance.hasBoardConnected())
         {
-            firstDevice = UduinoManager.Instance.GetBoard("firstArduino");
-            secondDevice = UduinoManager.Instance.GetBoard("secondArduino");
+            inputDevice = UduinoManager.Instance.GetBoard(sensorPackageID + "_in");
+            outputDevice = UduinoManager.Instance.GetBoard(sensorPackageID + "_out");
 
             // Check if the board is connected
-            if (firstDevice != null)
+            if (inputDevice != null)
             {
-                //Debug.Log("Board1 is connected");
-
-                // Temperature Sensor : Pin A0
-                UduManager.pinMode(firstDevice, AnalogPin.A0, PinMode.Input);
-
-                // Light Sensor : Pin A1
-                UduManager.pinMode(firstDevice, AnalogPin.A1, PinMode.Input);
-
-                // Water Sensor : Pin A2
-                UduManager.pinMode(firstDevice, AnalogPin.A2, PinMode.Input);
-
-                // Flame Sensor : Pin A3
-                UduManager.pinMode(firstDevice, AnalogPin.A3, PinMode.Input);
-
-                // Human Detection Sensor : Pin 2
-                UduManager.pinMode(firstDevice, 2, PinMode.Input_pullup);
-
-                // Button : Pin 4
-                UduManager.pinMode(firstDevice, 4, PinMode.Input_pullup);
-
-                // Temperature Sensor
-                temperatureF = UduManager.analogRead(firstDevice, AnalogPin.A0);
-                temperatureC = System.Math.Round(temperatureF * 0.48828125, 1);
-
-                // Light Sensor
-                lightLevel = UduManager.analogRead(firstDevice, AnalogPin.A1);
-
-                // Water Sensor
-                waterLevel = UduManager.analogRead(firstDevice, AnalogPin.A2);
-
-                // Flame Sensor
-                flameDetected = UduManager.analogRead(firstDevice, AnalogPin.A3);
-
-                // Human Detection Sensor
-                humanDetected = (double)(UduManager.digitalRead(firstDevice, 2));
-
-                // Button
-                buttonPressed = UduManager.digitalRead(firstDevice, 4);
-
-                // Result Log
-                resultLog = "Temperature: " + temperatureC + " || Light: " + lightLevel + " || Water: " + waterLevel + " || Flame: " + flameDetected + " || Human: " + humanDetected + " || Button: " + buttonPressed;
-                dataAdd(temperatureC, lightLevel, waterLevel, flameDetected, humanDetected);
-                //Debug.Log(resultLog);
-            }
-            if (secondDevice != null)
-            {
-                // Debug.Log("Board2 is connected");
-
-                // RGB LED : Pin 9, 10, 11
-                UduManager.pinMode(secondDevice, 9, PinMode.Output);
-                UduManager.pinMode(secondDevice, 10, PinMode.Output);
-                UduManager.pinMode(secondDevice, 11, PinMode.Output);
-
-                // RGB LED
-                UduManager.analogWrite(secondDevice, 9, redIntensity);
-                UduManager.analogWrite(secondDevice, 10, greenIntensity);
-                UduManager.analogWrite(secondDevice, 11, blueIntensity);
-
-                // LCD Display
-                // lightLevel을 3자리 숫자로 변환하여 displayValue에 저장
-                string displayMessage = "DisplayData";
-
-                // Display Light Level
-                displayMessage += " " + "L:";
-                if (lightLevel.ToString().Length < 3)
-                {
-                    displayMessage += lightLevel.ToString().PadLeft(3, '0');
-                }
-                else
-                {
-                    displayMessage += lightLevel;
-                }
-
-                // Display Temperature
-                displayMessage += " " + "T:";
-                displayMessage += temperatureC;
-
-                // Display Water Level
-                displayMessage += " " + "W:";
-                if (waterLevel.ToString().Length < 3)
-                {
-                    displayMessage += waterLevel.ToString().PadLeft(3, '0');
-                }
-                else
-                {
-                    displayMessage += waterLevel;
-                }
-
-                // Debug.Log("Display Value: " + displayMessage);
-
-                UduManager.sendCommand(secondDevice, displayMessage);
+                ProcessInputData();
             }
         }
         else
         {
-            //Debug.Log("The boards have not been detected");
+            Debug.Log("The boards have not been detected");
         }
-        if (firstDevice != null && elapsedTime >= 10f)
+        if (inputDevice != null && elapsedTime >= 10f)
         {
-            uploadToDB();
+            UploadToDB();
             elapsedTime = 0f;
         }
 
@@ -183,7 +92,7 @@ public class SensorUploader : MonoBehaviour
     //    bool ok = float.TryParse(data, out distance);
     //}
 
-    private void dataAdd(double temperatureC, int lightLevel, int waterLevel, int flameDetected, double humanDetected)
+    private void DataAdd(double temperatureC, int lightLevel, int waterLevel, int flameDetected, double humanDetected)
     {
         temperatureCs.Add(temperatureC);
         lightLevels.Add(lightLevel);
@@ -193,18 +102,18 @@ public class SensorUploader : MonoBehaviour
         return;
     }
 
-    private void uploadToDB()
+    private void UploadToDB()
     {
-        Debug.Log("DB Uploading..");
+        Debug.Log("DB Uploading...");
         Timestamp tm = Timestamp.FromDateTime(DateTime.UtcNow);
         Dictionary<string, object> sensorDict = new Dictionary<string, object>
         {
             {"createdTime",     tm}, // DateTime ???? ???? ????
-            {"temperature",     getAverage(temperatureCs) },
-            {"lightLevel",      getAverage(lightLevels) },
-            {"waterLevel",      getAverage(waterLevels) },
-            {"flameDetected",   getAverage(flameDetecteds) },
-            {"humanDetected",   getAverage(humanDetecteds) },
+            {"temperature",     GetAverage(temperatureCs) },
+            {"lightLevel",      GetAverage(lightLevels) },
+            {"waterLevel",      GetAverage(waterLevels) },
+            {"flameDetected",   GetAverage(flameDetecteds) },
+            {"humanDetected",   GetAverage(humanDetecteds) },
         };
         if(Convert.ToDouble(sensorDict["flameDetected"]) > 0)
         {
@@ -214,16 +123,16 @@ public class SensorUploader : MonoBehaviour
                 {"createdTime", tm},
                 {"location", parts[0]},
                 {"sensorPackageNum", parts[1]},
-                {"flameDetected",   getAverage(flameDetecteds) },
+                {"flameDetected",   GetAverage(flameDetecteds) },
             };
             db.Collection("IssueAlerts").Document(tm.ToString()).SetAsync(alertDict);
         }
         db.Collection("SensorPackages").Document(sensorPackageID).Collection("SensorData").Document(tm.ToString()).SetAsync(sensorDict);
-        resetLists();
+        ResetLists();
         return;
     }
 
-    private double getAverage(List<double> list)
+    private double GetAverage(List<double> list)
     {
         double result = 0;
         foreach (var itm in list)
@@ -236,7 +145,7 @@ public class SensorUploader : MonoBehaviour
         return result;
     }
 
-    private int getAverage(List<int> list)
+    private int GetAverage(List<int> list)
     {
         int result = 0;
         foreach (var itm in list)
@@ -248,7 +157,7 @@ public class SensorUploader : MonoBehaviour
         return result;
     }
 
-    private void resetLists()
+    private void ResetLists()
     {
         temperatureCs.Clear();
         waterLevels.Clear();
@@ -258,4 +167,49 @@ public class SensorUploader : MonoBehaviour
         return;
     }
 
+    void ProcessInputData()
+    {
+        //Debug.Log("Board1 is connected");
+
+        // Temperature Sensor : Pin A0
+        UduManager.pinMode(inputDevice, AnalogPin.A0, PinMode.Input);
+
+        // Light Sensor : Pin A1
+        UduManager.pinMode(inputDevice, AnalogPin.A1, PinMode.Input);
+
+        // Water Sensor : Pin A2
+        UduManager.pinMode(inputDevice, AnalogPin.A2, PinMode.Input);
+
+        // Flame Sensor : Pin A3
+        UduManager.pinMode(inputDevice, AnalogPin.A3, PinMode.Input);
+
+        // Human Detection Sensor : Pin 2
+        UduManager.pinMode(inputDevice, 2, PinMode.Input_pullup);
+
+        // Button : Pin 4
+        UduManager.pinMode(inputDevice, 4, PinMode.Input_pullup);
+
+        // Temperature Sensor
+        temperatureF = UduManager.analogRead(inputDevice, AnalogPin.A0);
+        temperatureC = System.Math.Round(temperatureF * 0.48828125, 1);
+
+        // Light Sensor
+        lightLevel = UduManager.analogRead(inputDevice, AnalogPin.A1);
+
+        // Water Sensor
+        waterLevel = UduManager.analogRead(inputDevice, AnalogPin.A2);
+
+        // Flame Sensor
+        flameDetected = UduManager.analogRead(inputDevice, AnalogPin.A3);
+
+        // Human Detection Sensor
+        humanDetected = (double)(UduManager.digitalRead(inputDevice, 2));
+
+        // Button
+        buttonPressed = UduManager.digitalRead(inputDevice, 4);
+
+        // Result Log
+        resultLog = "Temperature: " + temperatureC + " || Light: " + lightLevel + " || Water: " + waterLevel + " || Flame: " + flameDetected + " || Human: " + humanDetected + " || Button: " + buttonPressed;
+        DataAdd(temperatureC, lightLevel, waterLevel, flameDetected, humanDetected);
+    }
 }
