@@ -2,20 +2,19 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 
-public class MarkerGroup : MonoBehaviour
+public class MarkerDashboard : MonoBehaviour
 {
-    public TMP_Text textDisplay; // TextMeshPro¸¦ »ç¿ëÇÏ±â À§ÇÑ UI ¿ä¼Ò
-    private string displayText;
-
-    void Start()
-    {
-        // MarkerData ÄÄÆ÷³ÍÆ®¸¦ °¡Áø ¸ğµç °ÔÀÓ ¿ÀºêÁ§Æ®¸¦ Ã£½À´Ï´Ù.
+    public TMP_Text textDisplay; // TextMeshProì— í‘œì‹œí•  í…ìŠ¤íŠ¸ UI ìš”ì†Œ
+    public MarkerData[] markerDataArray;
+    
+    private void WriteDashboard() {
+        // MarkerData Array
         MarkerData[] markerDataArray = FindObjectsOfType<MarkerData>();
 
-        // Locationº°·Î Á¤º¸¸¦ ±×·ìÈ­ÇÏ´Â µñ¼Å³Ê¸® »ı¼º
+        // Locationìœ¼ë¡œ ê·¸ë£¹í™”í•˜ì—¬ ì €ì¥í•  ë”•ì…”ë„ˆë¦¬
         Dictionary<string, List<MarkerData>> locationGroups = new Dictionary<string, List<MarkerData>>();
 
-        // °¢ MarkerData¸¦ Locationº°·Î ±×·ìÈ­
+        // ê° MarkerDataë¥¼ Locationìœ¼ë¡œ ê·¸ë£¹í™”
         foreach (MarkerData markerData in markerDataArray)
         {
             if (!locationGroups.ContainsKey(markerData.location))
@@ -25,10 +24,10 @@ public class MarkerGroup : MonoBehaviour
             locationGroups[markerData.location].Add(markerData);
         }
 
-        // ³»¿ëÀ» ÀúÀåÇÒ ¹®ÀÚ¿­ º¯¼ö
-        displayText = "";
+        // í‘œì‹œí•  í…ìŠ¤íŠ¸ ì´ˆê¸°í™”
+        string displayText = "";
 
-        // Location ±×·ì¸¶´Ù Á¤º¸¸¦ Ãß°¡
+        // Location ê·¸ë£¹ë³„ë¡œ ì •ë³´ ì¶”ê°€
         foreach (var locationGroup in locationGroups)
         {
             displayText += "<color=#000000>Location: " + locationGroup.Key + "</color>\n";
@@ -43,17 +42,12 @@ public class MarkerGroup : MonoBehaviour
                 displayText += "-----------------\n";
             }
 
-            displayText += "\n"; // Location ±×·ì »çÀÌ¿¡ ºó ÁÙ Ãß°¡
+            displayText += "\n"; // Location ê·¸ë£¹ ê°„ ê°„ê²© ì¶”ê°€
         }
 
-        PrintGroup();
-    }
-
-    private void PrintGroup()
-    {
-        // TextMeshPro UI ¿ä¼Ò¿¡ displayText¸¦ ¼³Á¤ÇÕ´Ï´Ù.
-        textDisplay.text = this.displayText;
-        // ÆùÆ® Å©±â¸¦ 20À¸·Î ¼³Á¤ÇÕ´Ï´Ù.
+        // TextMeshPro UI ìš”ì†Œì— displayTextë¥¼ í• ë‹¹í•©ë‹ˆë‹¤.
+        textDisplay.text = displayText;
+        // í…ìŠ¤íŠ¸ í¬ê¸°ë¥¼ 20í¬ì¸íŠ¸ë¡œ ì„¤ì •í•©ë‹ˆë‹¤.
         textDisplay.fontSize = 20;
     }
 }
