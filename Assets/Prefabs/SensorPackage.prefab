@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 8386114223650106069}
   - component: {fileID: 3834659696328809106}
   - component: {fileID: 3819781966366643778}
+  - component: {fileID: 9185746526518586241}
   m_Layer: 0
   m_Name: SensorPackage
   m_TagString: Untagged
@@ -155,4 +156,15 @@ MonoBehaviour:
   waterLevel: 0
   flameDetected: 0
   humanDetected: 0
-  buttonPressed: 0
+--- !u!114 &9185746526518586241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028852068888251955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01cb3e0a4ec3ab44dbd064c5264634d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

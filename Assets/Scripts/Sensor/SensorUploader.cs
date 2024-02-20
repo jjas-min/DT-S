@@ -105,39 +105,46 @@ public class SensorUploader : MonoBehaviour
     private void UploadToDB()
     {
         Debug.Log("DB Uploading...");
-        Timestamp tm = Timestamp.FromDateTime(DateTime.UtcNow);
+        Timestamp createdTime = Timestamp.FromDateTime(DateTime.UtcNow);
+
         Dictionary<string, object> sensorDict = new Dictionary<string, object>
         {
-            {"createdTime",     tm}, // DateTime ???? ???? ????
+            {"createdTime",     createdTime}, // DateTime ???? ???? ????
             {"temperature",     GetAverage(temperatureCs) },
             {"lightLevel",      GetAverage(lightLevels) },
             {"waterLevel",      GetAverage(waterLevels) },
             {"flameDetected",   GetAverage(flameDetecteds) },
             {"humanDetected",   GetAverage(humanDetecteds) },
         };
-        if(Convert.ToDouble(sensorDict["flameDetected"]) > 0)
+
+        // Upload Alert if unusual activity is detected
+        if(Convert.ToDouble(sensorDict["flameDetected"]) > 0.0)
         {
-            string[] parts = sensorPackageID.Split('_');
+            string[] parse = sensorPackageID.Split('_');
             Dictionary<string, object> alertDict = new Dictionary<string, object>
             {
-                {"createdTime", tm},
-                {"location", parts[0]},
-                {"sensorPackageNum", parts[1]},
+                {"createdTime", createdTime},
+                {"location", parse[0]},
+                {"sensorPackageNum", parse[1]},
                 {"flameDetected",   GetAverage(flameDetecteds) },
             };
-            db.Collection("IssueAlerts").Document(tm.ToString()).SetAsync(alertDict);
+
+            db.Collection("IssueAlerts").Document(createdTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss")).SetAsync(alertDict);
         }
-        db.Collection("SensorPackages").Document(sensorPackageID).Collection("SensorData").Document(tm.ToString()).SetAsync(sensorDict);
+
+        // Upload sensor data to Firestore
+        db.Collection("SensorPackages").Document(sensorPackageID).Collection("SensorData").Document(createdTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss")).SetAsync(sensorDict);
         ResetLists();
+
         return;
     }
 
     private double GetAverage(List<double> list)
     {
         double result = 0;
-        foreach (var itm in list)
+        foreach (var item in list)
         {
-            result += itm;
+            result += item;
         }
 
         result /= list.Count;
@@ -148,9 +155,9 @@ public class SensorUploader : MonoBehaviour
     private int GetAverage(List<int> list)
     {
         int result = 0;
-        foreach (var itm in list)
+        foreach (var item in list)
         {
-            result += itm;
+            result += item;
         }
 
         result /= list.Count;
