@@ -6,7 +6,6 @@ public class MarkerDashboard : MonoBehaviour
 {
     public RectTransform content; // 스크롤 뷰의 Content 오브젝트
     public GameObject textPrefab; // 텍스트를 생성할 프리팹
-
     private MarkerData[] markerDataArray;
 
     public void WriteDashboard()
@@ -35,11 +34,14 @@ public class MarkerDashboard : MonoBehaviour
     {
         // 텍스트 컴포넌트를 찾아서 텍스트 설정
         TMP_Text markerText = textObject.GetComponent<TMP_Text>();
+        markerText.fontSize = 20;
         markerText.text = $"ID: {markerData.id}\n" +
                           $"Information: {markerData.information}\n" +
                           $"Level: {markerData.level}\n" +
                           $"Location: {markerData.location}\n" +
                           $"Position: {markerData.position}\n" +
-                          $"Creation Time: {markerData.creationTime}\n";
+                          $"Creation Time: {markerData.creationTime.ToString("yyyy-MM-dd HH:mm:ss")}\n";
+        
+        markerText.enabled = true;
     }
 }
