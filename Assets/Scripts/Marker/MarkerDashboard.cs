@@ -4,50 +4,42 @@ using System.Collections.Generic;
 
 public class MarkerDashboard : MonoBehaviour
 {
-    public TMP_Text textDisplay; // TextMeshPro에 표시할 텍스트 UI 요소
-    public MarkerData[] markerDataArray;
-    
-    private void WriteDashboard() {
+    public RectTransform content; // 스크롤 뷰의 Content 오브젝트
+    public GameObject textPrefab; // 텍스트를 생성할 프리팹
+
+    private MarkerData[] markerDataArray;
+
+    public void WriteDashboard()
+    {
         // MarkerData Array
-        MarkerData[] markerDataArray = FindObjectsOfType<MarkerData>();
+        markerDataArray = FindObjectsOfType<MarkerData>();
 
-        // Location으로 그룹화하여 저장할 딕셔너리
-        Dictionary<string, List<MarkerData>> locationGroups = new Dictionary<string, List<MarkerData>>();
+        // 스크롤 뷰의 Content 초기화
+        foreach (Transform child in content)
+        {
+            Destroy(child.gameObject);
+        }
 
-        // 각 MarkerData를 Location으로 그룹화
+        // 각 마커 데이터에 대해 텍스트 생성 및 정보 표시
         foreach (MarkerData markerData in markerDataArray)
         {
-            if (!locationGroups.ContainsKey(markerData.location))
-            {
-                locationGroups[markerData.location] = new List<MarkerData>();
-            }
-            locationGroups[markerData.location].Add(markerData);
+            // 텍스트 생성
+            GameObject textObject = Instantiate(textPrefab, content);
+
+            // 텍스트에 마커 데이터 정보 표시
+            SetMarkerDataOnText(textObject, markerData);
         }
+    }
 
-        // 표시할 텍스트 초기화
-        string displayText = "";
-
-        // Location 그룹별로 정보 추가
-        foreach (var locationGroup in locationGroups)
-        {
-            displayText += "<color=#000000>Location: " + locationGroup.Key + "</color>\n";
-            displayText += "<color=#000000>============</color>\n";
-
-            foreach (MarkerData markerData in locationGroup.Value)
-            {
-                displayText += "ID: " + markerData.id + "\n";
-                displayText += "Level: " + markerData.level + "\n";
-                displayText += "Information: " + markerData.information + "\n";
-                displayText += "Creation Time: " + markerData.creationTime.ToString("yyyy-MM-dd HH:mm:ss") + "\n";
-                displayText += "-----------------\n";
-            }
-
-            displayText += "\n"; // Location 그룹 간 간격 추가
-        }
-
-        // TextMeshPro UI 요소에 displayText를 할당합니다.
-        textDisplay.text = displayText;
-        // 텍스트 크기를 20포인트로 설정합니다.
-        textDisplay.fontSize = 20;
+    private void SetMarkerDataOnText(GameObject textObject, MarkerData markerData)
+    {
+        // 텍스트 컴포넌트를 찾아서 텍스트 설정
+        TMP_Text markerText = textObject.GetComponent<TMP_Text>();
+        markerText.text = $"ID: {markerData.id}\n" +
+                          $"Information: {markerData.information}\n" +
+                          $"Level: {markerData.level}\n" +
+                          $"Location: {markerData.location}\n" +
+                          $"Position: {markerData.position}\n" +
+                          $"Creation Time: {markerData.creationTime}\n";
     }
 }
