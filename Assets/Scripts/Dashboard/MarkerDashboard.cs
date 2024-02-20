@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using System.Linq; // LINQ 라이브러리 추가
 
 public class MarkerDashboard : MonoBehaviour
 {
@@ -10,8 +11,8 @@ public class MarkerDashboard : MonoBehaviour
 
     public void WriteDashboard()
     {
-        // MarkerData Array
-        markerDataArray = FindObjectsOfType<MarkerData>();
+        // MarkerData 배열을 creationTime을 기준으로 정렬
+        markerDataArray = FindObjectsOfType<MarkerData>().OrderBy(markerData => markerData.creationTime).ToArray();
 
         // 스크롤 뷰의 Content 초기화
         foreach (Transform child in content)
@@ -24,6 +25,7 @@ public class MarkerDashboard : MonoBehaviour
         {
             // 텍스트 생성
             GameObject textObject = Instantiate(textPrefab, content);
+            textObject.name = markerData.id.ToString();
 
             // 텍스트에 마커 데이터 정보 표시
             SetMarkerDataOnText(textObject, markerData);
