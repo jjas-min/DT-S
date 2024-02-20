@@ -12,7 +12,7 @@ public class SensorDashboard : MonoBehaviour
     public void WriteDashboard() {
         // MarkerData Array
         SensorDataArray = FindObjectsOfType<SensorData>();
-
+        Debug.Log(SensorDataArray.Length);
         foreach (SensorData sensorData in SensorDataArray)
         {
             GameObject textObject = Instantiate(textPrefab, content);
