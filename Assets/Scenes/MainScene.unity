@@ -1607,7 +1607,6 @@ GameObject:
   - component: {fileID: 420713304}
   - component: {fileID: 420713307}
   - component: {fileID: 420713306}
-  - component: {fileID: 420713305}
   m_Layer: 5
   m_Name: SensorInfoPanel
   m_TagString: Untagged
@@ -1640,23 +1639,6 @@ RectTransform:
   m_AnchoredPosition: {x: -80, y: -55}
   m_SizeDelta: {x: 150, y: 300}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &420713305
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 420713303}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac86ebe845827504f898221821738531, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  informationPanel: {fileID: 420713303}
-  informationText: {fileID: 776305459}
-  levelText: {fileID: 1292725076}
-  timestampText: {fileID: 1528784354}
-  locationText: {fileID: 0}
 --- !u!114 &420713306
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4485,7 +4467,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 857593924}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.81333333
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7619,15 +7601,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3819781966366643778, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3834659696328809106, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
       propertyPath: m_Enabled
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5028852068888251955, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
       propertyPath: m_Name
       value: NTH311_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5028852068888251955, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 9185746526518586241, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
       propertyPath: lightLevelText
