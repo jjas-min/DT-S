@@ -10,7 +10,7 @@ public class MarkerClickDetector : MonoBehaviour
         MarkerData markerData = GetComponent<MarkerData>();
         if (markerData != null && markerInfoManager != null)
         {
-            markerInfoManager.DisplayInformation(markerData);
+            markerInfoManager.SetInformation(markerData);
         }
     }
 }
