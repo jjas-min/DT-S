@@ -13,7 +13,7 @@ public class MarkerManager : MonoBehaviour
     private FirebaseFirestore db;
     //UI
     public GameObject selectionUI;
-    public Button confirmButton; 
+    public Button confirmButton;
     public Button cancelButton;
     public TMP_InputField informationInputField;
     public TMP_Dropdown levelInputField;
@@ -32,12 +32,7 @@ public class MarkerManager : MonoBehaviour
     void Update()
     {
         positionSelector();
-        cancelButton.onClick.RemoveAllListeners();
-        cancelButton.onClick.AddListener(() => {
-            informationInputField.text = "";
-            levelInputField.value = 0;
-            selectionUI.SetActive(false);
-        });
+
     }
 
     Camera FindActiveCamera()
@@ -69,8 +64,6 @@ public class MarkerManager : MonoBehaviour
     void ShowSelectionUI(Vector3 hitPoint, RaycastHit hit) //UI ǥ�� �� ���� ����
     {
         selectionUI.SetActive(true); 
-        Button confirmButton = selectionUI.GetComponentInChildren<Button>();
-        Button cancelButton = selectionUI.GetComponentInChildren<Button>();
         confirmButton.onClick.RemoveAllListeners(); 
         confirmButton.onClick.AddListener(() => {
             string information = informationInputField.text;
@@ -78,6 +71,12 @@ public class MarkerManager : MonoBehaviour
             MarkerCreator(hitPoint, information, levelIndex, hit);
             informationInputField.text = "";
             levelInputField.value = 0; 
+            selectionUI.SetActive(false);
+        });
+        cancelButton.onClick.RemoveAllListeners();
+        cancelButton.onClick.AddListener(() => {
+            informationInputField.text = "";
+            levelInputField.value = 0;
             selectionUI.SetActive(false);
         });
     }
