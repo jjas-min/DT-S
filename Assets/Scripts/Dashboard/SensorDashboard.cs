@@ -12,6 +12,13 @@ public class SensorDashboard : MonoBehaviour
     public void WriteDashboard() {
         // MarkerData Array
         SensorDataArray = FindObjectsOfType<SensorData>();
+
+        // 스크롤 뷰의 Content 초기화
+        foreach (Transform child in content)
+        {
+            Destroy(child.gameObject);
+        }
+        
         Debug.Log(SensorDataArray.Length);
         foreach (SensorData sensorData in SensorDataArray)
         {
