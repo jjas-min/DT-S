@@ -24,6 +24,7 @@ public class DashboardController : MonoBehaviour
             isDashboardVisible = true;
             markerPanel.SetActive(true);
             DashboardButton.SetActive(false);
+            markerPanel.GetComponent<MarkerDashboard>().WriteDashboard();
         }
     }
 
