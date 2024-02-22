@@ -270,11 +270,11 @@ public class SensorUploader : MonoBehaviour
 
     private void UploadToDB()
     {
-        Timestamp createdTime = Timestamp.FromDateTime(DateTime.Now);
+        DateTime createdTime = DateTime.Now;
 
         Dictionary<string, object> sensorDict = new Dictionary<string, object>
         {
-            {"createdTime",     createdTime}, // DateTime ???? ???? ????
+            {"createdTime",     createdTime}, // DateTime
             {"temperature",     GetAverage(temperatureCs) },
             {"lightLevel",      GetAverage(lightLevels) },
             {"waterLevel",      GetAverage(waterLevels) },
@@ -286,9 +286,9 @@ public class SensorUploader : MonoBehaviour
         CheckForAlertAndUpload(sensorDict);
 
         // Upload sensor data to Firestore
-        db.Collection("SensorPackages").Document(sensorPackageID).Collection("SensorData").Document(createdTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss")).SetAsync(sensorDict);
+        db.Collection("SensorPackages").Document(sensorPackageID).Collection("SensorData").Document(createdTime.ToString("yyyy-MM-dd HH:mm:ss")).SetAsync(sensorDict);
 
-        Debug.Log("[Sensor Data Upload] " + sensorPackageID + " " + createdTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss") + " " + sensorDict["temperature"] + " " + sensorDict["lightLevel"] + " " + sensorDict["waterLevel"] + " " + sensorDict["flameDetected"] + " " + sensorDict["humanDetected"]);
+        Debug.Log("[Sensor Data Upload] " + sensorPackageID + " " + createdTime.ToString("yyyy-MM-dd HH:mm:ss") + " " + sensorDict["temperature"] + " " + sensorDict["lightLevel"] + " " + sensorDict["waterLevel"] + " " + sensorDict["flameDetected"] + " " + sensorDict["humanDetected"]);
 
         ResetLists();
 
@@ -303,7 +303,7 @@ public class SensorUploader : MonoBehaviour
         bool uploadAlert = false;
 
         // Alert Dictionary
-        Timestamp createdTime = (Timestamp)sensorDict["createdTime"];
+        DateTime createdTime = (DateTime)sensorDict["createdTime"];
         Dictionary<string, object> alertDict = new Dictionary<string, object>{
                 {"createdTime", createdTime},
                 {"location", parse[0]},
@@ -357,7 +357,7 @@ public class SensorUploader : MonoBehaviour
         if (uploadAlert)
         {
             Debug.Log(alertLog);
-            db.Collection("IssueAlerts").Document(createdTime.ToDateTime().ToString("yyyy-MM-dd HH:mm:ss")).SetAsync(alertDict);
+            db.Collection("IssueAlerts").Document(createdTime.ToString("yyyy-MM-dd HH:mm:ss")).SetAsync(alertDict);
         }
     }
 
