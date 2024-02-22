@@ -9,12 +9,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1234468788487979909}
+  - component: {fileID: 6239374317652233896}
+  - component: {fileID: 3819781966366643778}
+  - component: {fileID: 3834659696328809106}
+  - component: {fileID: 9185746526518586241}
   - component: {fileID: 968232426533994187}
   - component: {fileID: 1123944206489815312}
   - component: {fileID: 8386114223650106069}
-  - component: {fileID: 3834659696328809106}
-  - component: {fileID: 3819781966366643778}
-  - component: {fileID: 9185746526518586241}
   m_Layer: 0
   m_Name: SensorPackage
   m_TagString: Untagged
@@ -37,6 +38,79 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &6239374317652233896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028852068888251955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2877f63db838b654d9ff797968be3024, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  temperature: 0
+  lightLevel: 0
+  waterLevel: 0
+  flameDetected: 0
+  humanDetected: 0
+--- !u!114 &3819781966366643778
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028852068888251955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0f54ae3ea663524aae1e2ebf037476d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensorPackageID: 
+--- !u!114 &3834659696328809106
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028852068888251955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: df2a1d3ae97d74000967179f7ac35165, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensorPackageID: 
+  temperatureF: 0
+  temperatureC: 0
+  lightLevel: 0
+  waterLevel: 0
+  flameDetected: 0
+  humanDetected: 0
+  buttonPressed: 0
+  temperatureFs: 
+  temperatureCs: []
+  lightLevels: 
+  waterLevels: 
+  flameDetecteds: 
+  humanDetecteds: []
+  buttonPresseds: 
+  redIntensity: 0
+  greenIntensity: 0
+  blueIntensity: 0
+--- !u!114 &9185746526518586241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5028852068888251955}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01cb3e0a4ec3ab44dbd064c5264634d6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensorInfoPanel: {fileID: 0}
 --- !u!33 &968232426533994187
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -108,63 +182,3 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &3834659696328809106
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5028852068888251955}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: df2a1d3ae97d74000967179f7ac35165, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensorPackageID: 
-  temperatureF: 0
-  temperatureC: 0
-  lightLevel: 0
-  waterLevel: 0
-  flameDetected: 0
-  humanDetected: 0
-  buttonPressed: 0
-  temperatureFs: 
-  temperatureCs: []
-  lightLevels: 
-  waterLevels: 
-  flameDetecteds: 
-  humanDetecteds: []
-  buttonPresseds: 
-  redIntensity: 0
-  greenIntensity: 0
-  blueIntensity: 0
---- !u!114 &3819781966366643778
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5028852068888251955}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e0f54ae3ea663524aae1e2ebf037476d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensorPackageID: 
-  temperature: 0
-  lightLevel: 0
-  waterLevel: 0
-  flameDetected: 0
-  humanDetected: 0
---- !u!114 &9185746526518586241
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5028852068888251955}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01cb3e0a4ec3ab44dbd064c5264634d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
