@@ -11,13 +11,15 @@ using TMPro;
 public class SensorAlert : MonoBehaviour
 {
     public GameObject alertsUI;
-    public GameObject alertPanelPrefab; // ÀÛÀº ÆÐ³ÎÀÇ ÇÁ¸®ÆÕ
-    public Transform alertsPanel; // ScrollViewÀÇ Content Transform
+    public GameObject alertPanelPrefab; // ï¿½ï¿½ï¿½ï¿½ ï¿½Ð³ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½
+    public GameObject firstPersonView;
+    public Transform alertsPanel; // ScrollViewï¿½ï¿½ Content Transform
     private FirebaseFirestore db;
 
     void Start()
     {
         db = FirebaseFirestore.DefaultInstance;
+        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = false;
         ListenAlerts();
     }
 
@@ -74,10 +76,12 @@ public class SensorAlert : MonoBehaviour
     }
     public void OnCloseButtonClicked()
     {
-        alertsUI.SetActive(false); 
+        alertsUI.SetActive(false);
+        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true; 
     }
     public void OnActiveButtonClicked()
     {
         alertsUI.SetActive(true);
+        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = false;
     }
 }
