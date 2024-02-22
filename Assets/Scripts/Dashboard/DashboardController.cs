@@ -4,8 +4,9 @@ public class DashboardController : MonoBehaviour
 {
     public GameObject markerPanel;
     public GameObject issuePanel;
-    private bool isDashboardVisible = false;
     public GameObject DashboardButton;
+    public GameObject firstPersonView;
+    private bool isDashboardVisible = false;
     // Start is called before the first frame update
     void Start()
     {
@@ -25,6 +26,7 @@ public class DashboardController : MonoBehaviour
             markerPanel.SetActive(true);
             DashboardButton.SetActive(false);
             markerPanel.GetComponent<MarkerDashboard>().WriteDashboard();
+            firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = false;
         }
     }
 
@@ -36,6 +38,7 @@ public class DashboardController : MonoBehaviour
         markerPanel.SetActive(false);
         issuePanel.SetActive(false);
         DashboardButton.SetActive(true);
+        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
     }
 
     // Panel �ٲ��ִ� �Լ�
