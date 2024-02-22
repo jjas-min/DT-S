@@ -12,8 +12,8 @@ public class SensorLoader : MonoBehaviour
     private FirebaseFirestore db;
     private CollectionReference sensorDataCollection;
 
-    UduinoDevice outputDevice = null;
-    UduinoManager UduManager;
+    private UduinoDevice outputDevice = null;
+    private UduinoManager UduManager;
 
     [SerializeField] private string sensorPackageID;
     private SensorData sensorData;
@@ -59,7 +59,7 @@ public class SensorLoader : MonoBehaviour
                                         flameDetected: Convert.ToInt32(receivedSensorData["flameDetected"]),
                                         humanDetected: Convert.ToDouble(receivedSensorData["humanDetected"], System.Globalization.CultureInfo.InvariantCulture));
 
-                Debug.Log("New sensor data received: " + receivedSensorData["temperature"] + " " + receivedSensorData["lightLevel"] + " " + receivedSensorData["waterLevel"] + " " + receivedSensorData["flameDetected"] + " " + receivedSensorData["humanDetected"]);
+                Debug.Log("[Sensor Data Load] " + sensorPackageID + " " + sensorData.GetTemperature() + " " + sensorData.GetLightLevel() + " " + sensorData.GetWaterLevel() + " " + sensorData.GetFlameDetected() + " " + sensorData.GetHumanDetected());
             
                 if (outputDevice != null)
                 {

@@ -5,19 +5,26 @@ using TMPro;
 
 public class SensorInfoManager : MonoBehaviour
 {
-    public GameObject sensorInfoPanel;
+    [SerializeField] private GameObject sensorInfoPanel;
 
-    public TMP_Text temperatureText; 
-    public TMP_Text lightLevelText;
-    public TMP_Text waterLevelText;
-    public TMP_Text flameDetectedText;
-    public TMP_Text humanDetectedText;
+    private TMP_Text temperatureText; 
+    private TMP_Text lightLevelText;
+    private TMP_Text waterLevelText;
+    private TMP_Text flameDetectedText;
+    private TMP_Text humanDetectedText;
 
     private SensorData sensorData;
 
     void Start()
     {
         sensorInfoPanel.SetActive(false);
+
+        // Find the TextMeshPro components among the children of the sensorInfoPanel
+        temperatureText = sensorInfoPanel.transform.Find("Temperature").GetComponent<TMP_Text>();
+        lightLevelText = sensorInfoPanel.transform.Find("LightLevel").GetComponent<TMP_Text>();
+        waterLevelText = sensorInfoPanel.transform.Find("WaterLevel").GetComponent<TMP_Text>();
+        flameDetectedText = sensorInfoPanel.transform.Find("FlameDetected").GetComponent<TMP_Text>();
+        humanDetectedText = sensorInfoPanel.transform.Find("HumanDetected").GetComponent<TMP_Text>();
     }
 
     // Update is called once per frame
