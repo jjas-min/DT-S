@@ -3,7 +3,7 @@ using UnityEngine.UI;
 
 namespace RosSharp.RosBridgeClient
 {
-    [RequireComponent(typeof(RosConnector))]
+    [RequireComponent(typeof(RosConnector))]   
     public class ImageSubscriber : UnitySubscriber<MessageTypes.Sensor.CompressedImage>
     {
         public RawImage rawImage;
