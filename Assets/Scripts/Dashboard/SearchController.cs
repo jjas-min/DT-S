@@ -4,7 +4,7 @@ using UnityEngine.UI;
 
 public class SearchController : MonoBehaviour
 {
-    public MarkerDashboard markerDashboard;
+    public MarkerDashboard markerPanel;
 
     private TMP_InputField searchInputField;
 
@@ -22,8 +22,8 @@ public class SearchController : MonoBehaviour
         // 검색어 가져오기
         string keyword = searchInputField.text;
         
-        // MarkerDashboard의 WriteDashboard 메서드 호출하여 검색어 전달
-        markerDashboard.WriteDashboard(keyword);
+        // MarkerPanel의 WriteDashboard 메서드 호출하여 검색어 전달
+        markerPanel.WriteDashboard(keyword);
 
         // 텍스트 입력란 초기화
         searchInputField.text = "";
