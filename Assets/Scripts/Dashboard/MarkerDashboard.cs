@@ -100,7 +100,7 @@ public class MarkerDashboard : MonoBehaviour
                               $"Information: {markerData.information}\n" +
                               $"Level: {markerData.level}\n" +
                               $"Location: {markerData.location}\n" +
-                              $"Creation Time: {markerData.creationTime.ToString("yyyy-MM-dd HH:mm:ss")}";
+                              $"Creation Time: {markerData.creationTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")}";
         }
 
         // Vertical Layout Group 컴포넌트의 child force expand를 적용하여 공백을 생성
