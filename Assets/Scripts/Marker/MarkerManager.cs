@@ -99,7 +99,8 @@ public class MarkerManager : MonoBehaviour
             {"information", information},
             {"level", actualLevel},
             {"creationTime", Timestamp.FromDateTime(DateTime.UtcNow)},
-            {"location", location }
+            {"location", location },
+            {"isSolved", false }
         };
 
         db.Collection("Markers").Document(markerId).SetAsync(markerDict);
@@ -145,6 +146,7 @@ public class MarkerManager : MonoBehaviour
         int level = int.Parse(markerData["level"].ToString());
         Timestamp creationTime = (Timestamp)markerData["creationTime"];
         string location = markerData["location"].ToString();
+        bool isSolved = (bool)markerData["isSolved"];
         // ��Ŀ�� �̹� �����ϴ��� Ȯ��
         GameObject existingMarker = GameObject.Find(document.Id);
         if (existingMarker != null)
@@ -167,10 +169,13 @@ public class MarkerManager : MonoBehaviour
             markerComponent.level = level;
             markerComponent.creationTime = creationTime.ToDateTime();
             markerComponent.location = location;
+            markerComponent.isSolved = isSolved;
 
             MarkerClickDetector clickDetector = markerInstance.AddComponent<MarkerClickDetector>();
             MarkerInfoManager infoManager = FindObjectOfType<MarkerInfoManager>();
             clickDetector.markerInfoManager = infoManager;
+
+            if (markerComponent.isSolved) markerInstance.SetActive(false);
         }
     }
 
@@ -199,6 +204,9 @@ public class MarkerManager : MonoBehaviour
             markerComponent.level = Convert.ToInt32(markerData["level"]);
             markerComponent.creationTime = ((Timestamp)markerData["creationTime"]).ToDateTime();
             markerComponent.location = markerData["location"].ToString();
+            markerComponent.isSolved = (bool)markerData["isSolved"];
+
+            if (markerComponent.isSolved) marker.SetActive(false);
             // ��Ÿ �ʿ��� ������ ������Ʈ
         }
     }
