@@ -83,7 +83,7 @@ public class SensorTest : MonoBehaviour
     {
         if (UduManager.hasBoardConnected())
         {
-            inputDevice = UduManager.GetBoard(sensorPackageID + "_in");
+            inputDevice = UduManager.GetBoard(sensorPackageID + "_wifi");
             outputDevice = UduManager.GetBoard(sensorPackageID + "_out");
 
             // Check if the board is connected
