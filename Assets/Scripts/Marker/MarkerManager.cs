@@ -99,7 +99,8 @@ public class MarkerManager : MonoBehaviour
             {"information", information},
             {"level", actualLevel},
             {"creationTime", Timestamp.FromDateTime(DateTime.UtcNow)},
-            {"location", location }
+            {"location", location },
+            {"isSolved", false }
         };
 
         db.Collection("Markers").Document(markerId).SetAsync(markerDict);
@@ -112,7 +113,7 @@ public class MarkerManager : MonoBehaviour
         {
             foreach (var change in snapshot.GetChanges())
             {
-                switch (change.ChangeType) // ¿©±â¸¦ ¼öÁ¤
+                switch (change.ChangeType) // ï¿½ï¿½ï¿½â¸¦ ï¿½ï¿½ï¿½ï¿½
                 {
                     case DocumentChange.Type.Added:
                         Debug.Log($"New document added: {change.Document.Id}");
@@ -145,21 +146,22 @@ public class MarkerManager : MonoBehaviour
         int level = int.Parse(markerData["level"].ToString());
         Timestamp creationTime = (Timestamp)markerData["creationTime"];
         string location = markerData["location"].ToString();
-        // ¸¶Ä¿°¡ ÀÌ¹Ì Á¸ÀçÇÏ´ÂÁö È®ÀÎ
+        bool isSolved = (bool)markerData["isSolved"];
+        // ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½ï¿½ï¿½ È®ï¿½ï¿½
         GameObject existingMarker = GameObject.Find(document.Id);
         if (existingMarker != null)
         {
-            // ¸¶Ä¿°¡ ÀÌ¹Ì Á¸ÀçÇÏ¸é À§Ä¡¿Í ±âÅ¸ µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ®
+            // ï¿½ï¿½Ä¿ï¿½ï¿½ ï¿½Ì¹ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï¸ï¿½ ï¿½ï¿½Ä¡ï¿½ï¿½ ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
             existingMarker.transform.position = position;
-            // ±âÅ¸ µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ® ·ÎÁ÷ Ãß°¡
+            // ï¿½ï¿½Å¸ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ® ï¿½ï¿½ï¿½ï¿½ ï¿½ß°ï¿½
             UpdateMarkerData(existingMarker, markerData);
         }
         else
         {
-            // »õ ¸¶Ä¿ »ý¼º
+            // ï¿½ï¿½ ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½
             GameObject markerInstance = Instantiate(markerPrefab, position, Quaternion.identity, markerContainer.transform);
-            markerInstance.name = document.Id; // GameObjectÀÇ ÀÌ¸§À» ¹®¼­ ID·Î ¼³Á¤
-                                               // ¸¶Ä¿ µ¥ÀÌÅÍ ¼³Á¤
+            markerInstance.name = document.Id; // GameObjectï¿½ï¿½ ï¿½Ì¸ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ IDï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
+                                               // ï¿½ï¿½Ä¿ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
             MarkerData markerComponent = markerInstance.AddComponent<MarkerData>();
             markerComponent.id = document.Id;
             markerComponent.position = position;
@@ -167,10 +169,13 @@ public class MarkerManager : MonoBehaviour
             markerComponent.level = level;
             markerComponent.creationTime = creationTime.ToDateTime();
             markerComponent.location = location;
+            markerComponent.isSolved = isSolved;
 
             MarkerClickDetector clickDetector = markerInstance.AddComponent<MarkerClickDetector>();
             MarkerInfoManager infoManager = FindObjectOfType<MarkerInfoManager>();
             clickDetector.markerInfoManager = infoManager;
+
+            if (markerComponent.isSolved) markerInstance.SetActive(false);
         }
     }
 
@@ -194,12 +199,15 @@ public class MarkerManager : MonoBehaviour
         MarkerData markerComponent = marker.GetComponent<MarkerData>();
         if (markerComponent != null)
         {
-            // ±âÁ¸ ÄÄÆ÷³ÍÆ®ÀÇ µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ®
+            // ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
             markerComponent.information = markerData["information"].ToString();
             markerComponent.level = Convert.ToInt32(markerData["level"]);
             markerComponent.creationTime = ((Timestamp)markerData["creationTime"]).ToDateTime();
             markerComponent.location = markerData["location"].ToString();
-            // ±âÅ¸ ÇÊ¿äÇÑ µ¥ÀÌÅÍ ¾÷µ¥ÀÌÆ®
+            markerComponent.isSolved = (bool)markerData["isSolved"];
+
+            if (markerComponent.isSolved) marker.SetActive(false);
+            // ï¿½ï¿½Å¸ ï¿½Ê¿ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½Æ®
         }
     }
 }

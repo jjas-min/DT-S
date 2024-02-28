@@ -15,20 +15,6 @@ public class FirstPersonViewCameraController : MonoBehaviour
     {
         // 현재 스크립트가 부착된 카메라 컴포넌트를 가져옴
         attachedCamera = GetComponent<Camera>();
-        roomsDropdown.value = 0; // Hallway 선택
-
-        // 드랍다운 값 변경 이벤트에 MoveToRoom 함수 연결
-        roomsDropdown.onValueChanged.AddListener(delegate {
-            DropdownValueChanged(roomsDropdown);
-        });
-    }
-
-    void DropdownValueChanged(TMP_Dropdown change)
-    {
-        // 선택된 방 이름 가져오기
-        string selectedRoom = change.options[change.value].text;
-        // 선택된 방으로 이동
-        MoveToRoom(selectedRoom);
     }
 
     void Update()
@@ -96,7 +82,7 @@ public class FirstPersonViewCameraController : MonoBehaviour
         transform.position -= new Vector3(0, moveSpeed * Time.deltaTime, 0);
     }
 
-    void MoveToRoom(string roomName)
+    public void MoveToRoom(string roomName)
     {
         Vector3 targetPosition = Vector3.zero;
         Vector3 targetRotation = Vector3.zero;

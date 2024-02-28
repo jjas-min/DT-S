@@ -3,7 +3,7 @@ using UnityEngine;
 public class DashboardController : MonoBehaviour
 {
     public GameObject markerPanel;
-    public GameObject issuePanel;
+    public GameObject sensorPanel;
     public GameObject DashboardButton;
     public GameObject firstPersonView;
     private bool isDashboardVisible = false;
@@ -12,7 +12,7 @@ public class DashboardController : MonoBehaviour
     {
         // Dashboard Panel�� ó������ ����
         markerPanel.SetActive(false);
-        issuePanel.SetActive(false);
+        sensorPanel.SetActive(false);
     }
 
     // Dashboard ��ư�� ���� �� ȣ��Ǵ� �Լ�
@@ -36,7 +36,7 @@ public class DashboardController : MonoBehaviour
         // Dashboard Panel�� ����
         isDashboardVisible = false;
         markerPanel.SetActive(false);
-        issuePanel.SetActive(false);
+        sensorPanel.SetActive(false);
         DashboardButton.SetActive(true);
         firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
     }
@@ -48,11 +48,11 @@ public class DashboardController : MonoBehaviour
         if (markerPanel.activeSelf)
         {
             markerPanel.SetActive(false);
-            issuePanel.SetActive(true);
+            sensorPanel.SetActive(true);
         }
         else
         {
-            issuePanel.SetActive(false);
+            sensorPanel.SetActive(false);
             markerPanel.SetActive(true);
         }
     }
