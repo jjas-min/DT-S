@@ -24,13 +24,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1169019389771402}
-  serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &114023058375386772
 MonoBehaviour:
@@ -63,7 +62,7 @@ MonoBehaviour:
   limitSendRate: 0
   readTimeout: 30
   writeTimeout: 30
-  threadIdleDelay: 16
+  threadFrequency: 16
   alwaysRead: 1
   readAfterCommand: 1
   skipMessageQueue: 0
@@ -71,11 +70,10 @@ MonoBehaviour:
   defaultArduinoBoardType: 0
   useCuPort: 0
   forcePinEditor: 0
-  sendRateDelay: 20
+  sendRateSpeed: 20
   discoverTries: 10
   autoDiscover: 1
   delayBeforeDiscover: 0.5
-  readLineCharByChar: 0
   stopAllOnQuit: 1
   stopAllOnPause: 0
   autoReconnect: 1
