@@ -1,22 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.UI;
 using Uduino;
-using Firebase;
-using Firebase.Firestore;
-using Firebase.Extensions;
+using UnityEngine;
 
 public class SensorTest : MonoBehaviour
 {
-    private FirebaseFirestore db;
     private UduinoManager UduManager;
     private UduinoDevice inputDevice = null;
     private UduinoDevice outputDevice = null;
 
     // SensorPackage ID
-    [SerializeField] private string sensorPackageID;
+    private string sensorPackageID;
+    [SerializeField] private string inputDeviceName;
+    [SerializeField] private string outputDeviceName;
 
     enum Pin
     {
@@ -57,103 +54,72 @@ public class SensorTest : MonoBehaviour
     [Range(0, 255)] public int greenIntensity;
     [Range(0, 255)] public int blueIntensity;
 
+    float timer = 0.0f;
+    float interval = 0.5f; // 0.5초
+
     // Start is called before the first frame update
     void Start()
     {
-        db = FirebaseFirestore.DefaultInstance;
         UduManager = UduinoManager.Instance;
 
         sensorPackageID = this.gameObject.name;
+        inputDeviceName = sensorPackageID + "_wifi";
+        outputDeviceName = sensorPackageID + "_out";
 
-        //UduManager.OnBoardConnected += OnBoardConnected;
-
-        // UduinoManager.Instance.OnDataReceived += DataReceived;
-
-        // // Temperature + Humidity Sensor : Serial
-        // UduManager.OnDataReceived += DataReceived;
+        UduManager.OnDataReceived += DataReceived;
     }
-
-    // void DataReceived(string value, UduinoDevice board)
-    // {
-    //     Debug.Log("Value: " + value + " Board: " + board);
-    // }
 
     // Update is called once per frame
     void Update()
     {
+        timer += Time.deltaTime; // 프레임 간 시간 추가
+
         if (UduManager.hasBoardConnected())
         {
-            inputDevice = UduManager.GetBoard(sensorPackageID + "_wifi");
-            outputDevice = UduManager.GetBoard(sensorPackageID + "_out");
+            inputDevice = UduManager.GetBoard(inputDeviceName);
+            outputDevice = UduManager.GetBoard(outputDeviceName);
 
-            // Check if the board is connected
-            if (inputDevice != null)
+            // 타이머가 interval보다 큰 경우 함수 실행
+            if (timer >= interval)
             {
-                ProcessInputData();
-            }
 
-            if (outputDevice != null)
-            {
-                ProcessOutputData();
+                // Check if the board is connected
+                if (inputDevice != null)
+                {
+                    ReadDataFrom((int)Pin.A0);
+                    ReadDataFrom((int)Pin.A1);
+                    ReadDataFrom((int)Pin.A2);
+                    ReadDataFrom((int)Pin.A3);
+                    ReadDataFrom((int)Pin.D4);
+                    ReadDataFrom((int)Pin.D7);
+                }
+
+                if (outputDevice != null)
+                {
+                    ProcessOutputData();
+                }
+
+                timer = 0.0f; // 타이머 초기화
             }
         }
         else
         {
-            Debug.Log("The boards have not been detected");
+            Debug.Log("## NO BOARDS DETECTD ##");
         }
     }
 
-    // Different setups for each arduino board
-    void OnBoardConnected(UduinoDevice connectedDevice)
+    void DataReceived(string receivedData, UduinoDevice device)
     {
-        //You can launch specific functions here
-        if (connectedDevice.name == sensorPackageID + "_in")
+        if (device.name == inputDeviceName)
         {
-            inputDevice = connectedDevice;
-        }
-        else if (connectedDevice.name == sensorPackageID + "_out")
-        {
-            outputDevice = connectedDevice;
+            ProcessInputData(receivedData);
         }
     }
 
-    void ProcessInputData()
+    void ProcessInputData(string data)
     {
         //Debug.Log("[Input Board] " + inputDevice.name + " is connected");
 
-        ReadDataFrom((int)Pin.A0);
-        ReadDataFrom((int)Pin.A1);
-        ReadDataFrom((int)Pin.A2);
-        ReadDataFrom((int)Pin.A3);
-        ReadDataFrom((int)Pin.D2);
-        ReadDataFrom((int)Pin.D4);
-    }
-
-    void ProcessOutputData()
-    {
-        //Debug.Log("[Output Board] " + inputDevice.name + " is connected");
-
-        WriteAnalogDataTo((int)Pin.D9, redIntensity);
-        WriteAnalogDataTo((int)Pin.D10, greenIntensity);
-        WriteAnalogDataTo((int)Pin.D11, blueIntensity);
-
-        WriteDisplay();
-    }
-
-    void ReadDataFrom(int pin)
-    {
-        // Directly read the value from the sensor
-        string data;
-        // If the pin is analog, use analog read
-        if (pin >= (int)Pin.A0)
-        {
-            data = UduManager.Read(inputDevice, "r " + pin);
-        }
-        else
-        {
-            data = UduManager.Read(inputDevice, "rd " + pin);
-        }
-       
         // Split the string and convert it to int
         if (!string.IsNullOrEmpty(data))
         {
@@ -187,16 +153,16 @@ public class SensorTest : MonoBehaviour
                                 flameDetected = sensorValue;
                                 Debug.Log("Sensor value from " + inputDevice.name + ": F" + flameDetected);
                                 break;
-                            case (int)Pin.D2:
+                            case (int)Pin.D4:
                                 humanDetected = sensorValue;
                                 Debug.Log("Sensor value from " + inputDevice.name + ": H" + humanDetected);
                                 break;
-                            case (int)Pin.D4:
+                            case (int)Pin.D7:
                                 buttonPressed = sensorValue;
                                 Debug.Log("Sensor value from " + inputDevice.name + ": B" + buttonPressed);
                                 break;
                             default:
-                                Debug.LogError("### Invalid Pin ###");
+                                Debug.LogError("### Invalid Pin ###" + pinValue);
                                 break;
                         }
                     }
@@ -215,6 +181,39 @@ public class SensorTest : MonoBehaviour
                 Debug.LogError("### Insufficient data received ###");
             }
         }
+    }
+
+    void ProcessOutputData()
+    {
+        //Debug.Log("[Output Board] " + inputDevice.name + " is connected");
+
+        WriteAnalogDataTo((int)Pin.D9, redIntensity);
+        WriteAnalogDataTo((int)Pin.D10, greenIntensity);
+        WriteAnalogDataTo((int)Pin.D11, blueIntensity);
+
+        WriteDisplay();
+    }
+
+    void ReadDataFrom(int pin)
+    {
+        string command;
+
+        // If the pin is analog, use analog read
+        if (pin >= (int)Pin.A0)
+        {
+            command = "r " + pin + " >";
+        }
+        else if (pin >= (int)Pin.D0)
+        {
+            command = "rd " + pin + " >";
+        }
+        else
+        {
+            Debug.LogError("### Invalid Pin ###");
+            return;
+        }
+
+        UduManager.sendCommand(inputDevice, command);
     }
 
     void WriteAnalogDataTo(int pin, int value)

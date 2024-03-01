@@ -491,7 +491,6 @@ MonoBehaviour:
   topViewCamera: {fileID: 963194227}
   firstPersonCamera: {fileID: 573116541}
   roomsDropdown: {fileID: 0}
-  firstPersonViewCameraController: {fileID: 0}
 --- !u!4 &64783864
 Transform:
   m_ObjectHideFlags: 0
@@ -1695,7 +1694,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &423752115
 Transform:
   m_ObjectHideFlags: 0
@@ -2298,7 +2297,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 5
   rotateSpeed: 100
-  roomsDropdown: {fileID: 0}
 --- !u!114 &573116545
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3489,7 +3487,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1169019389771402, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4720884688345560, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3530,6 +3528,18 @@ PrefabInstance:
     - target: {fileID: 4720884688345560, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
+      propertyPath: presentExtentionsMap.keys.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
+      propertyPath: presentExtentionsMap.values.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
+      propertyPath: presentExtentionsMap.keys.Array.data[1]
+      value: UduinoDevice_Wifi
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -4555,7 +4565,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 857593924}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.81333333
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -7930,7 +7940,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df2a1d3ae97d74000967179f7ac35165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensorPackageID: 
+  inputDeviceName: 
+  outputDeviceName: 
   temperatureF: 0
   temperatureC: 0
   lightLevel: 0
@@ -7985,7 +7996,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df2a1d3ae97d74000967179f7ac35165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensorPackageID: 
+  inputDeviceName: 
+  outputDeviceName: 
   temperatureF: 0
   temperatureC: 0
   lightLevel: 0
@@ -8132,7 +8144,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcc7d41190c62e5428e93b8240aa0ffd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensorPackageID: 
+  inputDeviceName: 
+  outputDeviceName: 
   temperatureF: 0
   temperatureC: 0
   lightLevel: 0
@@ -8189,7 +8202,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcc7d41190c62e5428e93b8240aa0ffd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensorPackageID: 
+  inputDeviceName: 
+  outputDeviceName: 
   temperatureF: 0
   temperatureC: 0
   lightLevel: 0
