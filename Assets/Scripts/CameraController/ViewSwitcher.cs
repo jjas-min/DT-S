@@ -85,8 +85,8 @@ public class ViewSwitcher : MonoBehaviour
                 targetRotation = new Vector3(0, -38.51f, 0);
                 break;
             case "ANH313":
-                targetPosition = new Vector3(2,-0.9f, 9);
-                targetRotation = new Vector3(0, -176, 0);
+                targetPosition = new Vector3(4,-2, 10);
+                targetRotation = new Vector3(-11, -2, -1.6f);
                 break;
             case "Top View": // Top View 시점으로 변경
                 ActivateCamera(topViewCamera);
