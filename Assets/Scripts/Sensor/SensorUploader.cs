@@ -77,7 +77,7 @@ public class SensorUploader : MonoBehaviour
         UduManager = UduinoManager.Instance;
 
         sensorPackageID = this.gameObject.name;
-        inputDeviceName = sensorPackageID + "_in";
+        inputDeviceName = sensorPackageID + "_wifi";
         outputDeviceName = sensorPackageID + "_out";
 
         UduManager.OnDataReceived += DataReceived;
@@ -370,7 +370,7 @@ public class SensorUploader : MonoBehaviour
             alertLog += "Water: " + sensorDict["waterLevel"] + " ";
         }
 
-        if (Convert.ToDouble(sensorDict["flameDetected"]) > 3.0)
+        if (Convert.ToDouble(sensorDict["flameDetected"]) > 5.0)
         {
             alertDict.Add("flameDetected", Convert.ToDouble(sensorDict["flameDetected"]));
             uploadAlert = true;
@@ -378,7 +378,7 @@ public class SensorUploader : MonoBehaviour
             alertLog += "Flame: " + sensorDict["flameDetected"] + " ";
         }
 
-        if (Convert.ToDouble(sensorDict["humanDetected"]) > 0.5)
+        if (Convert.ToDouble(sensorDict["humanDetected"]) < 0.8)
         {
             alertDict.Add("humanDetected", Convert.ToDouble(sensorDict["humanDetected"]));
             uploadAlert = true;
@@ -402,6 +402,8 @@ public class SensorUploader : MonoBehaviour
             result += item;
         }
 
+        if (list.Count == 0) return 0; // Prevent division by zero
+
         result /= list.Count;
         result = Math.Round(result * 100) / 100;
         return result;
@@ -414,6 +416,8 @@ public class SensorUploader : MonoBehaviour
         {
             result += item;
         }
+
+        if (list.Count == 0) return 0; // Prevent division by zero
 
         result /= list.Count;
         return result;
