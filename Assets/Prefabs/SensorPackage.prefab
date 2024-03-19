@@ -80,7 +80,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df2a1d3ae97d74000967179f7ac35165, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensorPackageID: 
+  inputDeviceName: 
+  outputDeviceName: 
   temperatureF: 0
   temperatureC: 0
   lightLevel: 0
@@ -88,7 +89,6 @@ MonoBehaviour:
   flameDetected: 0
   humanDetected: 0
   buttonPressed: 0
-  temperatureFs: 
   temperatureCs: []
   lightLevels: 
   waterLevels: 

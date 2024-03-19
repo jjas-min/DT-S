@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 2758.5784, g: 2101.971, b: 2277.3088, a: 1}
+  m_IndirectSpecularColor: {r: 2749.5637, g: 2147.881, b: 2439.8518, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6445,7 +6445,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1778037246}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.81333333
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -6488,11 +6488,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 645159137}
   m_CullTransparentMesh: 1
---- !u!1 &646141762 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5028852068888251955, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-  m_PrefabInstance: {fileID: 1268002858}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &673582536
 GameObject:
   m_ObjectHideFlags: 0
@@ -8588,8 +8583,32 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
+      propertyPath: defaultArduinoBoardType
+      value: 13
+      objectReference: {fileID: 0}
+    - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
+      propertyPath: uduinoWiFiBoards.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
+      propertyPath: uduinoWiFiBoards.Array.data[0].ip
+      value: 192.168.0.40
+      objectReference: {fileID: 0}
+    - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
+      propertyPath: uduinoWiFiBoards.Array.data[1].ip
+      value: 192.168.0.39
+      objectReference: {fileID: 0}
+    - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: activeExtentionsMap.keys.Array.size
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
+      propertyPath: uduinoWiFiBoards.Array.data[0].port
+      value: 4223
+      objectReference: {fileID: 0}
+    - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
+      propertyPath: uduinoWiFiBoards.Array.data[1].port
+      value: 4222
       objectReference: {fileID: 0}
     - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: presentExtentionsMap.keys.Array.size
@@ -9406,33 +9425,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 915965621}
   m_CullTransparentMesh: 1
---- !u!1 &926565440 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 5028852068888251955, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-  m_PrefabInstance: {fileID: 1414413072967425502}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &926565441 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1234468788487979909, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
   m_PrefabInstance: {fileID: 1414413072967425502}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &926565447
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 926565440}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2877f63db838b654d9ff797968be3024, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  temperature: 0
-  lightLevel: 0
-  waterLevel: 0
-  flameDetected: 0
-  humanDetected: 0
 --- !u!1 &929503800
 GameObject:
   m_ObjectHideFlags: 0
@@ -10891,7 +10888,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 857593924}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.81333333
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -13098,72 +13095,24 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3819781966366643778, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3834659696328809106, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5028852068888251955, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
       propertyPath: m_Name
       value: Hallway_1
       objectReference: {fileID: 0}
     - target: {fileID: 9185746526518586241, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: lightLevelText
-      value: 
-      objectReference: {fileID: 1292725076}
-    - target: {fileID: 9185746526518586241, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: waterLevelText
-      value: 
-      objectReference: {fileID: 1528784354}
-    - target: {fileID: 9185746526518586241, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
       propertyPath: sensorInfoPanel
       value: 
       objectReference: {fileID: 420713303}
-    - target: {fileID: 9185746526518586241, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: temperatureText
-      value: 
-      objectReference: {fileID: 776305459}
-    - target: {fileID: 9185746526518586241, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: flameDetectedText
-      value: 
-      objectReference: {fileID: 74890814}
-    - target: {fileID: 9185746526518586241, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: humanDetectedText
-      value: 
-      objectReference: {fileID: 1233908221}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5028852068888251955, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      insertIndex: 6
-      addedObject: {fileID: 1268002865}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
 --- !u!4 &1268002859 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1234468788487979909, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
   m_PrefabInstance: {fileID: 1268002858}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &1268002865
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 646141762}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2877f63db838b654d9ff797968be3024, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  temperature: 0
-  lightLevel: 0
-  waterLevel: 0
-  flameDetected: 0
-  humanDetected: 0
 --- !u!1 &1270499678
 GameObject:
   m_ObjectHideFlags: 0
@@ -21348,53 +21297,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3819781966366643778, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 3834659696328809106, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5028852068888251955, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
       propertyPath: m_Name
       value: NTH311_1
       objectReference: {fileID: 0}
-    - target: {fileID: 5028852068888251955, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9185746526518586241, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: lightLevelText
-      value: 
-      objectReference: {fileID: 1292725076}
-    - target: {fileID: 9185746526518586241, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: waterLevelText
-      value: 
-      objectReference: {fileID: 1528784354}
     - target: {fileID: 9185746526518586241, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
       propertyPath: sensorInfoPanel
       value: 
       objectReference: {fileID: 420713303}
-    - target: {fileID: 9185746526518586241, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: temperatureText
-      value: 
-      objectReference: {fileID: 776305459}
-    - target: {fileID: 9185746526518586241, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: flameDetectedText
-      value: 
-      objectReference: {fileID: 74890814}
-    - target: {fileID: 9185746526518586241, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      propertyPath: humanDetectedText
-      value: 
-      objectReference: {fileID: 1233908221}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 5028852068888251955, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
-      insertIndex: 6
-      addedObject: {fileID: 926565447}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 51fb8f4f88f25a04589b2a6e7a4c4ecd, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
