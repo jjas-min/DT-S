@@ -941,10 +941,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Confirm
+  m_text: "\uD655\uC778"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c673daeaead47184d89a0e12fdd22849, type: 2}
-  m_sharedMaterial: {fileID: 3411569656378775019, guid: c673daeaead47184d89a0e12fdd22849, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d1dcea504d091421ba6e2b2aaab6d7a7, type: 2}
+  m_sharedMaterial: {fileID: -2556228300402405471, guid: d1dcea504d091421ba6e2b2aaab6d7a7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -968,12 +968,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 24
+  m_fontSize: 18
   m_fontSizeBase: 24
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 16
+  m_fontSizeMax: 18
   m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
@@ -3269,10 +3269,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Mark here?
+  m_text: Issue Marker
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c673daeaead47184d89a0e12fdd22849, type: 2}
-  m_sharedMaterial: {fileID: 3411569656378775019, guid: c673daeaead47184d89a0e12fdd22849, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: ebf283494b88a48ddbf1895bbde7f441, type: 2}
+  m_sharedMaterial: {fileID: 2929985244304660877, guid: ebf283494b88a48ddbf1895bbde7f441, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -3296,7 +3296,7 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 40
+  m_fontSize: 31.9
   m_fontSizeBase: 36
   m_fontWeight: 400
   m_enableAutoSizing: 1
@@ -3810,10 +3810,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Enter text...
+  m_text: "\uC785\uB825..."
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: c673daeaead47184d89a0e12fdd22849, type: 2}
-  m_sharedMaterial: {fileID: 3411569656378775019, guid: c673daeaead47184d89a0e12fdd22849, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: d1dcea504d091421ba6e2b2aaab6d7a7, type: 2}
+  m_sharedMaterial: {fileID: -2556228300402405471, guid: d1dcea504d091421ba6e2b2aaab6d7a7, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4877,12 +4877,12 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 14
+  m_fontSize: 18
   m_fontSizeBase: 14
   m_fontWeight: 400
-  m_enableAutoSizing: 0
-  m_fontSizeMin: 18
-  m_fontSizeMax: 72
+  m_enableAutoSizing: 1
+  m_fontSizeMin: 12
+  m_fontSizeMax: 18
   m_fontStyle: 0
   m_HorizontalAlignment: 1
   m_VerticalAlignment: 256
@@ -6907,7 +6907,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1823175406
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7193,7 +7193,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Cancel
+  m_text: "\uCDE8\uC18C"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: c673daeaead47184d89a0e12fdd22849, type: 2}
   m_sharedMaterial: {fileID: 3411569656378775019, guid: c673daeaead47184d89a0e12fdd22849, type: 2}
