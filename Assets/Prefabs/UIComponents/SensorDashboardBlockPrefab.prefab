@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 3163649490427093508}
   - component: {fileID: 5644499084577174589}
   m_Layer: 5
-  m_Name: SensorDashboardBlock 1
+  m_Name: SensorDashboardBlockPrefab
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
