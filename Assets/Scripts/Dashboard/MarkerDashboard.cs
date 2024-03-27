@@ -95,7 +95,7 @@ public class MarkerDashboard : MonoBehaviour
             TMP_Text markerText = panelObject.GetComponentInChildren<TMP_Text>();
             markerText.font = font; // 폰트 설정
             markerText.color = fontColor;
-            markerText.fontSize = 20;
+            markerText.fontSize = 15;
             markerText.text = $"ID: {markerData.id}\n" +
                               $"Information: {markerData.information}\n" +
                               $"Level: {markerData.level}\n" +
