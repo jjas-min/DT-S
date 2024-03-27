@@ -34,7 +34,7 @@ public class SensorDashboard : MonoBehaviour
             TMP_Text markerText = paenlObject.GetComponentInChildren<TMP_Text>();
             markerText.font = font; // 폰트 설정
             markerText.color = fontColor;
-            markerText.fontSize = 20;
+            markerText.fontSize = 15;
             markerText.text = $"ID: {sensorData.GetSensorPackageID()}\n" +
                             $"Temperature: {sensorData.GetLightLevel()}\n" +
                             $"WaterLevel: {sensorData.GetWaterLevel()}\n" +

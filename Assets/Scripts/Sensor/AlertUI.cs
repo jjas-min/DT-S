@@ -63,6 +63,11 @@ public class SensorAlert : MonoBehaviour
                 alertText.text += $"\n{field.Key}: {field.Value}";
             }
         }
+
+        // 이미지 생성 후 Vertical Layout Group 컴포넌트 추가 및 설정
+        VerticalLayoutGroup layoutGroup = alertsPanel.gameObject.AddComponent<VerticalLayoutGroup>();
+        layoutGroup.spacing = 10f;
+        
         alertsUI.SetActive(true);
     }
 
