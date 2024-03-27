@@ -68,7 +68,7 @@ public class SensorUploader : MonoBehaviour
 
     // Timer for communication with boards
     float timer = 0.0f;
-    float interval = 0.5f; // 0.5ÃÊ
+    float interval = 0.5f; // 0.5ï¿½ï¿½
 
     // Start is called before the first frame update
     void Start()
@@ -86,14 +86,14 @@ public class SensorUploader : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer += Time.deltaTime; // ÇÁ·¹ÀÓ °£ ½Ã°£ Ãß°¡
+        timer += Time.deltaTime; // ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½Ã°ï¿½ ï¿½ß°ï¿½
 
         if (UduManager.hasBoardConnected())
         {
             inputDevice = UduManager.GetBoard(inputDeviceName);
             outputDevice = UduManager.GetBoard(outputDeviceName);
 
-            // Å¸ÀÌ¸Ó°¡ intervalº¸´Ù Å« °æ¿ì ÇÔ¼ö ½ÇÇà
+            // Å¸ï¿½Ì¸Ó°ï¿½ intervalï¿½ï¿½ï¿½ï¿½ Å« ï¿½ï¿½ï¿½ ï¿½Ô¼ï¿½ ï¿½ï¿½ï¿½ï¿½
             if (timer >= interval)
             {
 
@@ -114,7 +114,7 @@ public class SensorUploader : MonoBehaviour
                     ProcessOutputData();
                 }
 
-                timer = 0.0f; // Å¸ÀÌ¸Ó ÃÊ±âÈ­
+                timer = 0.0f; // Å¸ï¿½Ì¸ï¿½ ï¿½Ê±ï¿½È­
             }
         }
         else
@@ -255,7 +255,7 @@ public class SensorUploader : MonoBehaviour
     void WriteDisplay()
     {
         // LCD Display
-        // lightLevelÀ» 3ÀÚ¸® ¼ýÀÚ·Î º¯È¯ÇÏ¿© displayValue¿¡ ÀúÀå
+        // lightLevelï¿½ï¿½ 3ï¿½Ú¸ï¿½ ï¿½ï¿½ï¿½Ú·ï¿½ ï¿½ï¿½È¯ï¿½Ï¿ï¿½ displayValueï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½
         string displayMessage = "DisplayData";
 
         // Display Light Level
