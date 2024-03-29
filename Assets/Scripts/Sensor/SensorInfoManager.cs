@@ -55,10 +55,14 @@ public class SensorInfoManager : MonoBehaviour
 
     public void UpdateSensorInformation()
     {
-        temperatureText.text = $"Temperature: {sensorData.GetTemperature()}";
-        lightLevelText.text = $"Light Level: {sensorData.GetLightLevel()}";
-        waterLevelText.text = $"Water Level: {sensorData.GetWaterLevel()}";
-        flameDetectedText.text = $"Flame Detected: {sensorData.GetFlameDetected()}";
-        humanDetectedText.text = $"Human Detected: {sensorData.GetHumanDetected()}";
+        if (sensorData == null)
+        {
+            return;
+        }
+        temperatureText.text = $"{sensorData.GetTemperature()}";
+        lightLevelText.text = $"{sensorData.GetLightLevel()}";
+        waterLevelText.text = $"{sensorData.GetWaterLevel()}";
+        flameDetectedText.text = $"{sensorData.GetFlameDetected()}";
+        humanDetectedText.text = $"{sensorData.GetHumanDetected()}";
     }
 }

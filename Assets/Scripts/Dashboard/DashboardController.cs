@@ -4,9 +4,8 @@ public class DashboardController : MonoBehaviour
 {
     public GameObject markerPanel;
     public GameObject sensorPanel;
-    public GameObject DashboardButton;
     public GameObject firstPersonView;
-    private bool isDashboardVisible = false;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -16,44 +15,49 @@ public class DashboardController : MonoBehaviour
     }
 
     // Dashboard ��ư�� ���� �� ȣ��Ǵ� �Լ�
-    public void OnClickDashboardButton()
+    public void OnClickMarkerDashboardButton()
     {
-        // Dashboard Panel�� ���� ���������� Ȯ��
-        if (!isDashboardVisible)
+        // If marker dashboard is not active
+        if (!markerPanel.activeSelf)
         {
-            // Marker Panel�� ������
-            isDashboardVisible = true;
+            // Activate marker dashboard
             markerPanel.SetActive(true);
-            DashboardButton.SetActive(false);
+            sensorPanel.SetActive(false);
             markerPanel.GetComponent<MarkerDashboard>().WriteDashboard();
             firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = false;
+        }
+        else
+        {
+            // Deactivate marker dashboard
+            markerPanel.SetActive(false);
+            firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
+        }
+    }
+
+    public void OnClickSensorDashboardButton()
+    {
+        // If sensor dashboard is not active
+        if (!sensorPanel.activeSelf)
+        {
+            // Activate sensor dashboard
+            sensorPanel.SetActive(true);
+            markerPanel.SetActive(false);
+            sensorPanel.GetComponent<SensorDashboard>().WriteDashboard();
+            firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = false;
+        }
+        else
+        {
+            // Deactivate sensor dashboard
+            sensorPanel.SetActive(false);
+            firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
         }
     }
 
     // Close ��ư�� ������ ȣ��Ǵ� �Լ�
-    public void CloseDashboard()
+    public void OnClickCloseDashboard()
     {
-        // Dashboard Panel�� ����
-        isDashboardVisible = false;
         markerPanel.SetActive(false);
         sensorPanel.SetActive(false);
-        DashboardButton.SetActive(true);
         firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
-    }
-
-    // Panel �ٲ��ִ� �Լ�
-    public void ToggleDashboard()
-    {
-        // Toggle Panel
-        if (markerPanel.activeSelf)
-        {
-            markerPanel.SetActive(false);
-            sensorPanel.SetActive(true);
-        }
-        else
-        {
-            sensorPanel.SetActive(false);
-            markerPanel.SetActive(true);
-        }
     }
 }

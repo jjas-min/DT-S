@@ -41,7 +41,7 @@ public class MarkerInfoManager : MonoBehaviour
             if (task.IsCompleted && !task.IsFaulted)
             {
                 Debug.Log($"Marker {id} deleted successfully from Firestore.");
-                informationPanel.SetActive(false); 
+                markerEditPanel.SetActive(false);
             }
             else
             {
@@ -67,10 +67,10 @@ public class MarkerInfoManager : MonoBehaviour
     {
         informationPanel.SetActive(false);
 
-        informationText.text = $"Information: {markerData.information}";
-        levelText.text = $"Level: {markerData.level}";
-        timestampText.text = $"Created: {markerData.creationTime.ToString("yyyy-MM-dd HH:mm:ss")}";
-        locationText.text = $"Location: {markerData.location}";
+        informationText.text = $"{markerData.information}";
+        levelText.text = $"{markerData.level}";
+        timestampText.text = $"{markerData.creationTime.ToString("yyyy-MM-dd HH:mm:ss")}";
+        locationText.text = $"{markerData.location}";
 
         informationPanel.SetActive(true);
     }
@@ -89,6 +89,9 @@ public class MarkerInfoManager : MonoBehaviour
 
     public void EditInformation()
     {
+        // Deactivate the information panel
+        informationPanel.SetActive(false);
+
         EditInformationInputField.text = markerData.information;
         EditLevelText.value = markerData.level-1;
 
