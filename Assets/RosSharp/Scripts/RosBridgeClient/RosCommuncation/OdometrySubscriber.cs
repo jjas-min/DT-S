@@ -1,35 +1,20 @@
-﻿/*
-© Siemens AG, 2017-2018
-Author: Dr. Martin Bischoff (martin.bischoff@siemens.com)
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-<http://www.apache.org/licenses/LICENSE-2.0>.
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/
-
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace RosSharp.RosBridgeClient
 {
     public class OdometrySubscriber : UnitySubscriber<MessageTypes.Nav.Odometry>
     {
-        public Transform PublishedTransform;
+        public Transform RobotTransform;
 
         private Vector3 position;
         private Quaternion rotation;
         private bool isMessageReceived;
 
         protected override void Start()
-		{
-			base.Start();
-		}
-		
+        {
+            base.Start();
+        }
+
         private void Update()
         {
             if (isMessageReceived)
@@ -42,10 +27,19 @@ namespace RosSharp.RosBridgeClient
             rotation = GetRotation(message).Ros2Unity();
             isMessageReceived = true;
         }
+
         private void ProcessMessage()
         {
-            PublishedTransform.position = position;
-            PublishedTransform.rotation = rotation;
+            // 포지션 편집
+            position.z *= -1;
+            position.x *= 7.75f;
+            position.z *= 7.75f;
+            position.x += 11.78f;
+            position.z -= 16.74f;
+
+            // 로봇의 위치 및 회전 적용
+            RobotTransform.position = position;
+            RobotTransform.rotation = rotation;
         }
 
         private Vector3 GetPosition(MessageTypes.Nav.Odometry message)
@@ -58,11 +52,14 @@ namespace RosSharp.RosBridgeClient
 
         private Quaternion GetRotation(MessageTypes.Nav.Odometry message)
         {
-            return new Quaternion(
-                (float)message.pose.pose.orientation.x,
-                (float)message.pose.pose.orientation.y,
-                (float)message.pose.pose.orientation.z,
-                (float)message.pose.pose.orientation.w);
+            // 초기 회전값을 135도로 설정
+            Quaternion q = new Quaternion(
+                0,
+                Mathf.Sin(Mathf.Deg2Rad * 135f / 2f),
+                0,
+                Mathf.Cos(Mathf.Deg2Rad * 135f / 2f));
+
+            return q;
         }
     }
 }

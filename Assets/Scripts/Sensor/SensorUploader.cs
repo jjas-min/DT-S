@@ -119,7 +119,7 @@ public class SensorUploader : MonoBehaviour
         }
         else
         {
-            Debug.Log("## NO BOARDS DETECTD ##");
+            // Debug.Log("## NO BOARDS DETECTD ##");
         }
 
         if (inputDevice != null && elapsedTime >= 10f)
