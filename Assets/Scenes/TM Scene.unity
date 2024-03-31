@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 2754.8254, g: 2136.764, b: 2391.6604, a: 1}
+  m_IndirectSpecularColor: {r: 2754.759, g: 2136.5256, b: 2390.7854, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -6279,7 +6279,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1778037246}
   m_Direction: 2
   m_Value: 0
-  m_Size: 0.81333333
+  m_Size: 1
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -10765,7 +10765,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   markerPanel: {fileID: 1221148235}
   sensorPanel: {fileID: 1549727916}
-  DashboardButton: {fileID: 879187613}
   firstPersonView: {fileID: 573116538}
 --- !u!114 &996080268
 MonoBehaviour:
