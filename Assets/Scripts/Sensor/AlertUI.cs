@@ -14,12 +14,27 @@ public class SensorAlert : MonoBehaviour
     public GameObject alertPanelPrefab; // ���� �г��� ������
     public GameObject firstPersonView;
     public Transform alertsPanel; // ScrollView�� Content Transform
+    private TMP_Text temperatureText; 
+    private TMP_Text lightLevelText;
+    private TMP_Text flameDetectedText;
+    private TMP_Text humanDetectedText;
+    private TMP_Text locationText;
+    private TMP_Text creationTimeText;
     private FirebaseFirestore db;
 
     void Start()
     {
         db = FirebaseFirestore.DefaultInstance;
         firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = false;
+        
+        // Find the TextMeshPro components among the children of the alertPanelPrefab
+        temperatureText = alertPanelPrefab.transform.Find("Temperature").GetComponent<TMP_Text>();
+        lightLevelText = alertPanelPrefab.transform.Find("LightLevel").GetComponent<TMP_Text>();
+        flameDetectedText = alertPanelPrefab.transform.Find("FlameDetected").GetComponent<TMP_Text>();
+        humanDetectedText = alertPanelPrefab.transform.Find("HumanDetected").GetComponent<TMP_Text>();
+        locationText = alertPanelPrefab.transform.Find("location").GetComponent<TMP_Text>();
+        creationTimeText = alertPanelPrefab.transform.Find("CreationTime").GetComponent<TMP_Text>();
+
         ListenAlerts();
     }
 
@@ -48,26 +63,17 @@ public class SensorAlert : MonoBehaviour
         if (!document.Exists) return;
         Dictionary<string, object> alertData = document.ToDictionary();
 
-        string formattedTime = TimeZoneInfo.ConvertTimeFromUtc(((Timestamp)alertData["createdTime"]).ToDateTime(), TimeZoneInfo.FindSystemTimeZoneById("Korea Standard Time")).ToString("yyyy-MM-dd HH:mm:ss");
+        GameObject alertPanelInstance = Instantiate(alertPanelPrefab, alertsUI.transform);
 
-        GameObject alertPanelInstance = Instantiate(alertPanelPrefab, alertsPanel);
-        alertPanelInstance.name = document.Id; // Set the name of the instance to document ID for easy retrieval
+        // Update sensor information on the alert panel
+        temperatureText.text = alertData.ContainsKey("temperature") ? $"<color=red>{alertData["temperature"]}</color>" : "-";
+        lightLevelText.text = alertData.ContainsKey("lightLevel") ? $"<color=red>{alertData["lightLevel"]}</color>" : "-";
+        flameDetectedText.text = alertData.ContainsKey("flameDetected") ? $"<color=red>{alertData["flameDetected"]}</color>" : "-";
+        humanDetectedText.text = alertData.ContainsKey("humanDetected") ? $"<color=red>{alertData["humanDetected"]}</color>" : "-";
+        locationText.text = alertData.ContainsKey("location") ? $"{alertData["location"]}</color>" : "-";
+        string formattedTime = TimeZoneInfo.ConvertTimeFromUtc(((Timestamp)alertData["createdTime"]).ToDateTime(), TimeZoneInfo.FindSystemTimeZoneById("Korea Standard Time")).ToString("yyyy.MM.dd hh:mm tt");
+        creationTimeText.text = $"{formattedTime}";
 
-        TextMeshProUGUI alertText = alertPanelInstance.GetComponentInChildren<TextMeshProUGUI>();
-        alertText.text = $"Location: {alertData["location"].ToString()}_{alertData["sensorPackageNum"].ToString()}\nCreatedTime: {formattedTime}";
-
-        foreach (var field in alertData)
-        {
-            if (field.Key != "createdTime" && field.Key != "location" && field.Key != "sensorPackageNum")
-            {
-                alertText.text += $"\n{field.Key}: {field.Value}";
-            }
-        }
-
-        // 이미지 생성 후 Vertical Layout Group 컴포넌트 추가 및 설정
-        VerticalLayoutGroup layoutGroup = alertsPanel.gameObject.AddComponent<VerticalLayoutGroup>();
-        layoutGroup.spacing = 10f;
-        
         alertsUI.SetActive(true);
     }
 
