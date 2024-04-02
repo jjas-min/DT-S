@@ -91,19 +91,50 @@ public class MarkerDashboard : MonoBehaviour
             // 패널 생성
             GameObject panelObject = Instantiate(panelPrefab, content);
 
-            // 텍스트 생성 및 설정
-            TMP_Text markerText = panelObject.GetComponentInChildren<TMP_Text>();
-            markerText.font = font; // 폰트 설정
-            markerText.color = fontColor;
-            markerText.fontSize = 15;
-            markerText.text = $"ID: {markerData.id}\n" +
-                              $"Information: {markerData.information}\n" +
-                              $"Level: {markerData.level}\n" +
-                              $"Location: {markerData.location}\n" +
-                              $"Creation Time: {markerData.creationTime.ToLocalTime().ToString("yyyy-MM-dd HH:mm:ss")}";
+            // 각 텍스트 컴포넌트 찾기
+            TMP_Text locationText = panelObject.transform.Find("Location").GetComponent<TMP_Text>();
+            TMP_Text levelText = panelObject.transform.Find("LevelNum").GetComponent<TMP_Text>();
+            TMP_Text creationTimeText = panelObject.transform.Find("CreationTime").GetComponent<TMP_Text>();
+            TMP_Text informationText = panelObject.transform.Find("Information").GetComponent<TMP_Text>();
+
+            // 텍스트 설정
+            locationText.font = font; // 폰트 설정
+            locationText.color = fontColor;
+            locationText.fontSize = 15;
+            locationText.text = $"{markerData.location}";
+
+            // 레벨에 따라 levelNum의 색상 설정
+            switch (markerData.level)
+            {
+                case 1:
+                    levelText.color = Color.red;
+                    break;
+                case 2:
+                    levelText.color = Color.yellow;
+                    break;
+                case 3:
+                    levelText.color = Color.green;
+                    break;
+                default:
+                    levelText.color = fontColor;
+                    break;
+            }
+            levelText.font = font;
+            levelText.fontSize = 45;
+            levelText.text = $"{markerData.level}";
+
+            creationTimeText.font = font;
+            creationTimeText.color = fontColor;
+            creationTimeText.fontSize = 12;
+            creationTimeText.text = $"{markerData.creationTime.ToLocalTime().ToString("yyyy-MM-dd hh:mm tt")}";
+
+            informationText.font = font;
+            informationText.color = fontColor;
+            informationText.fontSize = 15;
+            informationText.text = $"{markerData.information}";
         }
 
-        // Vertical Layout Group 컴포넌트의 child force expand를 적용하여 공백을 생성
+         // Vertical Layout Group 컴포넌트의 child force expand를 적용하여 공백을 생성
         VerticalLayoutGroup verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
         if (verticalLayoutGroup != null)
         {
