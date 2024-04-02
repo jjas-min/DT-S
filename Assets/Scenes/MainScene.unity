@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 705507994}
-  m_IndirectSpecularColor: {r: 2759.214, g: 2100.7444, b: 2272.762, a: 1}
+  m_IndirectSpecularColor: {r: 2755.056, g: 2136.469, b: 2390.3674, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -7737,7 +7737,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &728084176
 RectTransform:
   m_ObjectHideFlags: 0
@@ -13679,7 +13679,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   content: {fileID: 707740084}
-  panelPrefab: {fileID: 2771953584434476956, guid: 11c52b6a3a8f54a41b7210356f23eb7e, type: 3}
+  panelPrefab: {fileID: 2771953584434476956, guid: 50f59a4a288f1be4ca8dfff6d0a06889, type: 3}
   font: {fileID: 11400000, guid: d1dcea504d091421ba6e2b2aaab6d7a7, type: 2}
   fontColor: {r: 0, g: 0, b: 0, a: 1}
   verticalSpacing: 10

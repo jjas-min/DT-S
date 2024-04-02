@@ -11,30 +11,15 @@ using TMPro;
 public class SensorAlert : MonoBehaviour
 {
     public GameObject alertsUI;
-    public GameObject alertPanelPrefab; // ���� �г��� ������
+    public GameObject alertPanelPrefab; 
     public GameObject firstPersonView;
-    public Transform alertsPanel; // ScrollView�� Content Transform
-    private TMP_Text temperatureText; 
-    private TMP_Text lightLevelText;
-    private TMP_Text flameDetectedText;
-    private TMP_Text humanDetectedText;
-    private TMP_Text locationText;
-    private TMP_Text creationTimeText;
+    public Transform alertsPanel; 
     private FirebaseFirestore db;
 
     void Start()
     {
         db = FirebaseFirestore.DefaultInstance;
         firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = false;
-        
-        // Find the TextMeshPro components among the children of the alertPanelPrefab
-        temperatureText = alertPanelPrefab.transform.Find("Temperature").GetComponent<TMP_Text>();
-        lightLevelText = alertPanelPrefab.transform.Find("LightLevel").GetComponent<TMP_Text>();
-        flameDetectedText = alertPanelPrefab.transform.Find("FlameDetected").GetComponent<TMP_Text>();
-        humanDetectedText = alertPanelPrefab.transform.Find("HumanDetected").GetComponent<TMP_Text>();
-        locationText = alertPanelPrefab.transform.Find("location").GetComponent<TMP_Text>();
-        creationTimeText = alertPanelPrefab.transform.Find("CreationTime").GetComponent<TMP_Text>();
-
         ListenAlerts();
     }
 
@@ -63,19 +48,46 @@ public class SensorAlert : MonoBehaviour
         if (!document.Exists) return;
         Dictionary<string, object> alertData = document.ToDictionary();
 
-        GameObject alertPanelInstance = Instantiate(alertPanelPrefab, alertsUI.transform);
+        string formattedTime = TimeZoneInfo.ConvertTimeFromUtc(((Timestamp)alertData["createdTime"]).ToDateTime(), TimeZoneInfo.FindSystemTimeZoneById("Korea Standard Time")).ToString("yyyy-MM-dd hh:mm tt");
 
-        // Update sensor information on the alert panel
-        temperatureText.text = alertData.ContainsKey("temperature") ? $"<color=red>{alertData["temperature"]}</color>" : "-";
-        lightLevelText.text = alertData.ContainsKey("lightLevel") ? $"<color=red>{alertData["lightLevel"]}</color>" : "-";
-        flameDetectedText.text = alertData.ContainsKey("flameDetected") ? $"<color=red>{alertData["flameDetected"]}</color>" : "-";
-        humanDetectedText.text = alertData.ContainsKey("humanDetected") ? $"<color=red>{alertData["humanDetected"]}</color>" : "-";
-        locationText.text = alertData.ContainsKey("location") ? $"{alertData["location"]}</color>" : "-";
-        string formattedTime = TimeZoneInfo.ConvertTimeFromUtc(((Timestamp)alertData["createdTime"]).ToDateTime(), TimeZoneInfo.FindSystemTimeZoneById("Korea Standard Time")).ToString("yyyy.MM.dd hh:mm tt");
-        creationTimeText.text = $"{formattedTime}";
+        GameObject alertPanelInstance = Instantiate(alertPanelPrefab, alertsPanel);
+        alertPanelInstance.name = document.Id;
+
+        TextMeshProUGUI locationText = alertPanelInstance.transform.Find("Location").GetComponent<TextMeshProUGUI>();
+        locationText.text = $"{alertData["location"].ToString()}";
+
+        TextMeshProUGUI createdTimeText = alertPanelInstance.transform.Find("CreationTime").GetComponent<TextMeshProUGUI>();
+        createdTimeText.text = $"{formattedTime}";
+
+        TextMeshProUGUI temperatureText = alertPanelInstance.transform.Find("temperatureText").GetComponent<TextMeshProUGUI>();
+        temperatureText.text = alertData.ContainsKey("temperature") ? alertData["temperature"].ToString() : "-";
+        temperatureText.color = alertData.ContainsKey("temperature") ? Color.red : Color.black;
+        temperatureText.fontSize = 20;
+
+        TextMeshProUGUI flameDetectedText = alertPanelInstance.transform.Find("flameDetectedText").GetComponent<TextMeshProUGUI>();
+        flameDetectedText.text = alertData.ContainsKey("flameDetected") ? alertData["flameDetected"].ToString() : "-";
+        flameDetectedText.color = alertData.ContainsKey("flameDetected") ? Color.red : Color.black;
+        flameDetectedText.fontSize = 20;
+
+        TextMeshProUGUI lightLevelText = alertPanelInstance.transform.Find("lightLevelText").GetComponent<TextMeshProUGUI>();
+        lightLevelText.text = alertData.ContainsKey("lightLevel") ? alertData["lightLevel"].ToString() : "-";
+        lightLevelText.color = alertData.ContainsKey("lightLevel") ? Color.red : Color.black;
+        lightLevelText.fontSize = 20;
+
+        TextMeshProUGUI humanDetectedText = alertPanelInstance.transform.Find("humanDetectedText").GetComponent<TextMeshProUGUI>();
+        humanDetectedText.text = alertData.ContainsKey("humanDetected") ? alertData["humanDetected"].ToString() : "-";
+        humanDetectedText.color = alertData.ContainsKey("humanDetected") ? Color.red : Color.black;
+        humanDetectedText.fontSize = 20;
 
         alertsUI.SetActive(true);
+
+        // 이미지 생성 후 Vertical Layout Group 컴포넌트 추가 및 설정
+        VerticalLayoutGroup layoutGroup = alertsPanel.gameObject.AddComponent<VerticalLayoutGroup>();
+        layoutGroup.spacing = 10f;
+        
+        alertsUI.SetActive(true);
     }
+
 
     void RemoveAlert(string documentId)
     {
