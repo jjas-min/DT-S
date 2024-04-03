@@ -10,10 +10,10 @@ public class SensorDashboard : MonoBehaviour
     public GameObject panelPrefab; // 이미지와 텍스트를 담을 패널 프리팹
     public TMP_FontAsset font; // 사용할 폰트
     public Color fontColor = Color.black; // 폰트 컬러
-    public Texture2D imageTexture; // RawImage에 사용할 이미지 텍스처
+    public float verticalSpacing = 10f; // 이미지들 사이의 수직 간격
     public SensorData[] SensorDataArray;
 
-    public void WriteDashboard() 
+    public void WriteDashboard()
     {
         // MarkerData Array
         SensorDataArray = FindObjectsOfType<SensorData>();
@@ -23,52 +23,36 @@ public class SensorDashboard : MonoBehaviour
         {
             Destroy(child.gameObject);
         }
-        
+
         // 각 센서 데이터에 대해 이미지와 텍스트를 담을 패널 생성 및 정보 표시
         foreach (SensorData sensorData in SensorDataArray)
         {
-            Debug.Log("inside foreachinside foreachinside foreachinside foreachinside foreachinside foreachinside foreachinside foreachinside foreachinside foreach");
-            
             // 패널 생성
             GameObject panelObject = Instantiate(panelPrefab, content);
-            
-            // 텍스트 컴포넌트를 찾아서 정보 설정
-            TMP_Text idText = panelObject.transform.Find("Title").GetComponent<TMP_Text>();
+
+            // // 패널에서 필요한 텍스트 컴포넌트를 찾아 정보 설정
+            TMP_Text titleText = panelObject.transform.Find("Title").GetComponent<TMP_Text>();
+            titleText.text = sensorData.GetSensorPackageID();
+
             TMP_Text temperatureText = panelObject.transform.Find("Temperature").GetComponent<TMP_Text>();
+            temperatureText.text = sensorData.GetLightLevel() != null ? $"{sensorData.GetLightLevel()}°C" : "-";
+
             TMP_Text waterLevelText = panelObject.transform.Find("WaterLevel").GetComponent<TMP_Text>();
+            waterLevelText.text = sensorData.GetWaterLevel() != null ? $"수위정보: {sensorData.GetWaterLevel()}" : "수위정보: -";
+
             TMP_Text flameDetectedText = panelObject.transform.Find("FlameDetected").GetComponent<TMP_Text>();
+            flameDetectedText.text = sensorData.GetFlameDetected() != null ? $"불꽃감지: {sensorData.GetFlameDetected()}" : "불꽃감지: -";
+
             TMP_Text humanDetectedText = panelObject.transform.Find("HumanDetected").GetComponent<TMP_Text>();
+            humanDetectedText.text = sensorData.GetHumanDetected() != null ? $"인체감지: {sensorData.GetHumanDetected()}" : "인체감지: -";
+        }
 
-            // RawImage 컴포넌트를 찾아서 이미지 설정
-            RawImage rawImageComponent = panelObject.transform.Find("RawImage").GetComponent<RawImage>();
-            Debug.Log("rawImageComponent", rawImageComponent);
-            rawImageComponent.texture = imageTexture;
-
-            // 각 텍스트 필드에 정보 할당
-            idText.font = font; // 폰트 설정
-            idText.color = fontColor;
-            idText.fontSize = 15;
-            idText.text = sensorData.GetSensorPackageID();
-            
-            temperatureText.font = font; // 폰트 설정
-            temperatureText.color = fontColor;
-            temperatureText.fontSize = 45;
-            temperatureText.text = $"{sensorData.GetLightLevel()}°C";
-            
-            waterLevelText.font = font; // 폰트 설정
-            waterLevelText.color = fontColor;
-            waterLevelText.fontSize = 15;
-            waterLevelText.text = $"수위 정보: {sensorData.GetWaterLevel()}";
-            
-            flameDetectedText.font = font; // 폰트 설정
-            flameDetectedText.color = fontColor;
-            flameDetectedText.fontSize = 15;
-            flameDetectedText.text = $"불꽃 감지: {sensorData.GetFlameDetected()}";
-            
-            humanDetectedText.font = font; // 폰트 설정
-            humanDetectedText.color = fontColor;
-            humanDetectedText.fontSize = 15;
-            humanDetectedText.text = $"사람 감지: {sensorData.GetHumanDetected()}";
+        // Vertical Layout Group 컴포넌트의 child force expand를 적용하여 공백을 생성
+        VerticalLayoutGroup verticalLayoutGroup = content.GetComponent<VerticalLayoutGroup>();
+        if (verticalLayoutGroup != null)
+        {
+            verticalLayoutGroup.childForceExpandHeight = true;
+            verticalLayoutGroup.spacing = verticalSpacing;
         }
     }
 }

@@ -11,6 +11,8 @@ public class MarkerInfoManager : MonoBehaviour
 {
     public GameObject informationPanel;
     public GameObject markerEditPanel;
+    // Camera
+    public GameObject firstPersonView;
 
     public Button confirmButton;
     public Button cancelButton;
@@ -21,7 +23,7 @@ public class MarkerInfoManager : MonoBehaviour
     public TMP_InputField EditInformationInputField;
     public TMP_Text levelText;
     public TMP_Dropdown EditLevelText;
-    public TMP_Text timestampText; 
+    public TMP_Text timestampText;
     public TMP_Text locationText;
 
     private MarkerData markerData;
@@ -45,15 +47,17 @@ public class MarkerInfoManager : MonoBehaviour
             }
             else
             {
-                Debug.LogError("Error deleting marker from Firestore."); 
+                Debug.LogError("Error deleting marker from Firestore.");
             }
         });
+        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
     }
 
 
     public void OnCloseButtonClicked() //Close Info
     {
-        informationPanel.SetActive(false); 
+        informationPanel.SetActive(false);
+        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
     }
 
     public void SetInformation(MarkerData markerData)
@@ -69,8 +73,25 @@ public class MarkerInfoManager : MonoBehaviour
 
         informationText.text = $"{markerData.information}";
         levelText.text = $"{markerData.level}";
-        timestampText.text = $"{markerData.creationTime.ToString("yyyy-MM-dd HH:mm:ss")}";
+        timestampText.text = $"{markerData.creationTime.ToString("yyyy-MM-dd hh:mm tt")}";
         locationText.text = $"{markerData.location}";
+
+        // 레벨에 따라 텍스트 색상 변경
+        switch (markerData.level)
+        {
+            case 1:
+                levelText.color = Color.red;
+                break;
+            case 2:
+                levelText.color = Color.yellow;
+                break;
+            case 3:
+                levelText.color = Color.green;
+                break;
+            default:
+                levelText.color = Color.white;
+                break;
+        }
 
         informationPanel.SetActive(true);
     }
@@ -78,13 +99,14 @@ public class MarkerInfoManager : MonoBehaviour
     public void OnEditButtonClicked()
     {
         markerEditPanel.SetActive(true);
+        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = false;
         EditInformation();
     }
 
     IEnumerator WaitAndDisplayInformation(float waitTime)
     {
-        yield return new WaitForSeconds(waitTime); 
-        DisplayInformation(); 
+        yield return new WaitForSeconds(waitTime);
+        DisplayInformation();
     }
 
     public void EditInformation()
@@ -93,7 +115,7 @@ public class MarkerInfoManager : MonoBehaviour
         informationPanel.SetActive(false);
 
         EditInformationInputField.text = markerData.information;
-        EditLevelText.value = markerData.level-1;
+        EditLevelText.value = markerData.level - 1;
 
         confirmButton.onClick.RemoveAllListeners();
         confirmButton.onClick.AddListener(() =>
@@ -116,13 +138,14 @@ public class MarkerInfoManager : MonoBehaviour
                     Debug.LogError("Error updating marker in Firestore: " + task.Exception.ToString());
                 }
             });
-
+            firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
             StartCoroutine(WaitAndDisplayInformation(0.025f));
         });
         cancelButton.onClick.RemoveAllListeners();
         cancelButton.onClick.AddListener(() =>
         {
             markerEditPanel.SetActive(false);
+            firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
         });
     }
 }

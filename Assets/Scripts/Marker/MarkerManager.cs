@@ -20,6 +20,8 @@ public class MarkerManager : MonoBehaviour
     //Marker
     public GameObject markerContainer;
     public GameObject markerPrefab;
+    // Camera
+    public GameObject firstPersonView;
 
     void Start()
     {
@@ -63,7 +65,10 @@ public class MarkerManager : MonoBehaviour
 
     void ShowSelectionUI(Vector3 hitPoint, RaycastHit hit) //UI ǥ�� �� ���� ����
     {
-        selectionUI.SetActive(true); 
+        selectionUI.SetActive(true);
+        // 카메라 이동 off
+        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = false;
+
         confirmButton.onClick.RemoveAllListeners(); 
         confirmButton.onClick.AddListener(() => {
             string information = informationInputField.text;
@@ -72,12 +77,14 @@ public class MarkerManager : MonoBehaviour
             informationInputField.text = "";
             levelInputField.value = 0; 
             selectionUI.SetActive(false);
+            firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
         });
         cancelButton.onClick.RemoveAllListeners();
         cancelButton.onClick.AddListener(() => {
             informationInputField.text = "";
             levelInputField.value = 0;
             selectionUI.SetActive(false);
+            firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
         });
     }
 
