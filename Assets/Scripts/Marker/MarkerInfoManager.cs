@@ -103,6 +103,29 @@ public class MarkerInfoManager : MonoBehaviour
         EditInformation();
     }
 
+    public void OnSolvedButtonClicked()
+    {
+        Dictionary<string, object> solvedUpdate = new Dictionary<string, object>
+    {
+        {"isSolved", true}
+    };
+
+        db.Collection("Markers").Document(id).UpdateAsync(solvedUpdate).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted && !task.IsFaulted)
+            {
+                Debug.Log($"Marker {id} marked as solved successfully in Firestore.");
+            }
+            else
+            {
+                Debug.LogError("Error marking marker as solved in Firestore: " + task.Exception.ToString());
+            }
+        });
+
+        informationPanel.SetActive(false);
+        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
+    }
+
     IEnumerator WaitAndDisplayInformation(float waitTime)
     {
         yield return new WaitForSeconds(waitTime);
