@@ -65,7 +65,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: e2d8e1d3ddb1dee4699e08c1d84d84e1, type: 3}
+  m_Texture: {fileID: 0}
   m_UVRect:
     serializedVersion: 2
     x: 0
@@ -1159,7 +1159,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC591\uD638"
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: d1dcea504d091421ba6e2b2aaab6d7a7, type: 2}
   m_sharedMaterial: {fileID: -2556228300402405471, guid: d1dcea504d091421ba6e2b2aaab6d7a7, type: 2}
@@ -1169,7 +1169,7 @@ MonoBehaviour:
   m_fontColor32:
     serializedVersion: 2
     rgba: 4278245432
-  m_fontColor: {r: 0.21960786, g: 0.8470589, b: 0, a: 1}
+  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
