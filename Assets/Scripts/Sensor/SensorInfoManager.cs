@@ -13,6 +13,8 @@ public class SensorInfoManager : MonoBehaviour
     private TMP_Text flameDetectedText;
     private TMP_Text humanDetectedText;
 
+    private TMP_Text sensorPackageIDText;
+
     private SensorData sensorData;
 
     void Start()
@@ -25,6 +27,8 @@ public class SensorInfoManager : MonoBehaviour
         waterLevelText = sensorInfoPanel.transform.Find("WaterLevel").GetComponent<TMP_Text>();
         flameDetectedText = sensorInfoPanel.transform.Find("FlameDetected").GetComponent<TMP_Text>();
         humanDetectedText = sensorInfoPanel.transform.Find("HumanDetected").GetComponent<TMP_Text>();
+
+        sensorPackageIDText = sensorInfoPanel.transform.Find("SensorPackageID").GetComponent<TMP_Text>();
     }
 
     // Update is called once per frame
@@ -59,6 +63,7 @@ public class SensorInfoManager : MonoBehaviour
         {
             return;
         }
+        sensorPackageIDText.text = sensorData.GetSensorPackageID();
         temperatureText.text = $"{sensorData.GetTemperature()}";
         lightLevelText.text = $"{sensorData.GetLightLevel()}";
         waterLevelText.text = $"{sensorData.GetWaterLevel()}";
