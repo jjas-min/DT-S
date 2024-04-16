@@ -966,6 +966,7 @@ GameObject:
   - component: {fileID: 45888230}
   - component: {fileID: 45888229}
   - component: {fileID: 45888228}
+  - component: {fileID: 45888231}
   m_Layer: 5
   m_Name: SensorInfoUI
   m_TagString: Untagged
@@ -1056,6 +1057,19 @@ Canvas:
   m_SortingLayerID: 0
   m_SortingOrder: 0
   m_TargetDisplay: 0
+--- !u!114 &45888231
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 45888226}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a40a79eb721e464498c5904d476b816, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sensorInfoPanel: {fileID: 1973642587}
 --- !u!1 &58462041
 GameObject:
   m_ObjectHideFlags: 0
@@ -1074,7 +1088,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &58462042
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5777,7 +5791,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &537219381
 RectTransform:
   m_ObjectHideFlags: 0
@@ -6863,7 +6877,7 @@ RectTransform:
   m_Father: {fileID: 664804282}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 1, y: 1}
+  m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 20, y: 20}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -12489,8 +12503,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1973642591}
-        m_TargetAssemblyTypeName: SensorInfoManager, Assembly-CSharp
+      - m_Target: {fileID: 45888231}
+        m_TargetAssemblyTypeName: SensorInfoPanelController, Assembly-CSharp
         m_MethodName: OnCloseButtonClicked
         m_Mode: 1
         m_Arguments:
@@ -16289,7 +16303,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1462438046
 RectTransform:
   m_ObjectHideFlags: 0
@@ -19736,7 +19750,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1804594309
 RectTransform:
   m_ObjectHideFlags: 0
@@ -21476,7 +21490,6 @@ GameObject:
   - component: {fileID: 1973642588}
   - component: {fileID: 1973642590}
   - component: {fileID: 1973642589}
-  - component: {fileID: 1973642591}
   m_Layer: 5
   m_Name: SensorInfoPanel
   m_TagString: Untagged
@@ -21554,19 +21567,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1973642587}
   m_CullTransparentMesh: 1
---- !u!114 &1973642591
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1973642587}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 01cb3e0a4ec3ab44dbd064c5264634d6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sensorInfoPanel: {fileID: 1973642587}
 --- !u!1 &1974355615
 GameObject:
   m_ObjectHideFlags: 0

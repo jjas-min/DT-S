@@ -52,15 +52,16 @@ public class SensorInfoManager : MonoBehaviour
         }
     }
 
-    public void OnCloseButtonClicked()
-    {
-        sensorInfoPanel.SetActive(false); // X ��ư Ŭ�� �� Information Panel ��Ȱ��ȭ
-    }
-
     public void UpdateSensorInformation()
     {
         if (sensorData == null)
         {
+            sensorPackageIDText.text = "-";
+            temperatureText.text = "-";
+            lightLevelText.text = "-";
+            waterLevelText.text = "-";
+            flameDetectedText.text = "-";
+            humanDetectedText.text = "-";
             return;
         }
         sensorPackageIDText.text = sensorData.GetSensorPackageID();
