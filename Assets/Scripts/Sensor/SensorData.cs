@@ -11,7 +11,7 @@ public class SensorData : MonoBehaviour
     [SerializeField] private int flameDetected;
     [SerializeField] private double humanDetected;
 
-    private string sensorPackageID;
+    [SerializeField] private string sensorPackageID;
 
     void Start()
     {

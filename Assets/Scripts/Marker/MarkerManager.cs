@@ -113,6 +113,7 @@ public class MarkerManager : MonoBehaviour
         db.Collection("Markers").Document(markerId).SetAsync(markerDict);
         selectionUI.SetActive(false);
     }
+
     void MarkerLoader()
     {
         FirebaseFirestore db = FirebaseFirestore.DefaultInstance;
@@ -143,6 +144,7 @@ public class MarkerManager : MonoBehaviour
     void CreateOrUpdateMarker(DocumentSnapshot document)
     {
         Dictionary<string, object> markerData = document.ToDictionary();
+
         Dictionary<string, object> positionData = markerData["position"] as Dictionary<string, object>;
         Vector3 position = new Vector3(
             Convert.ToSingle(positionData["x"]),
@@ -154,6 +156,7 @@ public class MarkerManager : MonoBehaviour
         Timestamp creationTime = (Timestamp)markerData["creationTime"];
         string location = markerData["location"].ToString();
         bool isSolved = (bool)markerData["isSolved"];
+
         // ��Ŀ�� �̹� �����ϴ��� Ȯ��
         GameObject existingMarker = GameObject.Find(document.Id);
         if (existingMarker != null)

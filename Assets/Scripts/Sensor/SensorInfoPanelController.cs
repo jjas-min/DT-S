@@ -6,20 +6,20 @@ public class SensorInfoPanelController : MonoBehaviour
 {
     [SerializeField] private GameObject sensorInfoPanel;
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private string activeSensorPackageID;
 
     public void OnCloseButtonClicked()
     {
         sensorInfoPanel.SetActive(false); // X ��ư Ŭ�� �� Information Panel ��Ȱ��ȭ
+    }
+
+    public void SetActiveSensorPackageID(string sensorPackageID)
+    {
+        activeSensorPackageID = sensorPackageID;
+    }
+
+    public string GetActiveSensorPackageID()
+    {
+        return activeSensorPackageID;
     }
 }
