@@ -52,24 +52,15 @@ namespace RosSharp.RosBridgeClient
 
         private Quaternion GetRotation(MessageTypes.Nav.Odometry message)
         {
-            // 초기 회전값을 135도로 설정
-            Quaternion initialRotation = new Quaternion(
-                0,
-                Mathf.Sin(Mathf.Deg2Rad * 135f / 2f),
-                0,
-                Mathf.Cos(Mathf.Deg2Rad * 135f / 2f));
-
             // 메시지에서 받은 회전값
             Quaternion messageRotation = new Quaternion(
-                (float)message.pose.pose.orientation.x,
-                (float)message.pose.pose.orientation.y,
-                (float)message.pose.pose.orientation.z,
-                (float)message.pose.pose.orientation.w);
+                0,
+                1,
+                0,
+                (float)message.pose.pose.orientation.w
+            );
 
-            // 초기 회전값과 메시지에서 받은 회전값을 곱하여 최종 회전값 계산
-            Quaternion finalRotation = initialRotation * messageRotation;
-
-            return finalRotation;
+            return messageRotation;
         }
     }
 }

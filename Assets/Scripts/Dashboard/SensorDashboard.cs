@@ -63,7 +63,7 @@ public class SensorDashboard : MonoBehaviour
             string imagePath;
 
             // 불꽃 감지 여부에 따라 상태 텍스트 설정
-            if (sensorData.GetFlameDetected() == 1 || sensorData.GetTemperature() > 100)
+            if (sensorData.GetFlameDetected() > 20 || sensorData.GetTemperature() > 80)
             {
                 statusText.text = "위험";
                
