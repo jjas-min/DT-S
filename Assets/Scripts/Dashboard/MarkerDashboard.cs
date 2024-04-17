@@ -67,7 +67,7 @@ public class MarkerDashboard : MonoBehaviour
         filteredData = filteredData.OrderByDescending(data => data.creationTime);
 
         // Recent 드롭다운에 따라 필터링
-        if (recentDropdown.value != 0 && recentDropdown.options[recentDropdown.value].text == "Last")
+        if (recentDropdown.value != 0 && recentDropdown.options[recentDropdown.value].text == "오래된순")
         {
             // 과거순
             filteredData = filteredData.OrderBy(data => data.creationTime);
