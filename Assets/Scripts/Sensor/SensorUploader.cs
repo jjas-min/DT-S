@@ -51,14 +51,14 @@ public class SensorUploader : MonoBehaviour
     [SerializeField] private int lightLevel;
     [SerializeField] private int waterLevel;
     [SerializeField] private int flameDetected;
-    [SerializeField] private double humanDetected;
+    [SerializeField] private int humanDetected;
     [SerializeField] private int buttonPressed;
 
     [SerializeField] private List<double> temperatureCs = new List<double>();
     [SerializeField] private List<int> lightLevels = new List<int>();
     [SerializeField] private List<int> waterLevels = new List<int>();
     [SerializeField] private List<int> flameDetecteds = new List<int>();
-    [SerializeField] private List<double> humanDetecteds = new List<double>();
+    [SerializeField] private List<int> humanDetecteds = new List<int>();
     [SerializeField] private List<int> buttonPresseds = new List<int>();
 
     // Output
@@ -104,8 +104,9 @@ public class SensorUploader : MonoBehaviour
                     ReadDataFrom((int)Pin.A1);
                     ReadDataFrom((int)Pin.A2);
                     ReadDataFrom((int)Pin.A3);
-                    ReadDataFrom((int)Pin.D2);
+
                     ReadDataFrom((int)Pin.D4);
+                    ReadDataFrom((int)Pin.D7);
                 }
 
                 // Check if the output board is connected and process the output data
@@ -178,16 +179,16 @@ public class SensorUploader : MonoBehaviour
                                 flameDetected = sensorValue;
                                 Debug.Log("Sensor value from " + inputDevice.name + ": F" + flameDetected);
                                 break;
-                            case (int)Pin.D2:
+                            case (int)Pin.D4:
                                 humanDetected = sensorValue;
                                 Debug.Log("Sensor value from " + inputDevice.name + ": H" + humanDetected);
                                 break;
-                            case (int)Pin.D4:
+                            case (int)Pin.D7:
                                 buttonPressed = sensorValue;
                                 Debug.Log("Sensor value from " + inputDevice.name + ": B" + buttonPressed);
                                 break;
                             default:
-                                Debug.LogError("### Invalid Pin ###");
+                                Debug.LogError("### Invalid Pin ###" + pinValue);
                                 break;
                         }
                     }
@@ -291,7 +292,7 @@ public class SensorUploader : MonoBehaviour
     #endregion
 
     #region Database Upload (Sensor Data & Alert)
-    private void AddDataToLists(double temperatureC, int lightLevel, int waterLevel, int flameDetected, double humanDetected)
+    private void AddDataToLists(double temperatureC, int lightLevel, int waterLevel, int flameDetected, int humanDetected)
     {
         temperatureCs.Add(temperatureC);
         lightLevels.Add(lightLevel);
@@ -308,11 +309,11 @@ public class SensorUploader : MonoBehaviour
         Dictionary<string, object> sensorDict = new Dictionary<string, object>
         {
             {"createdTime",     createdTime}, // DateTime
-            {"temperature",     GetAverage(temperatureCs) },
-            {"lightLevel",      GetAverage(lightLevels) },
-            {"waterLevel",      GetAverage(waterLevels) },
-            {"flameDetected",   GetAverage(flameDetecteds) },
-            {"humanDetected",   GetAverage(humanDetecteds) },
+            {"temperature",     GetMedian(temperatureCs) },
+            {"lightLevel",      GetMedian(lightLevels) },
+            {"waterLevel",      GetMedian(waterLevels) },
+            {"flameDetected",   GetMedian(flameDetecteds) },
+            {"humanDetected",   GetValueCount(humanDetecteds, 1) },
         };
 
         // Upload Alert if unusual activity is detected
@@ -378,7 +379,7 @@ public class SensorUploader : MonoBehaviour
             alertLog += "Flame: " + sensorDict["flameDetected"] + " ";
         }
 
-        if (Convert.ToDouble(sensorDict["humanDetected"]) < 0.8)
+        if (Convert.ToInt32(sensorDict["humanDetected"]) > 30)
         {
             alertDict.Add("humanDetected", Convert.ToDouble(sensorDict["humanDetected"]));
             uploadAlert = true;
@@ -392,6 +393,42 @@ public class SensorUploader : MonoBehaviour
             Debug.Log(alertLog);
             db.Collection("IssueAlerts").Document(createdTime.ToString("yyyy-MM-dd HH:mm:ss")).SetAsync(alertDict);
         }
+    }
+
+    private double GetMedian(List<double> list)
+    {
+        list.Sort();
+        double result = 0;
+        int count = list.Count;
+
+        if (count % 2 == 0)
+        {
+            result = (list[count / 2 - 1] + list[count / 2]) / 2;
+        }
+        else
+        {
+            result = list[count / 2];
+        }
+
+        return result;
+    }
+
+    private int GetMedian(List<int> list)
+    {
+        list.Sort();
+        int result = 0;
+        int count = list.Count;
+
+        if (count % 2 == 0)
+        {
+            result = (list[count / 2 - 1] + list[count / 2]) / 2;
+        }
+        else
+        {
+            result = list[count / 2];
+        }
+
+        return result;
     }
 
     private double GetAverage(List<double> list)
@@ -421,6 +458,20 @@ public class SensorUploader : MonoBehaviour
 
         result /= list.Count;
         return result;
+    }
+
+    private int GetValueCount(List<int> list, int value)
+    {
+        int count = 0;
+        foreach (var item in list)
+        {
+            if (item == value)
+            {
+                count++;
+            }
+        }
+
+        return count;
     }
 
     private void ResetLists()

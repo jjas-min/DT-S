@@ -36,30 +36,6 @@ public class MarkerInfoManager : MonoBehaviour
         markerEditPanel.SetActive(false);
     }
 
-    public void OnDeleteButtonClicked() //Delete Info
-    {
-        db.Collection("Markers").Document(id).DeleteAsync().ContinueWithOnMainThread(task =>
-        {
-            if (task.IsCompleted && !task.IsFaulted)
-            {
-                Debug.Log($"Marker {id} deleted successfully from Firestore.");
-                markerEditPanel.SetActive(false);
-            }
-            else
-            {
-                Debug.LogError("Error deleting marker from Firestore.");
-            }
-        });
-        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
-    }
-
-
-    public void OnCloseButtonClicked() //Close Info
-    {
-        informationPanel.SetActive(false);
-        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
-    }
-
     public void SetInformation(MarkerData markerData)
     {
         this.markerData = markerData;
@@ -94,36 +70,6 @@ public class MarkerInfoManager : MonoBehaviour
         }
 
         informationPanel.SetActive(true);
-    }
-
-    public void OnEditButtonClicked()
-    {
-        markerEditPanel.SetActive(true);
-        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = false;
-        EditInformation();
-    }
-
-    public void OnSolvedButtonClicked()
-    {
-        Dictionary<string, object> solvedUpdate = new Dictionary<string, object>
-    {
-        {"isSolved", true}
-    };
-
-        db.Collection("Markers").Document(id).UpdateAsync(solvedUpdate).ContinueWithOnMainThread(task =>
-        {
-            if (task.IsCompleted && !task.IsFaulted)
-            {
-                Debug.Log($"Marker {id} marked as solved successfully in Firestore.");
-            }
-            else
-            {
-                Debug.LogError("Error marking marker as solved in Firestore: " + task.Exception.ToString());
-            }
-        });
-
-        informationPanel.SetActive(false);
-        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
     }
 
     IEnumerator WaitAndDisplayInformation(float waitTime)
@@ -170,5 +116,59 @@ public class MarkerInfoManager : MonoBehaviour
             markerEditPanel.SetActive(false);
             firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
         });
+    }
+
+    public void OnDeleteButtonClicked() //Delete Info
+    {
+        db.Collection("Markers").Document(id).DeleteAsync().ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted && !task.IsFaulted)
+            {
+                Debug.Log($"Marker {id} deleted successfully from Firestore.");
+                markerEditPanel.SetActive(false);
+            }
+            else
+            {
+                Debug.LogError("Error deleting marker from Firestore.");
+            }
+        });
+        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
+    }
+
+
+    public void OnCloseButtonClicked() //Close Info
+    {
+        informationPanel.SetActive(false);
+        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
+    }
+
+    public void OnEditButtonClicked()
+    {
+        markerEditPanel.SetActive(true);
+        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = false;
+        EditInformation();
+    }
+
+    public void OnSolvedButtonClicked()
+    {
+        Dictionary<string, object> solvedUpdate = new Dictionary<string, object>
+    {
+        {"isSolved", true}
+    };
+
+        db.Collection("Markers").Document(id).UpdateAsync(solvedUpdate).ContinueWithOnMainThread(task =>
+        {
+            if (task.IsCompleted && !task.IsFaulted)
+            {
+                Debug.Log($"Marker {id} marked as solved successfully in Firestore.");
+            }
+            else
+            {
+                Debug.LogError("Error marking marker as solved in Firestore: " + task.Exception.ToString());
+            }
+        });
+
+        informationPanel.SetActive(false);
+        firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = true;
     }
 }

@@ -15,6 +15,8 @@ public class SensorInfoManager : MonoBehaviour
 
     private TMP_Text sensorPackageIDText;
 
+    [SerializeField] private SensorInfoPanelController sensorInfoPanelController;
+
     private SensorData sensorData;
 
     void Start()
@@ -34,8 +36,10 @@ public class SensorInfoManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        sensorData = GetComponent<SensorData>();
+
         // If sensorInfoPanel is active, update the sensor information
-        if (sensorInfoPanel.activeSelf)
+        if (sensorInfoPanel.activeSelf && sensorData.GetSensorPackageID() == sensorInfoPanelController.GetActiveSensorPackageID())
         {
             UpdateSensorInformation();
         }
@@ -45,7 +49,9 @@ public class SensorInfoManager : MonoBehaviour
     {
         sensorData = GetComponent<SensorData>();
 
-        if (sensorData != null && sensorInfoPanel != null)
+        sensorInfoPanelController.SetActiveSensorPackageID(sensorData.GetSensorPackageID());
+
+        if (sensorData != null && sensorInfoPanel != null && !sensorInfoPanel.activeSelf && sensorData.GetSensorPackageID() == sensorInfoPanelController.GetActiveSensorPackageID())
         {
             UpdateSensorInformation();
             sensorInfoPanel.SetActive(true);
@@ -54,21 +60,11 @@ public class SensorInfoManager : MonoBehaviour
 
     public void UpdateSensorInformation()
     {
-        if (sensorData == null)
-        {
-            sensorPackageIDText.text = "-";
-            temperatureText.text = "-";
-            lightLevelText.text = "-";
-            waterLevelText.text = "-";
-            flameDetectedText.text = "-";
-            humanDetectedText.text = "-";
-            return;
-        }
         sensorPackageIDText.text = sensorData.GetSensorPackageID();
         temperatureText.text = $"{sensorData.GetTemperature()}";
         lightLevelText.text = $"{sensorData.GetLightLevel()}";
         waterLevelText.text = $"{sensorData.GetWaterLevel()}";
         flameDetectedText.text = $"{sensorData.GetFlameDetected()}";
-        humanDetectedText.text = $"{sensorData.GetHumanDetected()}";
+        humanDetectedText.text = sensorData.GetHumanDetected() > 30 ? "°¨Áö" : "-";
     }
 }

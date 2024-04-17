@@ -75,15 +75,9 @@ public class SensorAlert : MonoBehaviour
         lightLevelText.fontSize = 20;
 
         TextMeshProUGUI humanDetectedText = alertPanelInstance.transform.Find("humanDetectedText").GetComponent<TextMeshProUGUI>();
-        humanDetectedText.text = alertData.ContainsKey("humanDetected") ? alertData["humanDetected"].ToString() : "-";
+        humanDetectedText.text = alertData.ContainsKey("humanDetected") ? "감지" : "-";
         humanDetectedText.color = alertData.ContainsKey("humanDetected") ? Color.red : Color.black;
         humanDetectedText.fontSize = 20;
-
-        alertsUI.SetActive(true);
-
-        // 이미지 생성 후 Vertical Layout Group 컴포넌트 추가 및 설정
-        VerticalLayoutGroup layoutGroup = alertsPanel.gameObject.AddComponent<VerticalLayoutGroup>();
-        layoutGroup.spacing = 10f;
         
         alertsUI.SetActive(true);
     }
@@ -107,4 +101,8 @@ public class SensorAlert : MonoBehaviour
         alertsUI.SetActive(true);
         firstPersonView.GetComponent<FirstPersonViewCameraController>().enabled = false;
     }
+    public void OnSolvedButtonClicked(string documentId)
+    {
+        db.Collection("IssueAlerts").Document(documentId).DeleteAsync();
+    }   
 }
