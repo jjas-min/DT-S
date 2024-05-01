@@ -12,6 +12,7 @@ public class SensorInfoManager : MonoBehaviour
     private TMP_Text waterLevelText;
     private TMP_Text flameDetectedText;
     private TMP_Text humanDetectedText;
+    private TMP_Text gasLevelText;
 
     private TMP_Text sensorPackageIDText;
 
@@ -29,6 +30,7 @@ public class SensorInfoManager : MonoBehaviour
         waterLevelText = sensorInfoPanel.transform.Find("WaterLevel").GetComponent<TMP_Text>();
         flameDetectedText = sensorInfoPanel.transform.Find("FlameDetected").GetComponent<TMP_Text>();
         humanDetectedText = sensorInfoPanel.transform.Find("HumanDetected").GetComponent<TMP_Text>();
+        //gasLevelText = sensorInfoPanel.transform.Find("GasLevel").GetComponent<TMP_Text>();
 
         sensorPackageIDText = sensorInfoPanel.transform.Find("SensorPackageID").GetComponent<TMP_Text>();
     }
@@ -66,5 +68,6 @@ public class SensorInfoManager : MonoBehaviour
         waterLevelText.text = $"{sensorData.GetWaterLevel()}";
         flameDetectedText.text = $"{sensorData.GetFlameDetected()}";
         humanDetectedText.text = sensorData.GetHumanDetected() > 30 ? "°¨Áö" : "-";
+        gasLevelText.text = $"{sensorData.GetGasLevel()}";
     }
 }

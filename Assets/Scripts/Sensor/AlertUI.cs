@@ -78,6 +78,11 @@ public class SensorAlert : MonoBehaviour
         humanDetectedText.text = alertData.ContainsKey("humanDetected") ? "감지" : "-";
         humanDetectedText.color = alertData.ContainsKey("humanDetected") ? Color.red : Color.black;
         humanDetectedText.fontSize = 20;
+
+        //TextMeshProUGUI gasLevelText = alertPanelInstance.transform.Find("gasLevelText").GetComponent<TextMeshProUGUI>();
+        //gasLevelText.text = alertData.ContainsKey("gasLevel") ? alertData["gasLevel"].ToString() : "-";
+        //gasLevelText.color = alertData.ContainsKey("gasLevel") ? Color.red : Color.black;
+        //gasLevelText.fontSize = 20;
         
         alertsUI.SetActive(true);
     }
