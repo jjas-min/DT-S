@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 using Firebase;
@@ -25,7 +26,7 @@ public class SensorAlert : MonoBehaviour
 
     void ListenAlerts()
     {
-        db.Collection("IssueAlerts").Listen(snapshot =>
+        db.Collection("IssueAlerts").OrderByDescending("createdTime").Listen(snapshot =>
         {
             foreach (var change in snapshot.GetChanges())
             {
@@ -78,10 +79,9 @@ public class SensorAlert : MonoBehaviour
         humanDetectedText.text = alertData.ContainsKey("humanDetected") ? "감지" : "-";
         humanDetectedText.color = alertData.ContainsKey("humanDetected") ? Color.red : Color.black;
         humanDetectedText.fontSize = 20;
-        
         alertsUI.SetActive(true);
     }
-
+ 
 
     void RemoveAlert(string documentId)
     {
