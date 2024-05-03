@@ -73,24 +73,24 @@ public class ViewSwitcher : MonoBehaviour
         switch (roomName)
         {
             case "NTH313":
-                targetPosition = new Vector3(27, -2, -33);
-                targetRotation = new Vector3(0, 218, 0);
+                targetPosition = new Vector3(-1.9f, -1.7f, -26.6f);
+                targetRotation = new Vector3(0, 139.7f, 0);
                 break;
             case "NTH311":
-                targetPosition = new Vector3(26, -0.7f, -9);
-                targetRotation = new Vector3(0, 434, 0);
+                targetPosition = new Vector3(-19.6f, -1.75f, -39.1f);
+                targetRotation = new Vector3(0, 287.4f, 0);
                 break;
             case "Hallway":
-                targetPosition = new Vector3(18.58f, -0.72f, -16.8f);
-                targetRotation = new Vector3(0, -38.51f, 0);
+                targetPosition = new Vector3(-7.9f, -1.7f, -24.3f);
+                targetRotation = new Vector3(0, 20.2f, 0);
                 break;
             case "ANH313":
-                targetPosition = new Vector3(4,-2, 10);
-                targetRotation = new Vector3(-11, -2, -1.6f);
+                targetPosition = new Vector3(7.6f, -2.6f, -3);
+                targetRotation = new Vector3(1.35f, 56.1f, 358.5f);
                 break;
             case "Top View": // Top View 시점으로 변경
                 ActivateCamera(topViewCamera);
-                break;
+                return;
             default:
                 Debug.LogError("Unknown room name: " + roomName);
                 return;

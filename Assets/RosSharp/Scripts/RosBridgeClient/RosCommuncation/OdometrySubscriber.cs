@@ -22,8 +22,8 @@ namespace RosSharp.RosBridgeClient
         {
             if (isMessageReceived)
                 ProcessMessage();
-            else
-                Debug.Log("no message");
+            // else
+            //     Debug.Log("no message");
         }
 
         protected override void ReceiveMessage(MessageTypes.Nav.Odometry message)
