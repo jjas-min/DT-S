@@ -10065,6 +10065,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
+      propertyPath: ManagerState
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: interfaceType
       value: 0
       objectReference: {fileID: 0}
@@ -10078,19 +10082,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: uduinoWiFiBoards.Array.data[0].ip
-      value: 192.168.0.39
+      value: 192.168.0.31
       objectReference: {fileID: 0}
     - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: uduinoWiFiBoards.Array.data[1].ip
-      value: 192.168.0.40
+      value: 192.168.0.28
       objectReference: {fileID: 0}
     - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: uduinoWiFiBoards.Array.data[2].ip
-      value: 192.168.0.33
+      value: 192.168.0.25
       objectReference: {fileID: 0}
     - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: uduinoWiFiBoards.Array.data[3].ip
-      value: 192.168.0.41
+      value: 192.168.0.30
+      objectReference: {fileID: 0}
+    - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
+      propertyPath: uduinoWiFiBoards.Array.data[4].ip
+      value: 192.168.x.x
       objectReference: {fileID: 0}
     - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: activeExtentionsMap.keys.Array.size
@@ -10111,6 +10119,10 @@ PrefabInstance:
     - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: uduinoWiFiBoards.Array.data[3].port
       value: 4225
+      objectReference: {fileID: 0}
+    - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
+      propertyPath: uduinoWiFiBoards.Array.data[4].port
+      value: 4226
       objectReference: {fileID: 0}
     - target: {fileID: 114023058375386772, guid: bb5e6aea88a650f4a8317e74940b0ea4, type: 3}
       propertyPath: presentExtentionsMap.keys.Array.size

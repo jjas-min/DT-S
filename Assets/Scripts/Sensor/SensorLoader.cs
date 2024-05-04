@@ -58,9 +58,12 @@ public class SensorLoader : MonoBehaviour
                                         waterLevel: Convert.ToInt32(receivedSensorData["waterLevel"]),
                                         flameDetected: Convert.ToInt32(receivedSensorData["flameDetected"]),
                                         humanDetected: Convert.ToDouble(receivedSensorData["humanDetected"], System.Globalization.CultureInfo.InvariantCulture),
-                                        gasLevel: Convert.ToInt32(receivedSensorData["gasLevel"]));
+                                        gasLevel: Convert.ToInt32(receivedSensorData["gasLevel"]),
+                                        pm25Level: Convert.ToInt32(receivedSensorData["pm25Level"]),
+                                        pm100Level: Convert.ToInt32(receivedSensorData["pm100Level"])
+                                        );
 
-                Debug.Log("[Sensor Data Load] " + sensorPackageID + " " + sensorData.GetTemperature() + " " + sensorData.GetLightLevel() + " " + sensorData.GetWaterLevel() + " " + sensorData.GetFlameDetected() + " " + sensorData.GetHumanDetected() + " " + sensorData.GetGasLevel());
+                Debug.Log("[Sensor Data Load] " + sensorPackageID + " " + sensorData.GetTemperature() + " " + sensorData.GetLightLevel() + " " + sensorData.GetWaterLevel() + " " + sensorData.GetFlameDetected() + " " + sensorData.GetHumanDetected() + " " + sensorData.GetGasLevel() + " " + sensorData.GetPM25Level() + " " + sensorData.GetPM100Level());
             
                 if (outputDevice != null)
                 {

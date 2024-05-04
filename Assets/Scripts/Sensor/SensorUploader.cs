@@ -54,6 +54,8 @@ public class SensorUploader : MonoBehaviour
     [SerializeField] private int humanDetected;
     [SerializeField] private int gasLevel;
     [SerializeField] private int buttonPressed;
+    [SerializeField] private int pm25Level;
+    [SerializeField] private int pm100Level;
 
     [SerializeField] private List<double> temperatureCs = new List<double>();
     [SerializeField] private List<int> lightLevels = new List<int>();
@@ -62,6 +64,8 @@ public class SensorUploader : MonoBehaviour
     [SerializeField] private List<int> humanDetecteds = new List<int>();
     [SerializeField] private List<int> gasLevels = new List<int>();
     [SerializeField] private List<int> buttonPresseds = new List<int>();
+    [SerializeField] private List<int> pm25Levels = new List<int>();
+    [SerializeField] private List<int> pm100Levels = new List<int>();
 
     // Output
     [Range(0, 255)] public int redIntensity;
@@ -102,14 +106,22 @@ public class SensorUploader : MonoBehaviour
                 // Check if the input board is connected and process the input data
                 if (inputDevice != null)
                 {
+                    // Temperature Sensor Read
                     ReadDataFrom((int)Pin.A0);
+                    // Light Sensor Read
                     ReadDataFrom((int)Pin.A1);
+                    // Water Sensor Read
                     ReadDataFrom((int)Pin.A2);
+                    // Flame Sensor Read
                     ReadDataFrom((int)Pin.A3);
+                    // Gas Sensor Read
                     ReadDataFrom((int)Pin.A4);
 
-                    ReadDataFrom((int)Pin.D4);
+                    // PMS Sensor Read
                     ReadDataFrom((int)Pin.D7);
+
+                    // Human Detection Sensor Read
+                    ReadDataFrom((int)Pin.D4);
                 }
 
                 // Check if the output board is connected and process the output data
@@ -126,7 +138,7 @@ public class SensorUploader : MonoBehaviour
             // Debug.Log("## NO BOARDS DETECTD ##");
         }
 
-        if (inputDevice != null && elapsedTime >= 10f)
+        if (inputDevice != null && elapsedTime >= 10f && temperatureCs.Count > 0)
         {
             UploadToDB();
             elapsedTime = 0f;
@@ -191,8 +203,12 @@ public class SensorUploader : MonoBehaviour
                                 Debug.Log("Sensor value from " + inputDevice.name + ": H" + humanDetected);
                                 break;
                             case (int)Pin.D7:
-                                buttonPressed = sensorValue;
-                                Debug.Log("Sensor value from " + inputDevice.name + ": B" + buttonPressed);
+                                pm25Level = sensorValue;
+                                Debug.Log("Sensor value from " + inputDevice.name + ": PM2.5" + pm25Level);
+                                break;
+                            case (int)Pin.D8:
+                                pm100Level = sensorValue;
+                                Debug.Log("Sensor value from " + inputDevice.name + ": PM10.0" + pm100Level);
                                 break;
                             default:
                                 Debug.LogError("### Invalid Pin [" + pinValue + "] ###");
@@ -215,7 +231,7 @@ public class SensorUploader : MonoBehaviour
             }
         }
 
-       AddDataToLists(temperatureC, lightLevel, waterLevel, flameDetected, humanDetected, gasLevel);
+        AddDataToLists(temperatureC, lightLevel, waterLevel, flameDetected, humanDetected, gasLevel, pm25Level, pm100Level);
     }
 
     void ProcessOutputData()
@@ -238,15 +254,23 @@ public class SensorUploader : MonoBehaviour
         {
             command = "r " + pin + " >";
         }
+        // PMS Sensor
+        else if (pin == (int)Pin.D7)
+        {
+            command = "rp >";
+        }
+        // If the pin is digital, use digital read
         else if (pin >= (int)Pin.D0)
         {
             command = "rd " + pin + " >";
         }
         else
         {
-            Debug.LogError("### Invalid Pin ###");
+            Debug.LogError("### Invalid Pin Read ###");
             return;
         }
+
+        //Debug.Log("Command: " + command);
 
         UduManager.sendCommand(inputDevice, command);
     }
@@ -296,7 +320,7 @@ public class SensorUploader : MonoBehaviour
     #endregion
 
     #region Database Upload (Sensor Data & Alert)
-    private void AddDataToLists(double temperatureC, int lightLevel, int waterLevel, int flameDetected, int humanDetected, int gasLevel)
+    private void AddDataToLists(double temperatureC, int lightLevel, int waterLevel, int flameDetected, int humanDetected, int gasLevel, int pm25Level, int pm100Level)
     {
         temperatureCs.Add(temperatureC);
         lightLevels.Add(lightLevel);
@@ -304,6 +328,8 @@ public class SensorUploader : MonoBehaviour
         flameDetecteds.Add(flameDetected);
         humanDetecteds.Add(humanDetected);
         gasLevels.Add(gasLevel);
+        pm25Levels.Add(pm25Level);
+        pm100Levels.Add(pm100Level);
         return;
     }
 
@@ -320,6 +346,8 @@ public class SensorUploader : MonoBehaviour
             {"flameDetected",   GetMedian(flameDetecteds) },
             {"humanDetected",   GetValueCount(humanDetecteds, 1) },
             {"gasLevel",        GetMedian(gasLevels) },
+            {"pm25Level",       GetMedian(pm25Levels) },
+            {"pm100Level",      GetMedian(pm100Levels) }
         };
 
         // Upload Alert if unusual activity is detected
@@ -328,7 +356,7 @@ public class SensorUploader : MonoBehaviour
         // Upload sensor data to Firestore
         db.Collection("SensorPackages").Document(sensorPackageID).Collection("SensorData").Document(createdTime.ToString("yyyy-MM-dd HH:mm:ss")).SetAsync(sensorDict);
 
-        Debug.Log("[Sensor Data Upload] " + sensorPackageID + " " + createdTime.ToString("yyyy-MM-dd HH:mm:ss") + " " + sensorDict["temperature"] + " " + sensorDict["lightLevel"] + " " + sensorDict["waterLevel"] + " " + sensorDict["flameDetected"] + " " + sensorDict["humanDetected"]);
+        Debug.Log("[Sensor Data Upload] " + sensorPackageID + " " + createdTime.ToString("yyyy-MM-dd HH:mm:ss") + " " + sensorDict["temperature"] + " " + sensorDict["lightLevel"] + " " + sensorDict["waterLevel"] + " " + sensorDict["flameDetected"] + " " + sensorDict["humanDetected"] + " " + sensorDict["gasLevel"] + " " + sensorDict["pm25Level"] + " " + sensorDict["pm100Level"]);
 
         ResetLists();
 
@@ -355,7 +383,7 @@ public class SensorUploader : MonoBehaviour
         // Check for unusual activity
 
         // Temperature is too high
-        if (Convert.ToDouble(sensorDict["temperature"]) > 30.0)
+        if (Convert.ToDouble(sensorDict["temperature"]) > 35.0)
         {
             alertDict.Add("temperature", Convert.ToDouble(sensorDict["temperature"]));
             uploadAlert = true;
@@ -417,6 +445,8 @@ public class SensorUploader : MonoBehaviour
 
     private double GetMedian(List<double> list)
     {
+        if (list.Count == 0) return 0;
+
         list.Sort();
         double result = 0;
         int count = list.Count;
@@ -435,6 +465,8 @@ public class SensorUploader : MonoBehaviour
 
     private int GetMedian(List<int> list)
     {
+        if (list.Count == 0) return 0;
+
         list.Sort();
         int result = 0;
         int count = list.Count;
@@ -453,6 +485,8 @@ public class SensorUploader : MonoBehaviour
 
     private double GetAverage(List<double> list)
     {
+        if (list.Count == 0) return 0;
+
         double result = 0;
         foreach (var item in list)
         {
@@ -468,6 +502,8 @@ public class SensorUploader : MonoBehaviour
 
     private int GetAverage(List<int> list)
     {
+        if (list.Count == 0) return 0;
+
         int result = 0;
         foreach (var item in list)
         {
@@ -501,6 +537,9 @@ public class SensorUploader : MonoBehaviour
         lightLevels.Clear();
         flameDetecteds.Clear();
         humanDetecteds.Clear();
+        gasLevels.Clear();
+        pm25Levels.Clear();
+        pm100Levels.Clear();
         return;
     }
     #endregion
