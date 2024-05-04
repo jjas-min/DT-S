@@ -305,7 +305,7 @@ GameObject:
   - component: {fileID: 1549514588159377606}
   - component: {fileID: 8301709259852360088}
   m_Layer: 5
-  m_Name: Carbon
+  m_Name: GasLevel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

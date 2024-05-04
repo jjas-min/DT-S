@@ -418,14 +418,24 @@ public class SensorUploader : MonoBehaviour
             alertLog += "Flame: " + sensorDict["flameDetected"] + " ";
         }
 
-        // Gas detected
-        if (Convert.ToInt32(sensorDict["gasLevel"]) > 300)
-        {
-            alertDict.Add("gasLevel", Convert.ToInt32(sensorDict["gasLevel"]));
-            uploadAlert = true;
+        //// Gas detected
+        //if (Convert.ToInt32(sensorDict["gasLevel"]) > 300)
+        //{
+        //    alertDict.Add("gasLevel", Convert.ToInt32(sensorDict["gasLevel"]));
+        //    uploadAlert = true;
 
-            alertLog += "Gas: " + sensorDict["gasLevel"] + " ";
-        }
+        //    alertLog += "Gas: " + sensorDict["gasLevel"] + " ";
+        //}
+
+        //// Dust
+        //if (Convert.ToInt32(sensorDict["pm25Level"]) > 40 || Convert.ToInt32(sensorDict["pm100Level"]) > 50)
+        //{
+        //    alertDict.Add("pm25Level", Convert.ToInt32(sensorDict["pm25Level"]));
+        //    alertDict.Add("pm100Level", Convert.ToInt32(sensorDict["pm100Level"]));
+        //    uploadAlert = true;
+
+        //    alertLog += "Dust: " + sensorDict["pm25Level"] + " " + sensorDict["pm100Level"] + " ";
+        //}
 
         // Human detected
         if (uploadAlert && Convert.ToInt32(sensorDict["humanDetected"]) > 30)
