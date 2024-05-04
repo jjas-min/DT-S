@@ -4,21 +4,26 @@ namespace RosSharp.RosBridgeClient
 {
     public class OdometrySubscriber : UnitySubscriber<MessageTypes.Nav.Odometry>
     {
-        public Transform RobotTransform;
-
+        public GameObject PrefabToInstantiate;
+        public GameObject Robot;
         private Vector3 position;
         private Quaternion rotation;
         private bool isMessageReceived;
 
+        private GameObject pointsParent;
+
         protected override void Start()
         {
             base.Start();
+            pointsParent = new GameObject("Points");
         }
 
         private void Update()
         {
             if (isMessageReceived)
                 ProcessMessage();
+            // else
+            //     Debug.Log("no message");
         }
 
         protected override void ReceiveMessage(MessageTypes.Nav.Odometry message)
@@ -27,23 +32,45 @@ namespace RosSharp.RosBridgeClient
             rotation = GetRotation(message).Ros2Unity();
             isMessageReceived = true;
         }
-
         private void ProcessMessage()
         {
-            // 포지션 편집
-            position.z *= -1;
-            position.x *= 7.75f;
-            position.z *= 7.75f;
-            position.x += 11.78f;
-            position.z -= 16.74f;
+            // Debug.Log(position);
+            if(!isMessageReceived) return;
 
-            // 로봇의 위치 및 회전 적용
-            RobotTransform.position = position;
-            RobotTransform.rotation = rotation;
+            
+            // position.z *= -1;
+            position.x *= 12.84f;
+            position.z *= 12.84f;
+            position.x -= 7.12f; //11.78  +  11.03
+            position.x += 1.52f;
+            position.x += 2.06f;
+            position.y -= 3.1f; //11.78  +  11.03
+            position.z -= 0.63f;
+            position.z -= 0.51f;
+            position.z -= 0.37f;
+            // position.x *= 1.15f;
+            // position.z *= 1.15f;
+            if(Mathf.Abs(position.x) > 30 || Mathf.Abs(position.y) > 30 || Mathf.Abs(position.z) > 30) {
+                Debug.Log(position);
+                Debug.Log("too far");
+                return;
+            }
+            
+            // Pink Prefab
+            GameObject instantiatedPrefab = Instantiate(PrefabToInstantiate, position, rotation);
+            instantiatedPrefab.transform.SetParent(pointsParent.transform);
+
+            // Robot
+            Robot.transform.position = position;
+            // Robot.transform.Quaternion.w = rotation.w;
+            Quaternion originalQuaternion = Robot.transform.rotation;
+            Quaternion newQuaternion = new Quaternion(originalQuaternion.x, originalQuaternion.y, originalQuaternion.z, rotation.w);
+            Robot.transform.rotation = newQuaternion;
         }
 
         private Vector3 GetPosition(MessageTypes.Nav.Odometry message)
         {
+
             return new Vector3(
                 (float)message.pose.pose.position.x,
                 (float)message.pose.pose.position.y,
@@ -52,15 +79,13 @@ namespace RosSharp.RosBridgeClient
 
         private Quaternion GetRotation(MessageTypes.Nav.Odometry message)
         {
-            // 메시지에서 받은 회전값
-            Quaternion messageRotation = new Quaternion(
+            Quaternion q = new Quaternion(
                 0,
                 1,
                 0,
-                (float)message.pose.pose.orientation.w
-            );
+                (float)message.pose.pose.orientation.w);
 
-            return messageRotation;
+            return q;
         }
     }
 }

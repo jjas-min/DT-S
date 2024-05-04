@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using System;
 using System.Collections.Generic;
 using System.Linq; // LINQ 라이브러리 추가
 using System.IO; // 파일 처리를 위한 네임스페이스 추가
@@ -27,6 +28,7 @@ public class SensorDashboard : MonoBehaviour
     {
         // MarkerData Array
         SensorDataArray = FindObjectsOfType<SensorData>();
+        DateTime currentTime = DateTime.Now;
 
         // 스크롤 뷰의 Content 초기화
         foreach (Transform child in content)
@@ -43,13 +45,20 @@ public class SensorDashboard : MonoBehaviour
             // // 패널에서 필요한 텍스트 컴포넌트를 찾아 정보 설정
             TMP_Text titleText = panelObject.transform.Find("Title").GetComponent<TMP_Text>();
             titleText.text = sensorData.GetSensorPackageID();
+            
+            TMP_Text timeText = panelObject.transform.Find("Current").GetComponent<TMP_Text>();
+            string timeString = currentTime.ToLocalTime().ToString("hh:mm tt");
+            timeText.text = timeString;
 
             TMP_Text temperatureText = panelObject.transform.Find("Temperature").GetComponent<TMP_Text>();
-            string temperatureString = sensorData.GetTemperature() != null ? $"{sensorData.GetTemperature():F0}°C" : "-";
+            string temperatureString = sensorData.GetTemperature() != null ? $"{sensorData.GetTemperature():F0}°" : "-";
             temperatureText.text = temperatureString;
 
             TMP_Text waterLevelText = panelObject.transform.Find("WaterLevel").GetComponent<TMP_Text>();
             waterLevelText.text = sensorData.GetWaterLevel() != null ? $"수위: {sensorData.GetWaterLevel()}" : "수위: -";
+
+            TMP_Text lightText = panelObject.transform.Find("Light").GetComponent<TMP_Text>();
+            lightText.text = sensorData.GetLightLevel() != null ? $"조도: {sensorData.GetLightLevel()}" : "조도: -";
 
             TMP_Text flameDetectedText = panelObject.transform.Find("FlameDetected").GetComponent<TMP_Text>();
             flameDetectedText.text = sensorData.GetFlameDetected() != null ? $"불꽃감지: {sensorData.GetFlameDetected()}" : "불꽃감지: -";
@@ -64,13 +73,12 @@ public class SensorDashboard : MonoBehaviour
             RawImage statusImage = panelObject.transform.Find("RawImage").GetComponent<RawImage>();
 
             string imagePath;
+            Color color;
 
             // 불꽃 감지 여부에 따라 상태 텍스트 설정
             if (sensorData.GetFlameDetected() > 15 || sensorData.GetTemperature() > 30)
             {
                 statusText.text = "위험";
-               
-                Color color;
                 if (ColorUtility.TryParseHtmlString("#FF0000", out color))
                 {
                     statusText.color = color;
@@ -80,8 +88,6 @@ public class SensorDashboard : MonoBehaviour
             else if (sensorData.GetTemperature() > 50 || sensorData.GetHumanDetected() == 1)
             {
                 statusText.text = "경고";
-               
-                Color color;
                 if (ColorUtility.TryParseHtmlString("#FFEB40", out color))
                 {
                     statusText.color = color;
@@ -91,8 +97,6 @@ public class SensorDashboard : MonoBehaviour
             else
             {
                 statusText.text = "양호";
-
-                Color color;
                 if (ColorUtility.TryParseHtmlString("#38D800", out color))
                 {
                     statusText.color = color;
@@ -100,6 +104,7 @@ public class SensorDashboard : MonoBehaviour
                 imagePath = Application.dataPath + "/Images/safe.png";
             }
 
+            temperatureText.color = color;
             Texture2D texture = LoadTextureFromFile(imagePath); // 이미지 로드
             statusImage.texture = texture; // 이미지 할당
         }
