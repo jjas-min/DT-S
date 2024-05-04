@@ -52,6 +52,7 @@ public class SensorUploader : MonoBehaviour
     [SerializeField] private int waterLevel;
     [SerializeField] private int flameDetected;
     [SerializeField] private int humanDetected;
+    [SerializeField] private int gasLevel;
     [SerializeField] private int buttonPressed;
 
     [SerializeField] private List<double> temperatureCs = new List<double>();
@@ -59,6 +60,7 @@ public class SensorUploader : MonoBehaviour
     [SerializeField] private List<int> waterLevels = new List<int>();
     [SerializeField] private List<int> flameDetecteds = new List<int>();
     [SerializeField] private List<int> humanDetecteds = new List<int>();
+    [SerializeField] private List<int> gasLevels = new List<int>();
     [SerializeField] private List<int> buttonPresseds = new List<int>();
 
     // Output
@@ -104,6 +106,7 @@ public class SensorUploader : MonoBehaviour
                     ReadDataFrom((int)Pin.A1);
                     ReadDataFrom((int)Pin.A2);
                     ReadDataFrom((int)Pin.A3);
+                    ReadDataFrom((int)Pin.A4);
 
                     ReadDataFrom((int)Pin.D4);
                     ReadDataFrom((int)Pin.D7);
@@ -179,6 +182,10 @@ public class SensorUploader : MonoBehaviour
                                 flameDetected = sensorValue;
                                 Debug.Log("Sensor value from " + inputDevice.name + ": F" + flameDetected);
                                 break;
+                            case (int)Pin.A4:
+                                gasLevel = sensorValue;
+                                Debug.Log("Sensor value from " + inputDevice.name + ": G" + gasLevel);
+                                break;
                             case (int)Pin.D4:
                                 humanDetected = sensorValue;
                                 Debug.Log("Sensor value from " + inputDevice.name + ": H" + humanDetected);
@@ -188,7 +195,7 @@ public class SensorUploader : MonoBehaviour
                                 Debug.Log("Sensor value from " + inputDevice.name + ": B" + buttonPressed);
                                 break;
                             default:
-                                Debug.LogError("### Invalid Pin ###" + pinValue);
+                                Debug.LogError("### Invalid Pin [" + pinValue + "] ###");
                                 break;
                         }
                     }
@@ -208,10 +215,7 @@ public class SensorUploader : MonoBehaviour
             }
         }
 
-        // Result Log
-        // string resultLog = "Temperature: " + temperatureC + " || Light: " + lightLevel + " || Water: " + waterLevel + " || Flame: " + flameDetected + " || Human: " + humanDetected + " || Button: " + buttonPressed;
-
-        AddDataToLists(temperatureC, lightLevel, waterLevel, flameDetected, humanDetected);
+       AddDataToLists(temperatureC, lightLevel, waterLevel, flameDetected, humanDetected, gasLevel);
     }
 
     void ProcessOutputData()
@@ -292,13 +296,14 @@ public class SensorUploader : MonoBehaviour
     #endregion
 
     #region Database Upload (Sensor Data & Alert)
-    private void AddDataToLists(double temperatureC, int lightLevel, int waterLevel, int flameDetected, int humanDetected)
+    private void AddDataToLists(double temperatureC, int lightLevel, int waterLevel, int flameDetected, int humanDetected, int gasLevel)
     {
         temperatureCs.Add(temperatureC);
         lightLevels.Add(lightLevel);
         waterLevels.Add(waterLevel);
         flameDetecteds.Add(flameDetected);
         humanDetecteds.Add(humanDetected);
+        gasLevels.Add(gasLevel);
         return;
     }
 
@@ -314,6 +319,7 @@ public class SensorUploader : MonoBehaviour
             {"waterLevel",      GetMedian(waterLevels) },
             {"flameDetected",   GetMedian(flameDetecteds) },
             {"humanDetected",   GetValueCount(humanDetecteds, 1) },
+            {"gasLevel",        GetMedian(gasLevels) },
         };
 
         // Upload Alert if unusual activity is detected
@@ -347,6 +353,8 @@ public class SensorUploader : MonoBehaviour
         string alertLog = "[Alert Upload] ";
 
         // Check for unusual activity
+
+        // Temperature is too high
         if (Convert.ToDouble(sensorDict["temperature"]) > 30.0)
         {
             alertDict.Add("temperature", Convert.ToDouble(sensorDict["temperature"]));
@@ -355,7 +363,8 @@ public class SensorUploader : MonoBehaviour
             alertLog += "Temperature: " + sensorDict["temperature"] + " ";
         }
 
-        if (Convert.ToInt32(sensorDict["lightLevel"]) > 400)
+        // Light level is too high or too low
+        if (Convert.ToInt32(sensorDict["lightLevel"]) > 400 || Convert.ToInt32(sensorDict["lightLevel"]) < 100)
         {
             alertDict.Add("lightLevel", Convert.ToInt32(sensorDict["lightLevel"]));
             uploadAlert = true;
@@ -363,7 +372,8 @@ public class SensorUploader : MonoBehaviour
             alertLog += "Light: " + sensorDict["lightLevel"] + " ";
         }
 
-        if (Convert.ToInt32(sensorDict["waterLevel"]) > 400)
+        // Water level is too high
+        if (Convert.ToInt32(sensorDict["waterLevel"]) > 300)
         {
             alertDict.Add("waterLevel", Convert.ToInt32(sensorDict["waterLevel"]));
             uploadAlert = true;
@@ -371,7 +381,8 @@ public class SensorUploader : MonoBehaviour
             alertLog += "Water: " + sensorDict["waterLevel"] + " ";
         }
 
-        if (Convert.ToDouble(sensorDict["flameDetected"]) > 5.0)
+        // Flame detected
+        if (Convert.ToDouble(sensorDict["flameDetected"]) > 8.0)
         {
             alertDict.Add("flameDetected", Convert.ToDouble(sensorDict["flameDetected"]));
             uploadAlert = true;
@@ -379,10 +390,19 @@ public class SensorUploader : MonoBehaviour
             alertLog += "Flame: " + sensorDict["flameDetected"] + " ";
         }
 
-        if (Convert.ToInt32(sensorDict["humanDetected"]) > 30)
+        // Gas detected
+        if (Convert.ToInt32(sensorDict["gasLevel"]) > 300)
+        {
+            alertDict.Add("gasLevel", Convert.ToInt32(sensorDict["gasLevel"]));
+            uploadAlert = true;
+
+            alertLog += "Gas: " + sensorDict["gasLevel"] + " ";
+        }
+
+        // Human detected
+        if (uploadAlert && Convert.ToInt32(sensorDict["humanDetected"]) > 30)
         {
             alertDict.Add("humanDetected", Convert.ToDouble(sensorDict["humanDetected"]));
-            uploadAlert = true;
 
             alertLog += "Human: " + sensorDict["humanDetected"] + " ";
         }

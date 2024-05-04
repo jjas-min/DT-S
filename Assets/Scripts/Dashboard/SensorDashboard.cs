@@ -64,7 +64,10 @@ public class SensorDashboard : MonoBehaviour
             flameDetectedText.text = sensorData.GetFlameDetected() != null ? $"불꽃감지: {sensorData.GetFlameDetected()}" : "불꽃감지: -";
 
             TMP_Text humanDetectedText = panelObject.transform.Find("HumanDetected").GetComponent<TMP_Text>();
-            humanDetectedText.text = sensorData.GetHumanDetected() != null ? $"인체감지: {sensorData.GetHumanDetected()}" : "인체감지: -";
+            humanDetectedText.text = (sensorData.GetHumanDetected() != null && sensorData.GetHumanDetected() > 30) ? $"인체감지: 감지" : "인체감지: -";
+
+            //TMP_Text gasLevelText = panelObject.transform.Find("GasLevel").GetComponent<TMP_Text>();
+            //gasLevelText.text = sensorData.GetGasLevel() != null ? $"일산화탄소: {sensorData.GetGasLevel()}" : "일산화탄소: -";
 
             TMP_Text statusText = panelObject.transform.Find("Status").GetComponent<TMP_Text>();
             RawImage statusImage = panelObject.transform.Find("RawImage").GetComponent<RawImage>();
@@ -73,7 +76,7 @@ public class SensorDashboard : MonoBehaviour
             Color color;
 
             // 불꽃 감지 여부에 따라 상태 텍스트 설정
-            if (sensorData.GetFlameDetected() > 20 || sensorData.GetTemperature() > 80)
+            if (sensorData.GetFlameDetected() > 15 || sensorData.GetTemperature() > 30)
             {
                 statusText.text = "위험";
                 if (ColorUtility.TryParseHtmlString("#FF0000", out color))

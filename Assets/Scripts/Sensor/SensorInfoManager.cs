@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using System;
-using System.IO; // 파일 처리를 위한 네임스페이스 추가
+using System.IO; // íì¼ ì²ë¦¬ë¥¼ ìí ë¤ìì¤íì´ì¤ ì¶ê°
 
 public class SensorInfoManager : MonoBehaviour
 {
@@ -15,6 +15,8 @@ public class SensorInfoManager : MonoBehaviour
     private TMP_Text waterLevelText;
     private TMP_Text flameDetectedText;
     private TMP_Text humanDetectedText;
+    private TMP_Text gasLevelText;
+    
     private TMP_Text timeText;
     private TMP_Text statusText;
     private RawImage statusImage;
@@ -35,8 +37,9 @@ public class SensorInfoManager : MonoBehaviour
         waterLevelText = sensorInfoPanel.transform.Find("WaterLevel").GetComponent<TMP_Text>();
         flameDetectedText = sensorInfoPanel.transform.Find("FlameDetected").GetComponent<TMP_Text>();
         humanDetectedText = sensorInfoPanel.transform.Find("HumanDetected").GetComponent<TMP_Text>();
+        //gasLevelText = sensorInfoPanel.transform.Find("GasLevel").GetComponent<TMP_Text>();
+       
         timeText = sensorInfoPanel.transform.Find("Current").GetComponent<TMP_Text>();
-
         statusText = sensorInfoPanel.transform.Find("Status").GetComponent<TMP_Text>();
         statusImage = sensorInfoPanel.transform.Find("RawImage").GetComponent<RawImage>();
         
@@ -68,13 +71,13 @@ public class SensorInfoManager : MonoBehaviour
         }
     }
 
-    // 파일로부터 Texture2D를 로드하는 함수
+    // íì¼ë¡ë¶í° Texture2Dë¥¼ ë¡ëíë í¨ì
     Texture2D LoadTextureFromFile(string path)
     {
-        byte[] fileData = File.ReadAllBytes(path); // 파일을 바이트 배열로 읽기
-        Texture2D texture = new Texture2D(2, 2); // Texture2D 객체 생성
-        texture.LoadImage(fileData); // 바이트 배열을 이미지로 로드
-        return texture; // 로드한 이미지 반환
+        byte[] fileData = File.ReadAllBytes(path); // íì¼ì ë°ì´í¸ ë°°ì´ë¡ ì½ê¸°
+        Texture2D texture = new Texture2D(2, 2); // Texture2D ê°ì²´ ìì±
+        texture.LoadImage(fileData); // ë°ì´í¸ ë°°ì´ì ì´ë¯¸ì§ë¡ ë¡ë
+        return texture; // ë¡ëí ì´ë¯¸ì§ ë°í
     }
 
     public void UpdateSensorInformation()
@@ -82,11 +85,12 @@ public class SensorInfoManager : MonoBehaviour
         DateTime currentTime = DateTime.Now;
 
         sensorPackageIDText.text = sensorData.GetSensorPackageID();
-        temperatureText.text = $"{sensorData.GetTemperature():F0}°";
-        lightLevelText.text = $"조도: {sensorData.GetLightLevel()}";
-        waterLevelText.text = $"수위: {sensorData.GetWaterLevel()}";
-        flameDetectedText.text = $"불꽃감지: {sensorData.GetFlameDetected()}";
-        humanDetectedText.text = sensorData.GetHumanDetected() > 30 ? "사람감지: 감지" : "사람감지: -";
+        temperatureText.text = $"{sensorData.GetTemperature():F0}Â°";
+        lightLevelText.text = $"ì¡°ë: {sensorData.GetLightLevel()}";
+        waterLevelText.text = $"ìì: {sensorData.GetWaterLevel()}";
+        flameDetectedText.text = $"ë¶ê½ê°ì§: {sensorData.GetFlameDetected()}";
+        humanDetectedText.text = sensorData.GetHumanDetected() > 30 ? "ì¬ëê°ì§: ê°ì§" : "ì¬ëê°ì§: -";
+        gasLevelText.text = $"{sensorData.GetGasLevel()}";
 
         string timeString = currentTime.ToLocalTime().ToString("hh:mm tt");
         timeText.text = timeString;
@@ -94,10 +98,10 @@ public class SensorInfoManager : MonoBehaviour
         string imagePath;
             Color color;
 
-            // 불꽃 감지 여부에 따라 상태 텍스트 설정
+            // ë¶ê½ ê°ì§ ì¬ë¶ì ë°ë¼ ìí íì¤í¸ ì¤ì 
             if (sensorData.GetFlameDetected() > 20 || sensorData.GetTemperature() > 80)
             {
-                statusText.text = "위험";
+                statusText.text = "ìí";
                 if (ColorUtility.TryParseHtmlString("#FF0000", out color))
                 {
                     statusText.color = color;
@@ -106,7 +110,7 @@ public class SensorInfoManager : MonoBehaviour
             }
             else if (sensorData.GetTemperature() > 50 || sensorData.GetHumanDetected() == 1)
             {
-                statusText.text = "경고";
+                statusText.text = "ê²½ê³ ";
                 if (ColorUtility.TryParseHtmlString("#FFEB40", out color))
                 {
                     statusText.color = color;
@@ -115,7 +119,7 @@ public class SensorInfoManager : MonoBehaviour
             }
             else
             {
-                statusText.text = "양호";
+                statusText.text = "ìí¸";
                 if (ColorUtility.TryParseHtmlString("#38D800", out color))
                 {
                     statusText.color = color;
@@ -124,7 +128,7 @@ public class SensorInfoManager : MonoBehaviour
             }
 
             temperatureText.color = color;
-            Texture2D texture = LoadTextureFromFile(imagePath); // 이미지 로드
-            statusImage.texture = texture; // 이미지 할당
+            Texture2D texture = LoadTextureFromFile(imagePath); // ì´ë¯¸ì§ ë¡ë
+            statusImage.texture = texture; // ì´ë¯¸ì§ í ë¹
     }
 }

@@ -10,6 +10,7 @@ public class SensorData : MonoBehaviour
     [SerializeField] private int waterLevel;
     [SerializeField] private int flameDetected;
     [SerializeField] private double humanDetected;
+    [SerializeField] private int gasLevel;
 
     [SerializeField] private string sensorPackageID;
 
@@ -44,18 +45,24 @@ public class SensorData : MonoBehaviour
         return humanDetected;
     }
 
+    public int GetGasLevel()
+    {
+        return gasLevel;
+    }
+
     public string GetSensorPackageID()
     {
         return sensorPackageID;
     }
 
     // Set the sensor data
-    public void SetSensorData(double temperature, int lightLevel, int waterLevel, int flameDetected, double humanDetected)
+    public void SetSensorData(double temperature, int lightLevel, int waterLevel, int flameDetected, double humanDetected, int gasLevel)
     {
         this.temperature = temperature;
         this.lightLevel = lightLevel;
         this.waterLevel = waterLevel;
         this.flameDetected = flameDetected;
         this.humanDetected = humanDetected;
+        this.gasLevel = gasLevel;
     }
 }
