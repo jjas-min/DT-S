@@ -66,8 +66,14 @@ public class SensorDashboard : MonoBehaviour
             TMP_Text humanDetectedText = panelObject.transform.Find("HumanDetected").GetComponent<TMP_Text>();
             humanDetectedText.text = (sensorData.GetHumanDetected() != null && sensorData.GetHumanDetected() > 30) ? $"인체감지: 감지" : "인체감지: -";
 
-            //TMP_Text gasLevelText = panelObject.transform.Find("GasLevel").GetComponent<TMP_Text>();
-            //gasLevelText.text = sensorData.GetGasLevel() != null ? $"일산화탄소: {sensorData.GetGasLevel()}" : "일산화탄소: -";
+            TMP_Text gasLevelText = panelObject.transform.Find("GasLevel").GetComponent<TMP_Text>();
+            gasLevelText.text = sensorData.GetGasLevel() != null ? $"일산화탄소: {sensorData.GetGasLevel()}" : "일산화탄소: -";
+
+            TMP_Text pm25LevelText = panelObject.transform.Find("PM2.5").GetComponent<TMP_Text>();
+            pm25LevelText.text = sensorData.GetPM25Level() != null ? $"PM2.5: {sensorData.GetPM25Level()}" : "PM2.5: -";
+
+            TMP_Text pm100LevelText = panelObject.transform.Find("PM10").GetComponent<TMP_Text>();
+            pm100LevelText.text = sensorData.GetPM100Level() != null ? $"PM10: {sensorData.GetPM100Level()}" : "PM10: -";
 
             TMP_Text statusText = panelObject.transform.Find("Status").GetComponent<TMP_Text>();
             RawImage statusImage = panelObject.transform.Find("RawImage").GetComponent<RawImage>();
@@ -87,7 +93,7 @@ public class SensorDashboard : MonoBehaviour
             }
             else if (sensorData.GetTemperature() > 50 || sensorData.GetHumanDetected() == 1)
             {
-                statusText.text = "경고";
+                statusText.text = "주의";
                 if (ColorUtility.TryParseHtmlString("#FFEB40", out color))
                 {
                     statusText.color = color;
@@ -96,7 +102,7 @@ public class SensorDashboard : MonoBehaviour
             }
             else
             {
-                statusText.text = "양호";
+                statusText.text = "안전";
                 if (ColorUtility.TryParseHtmlString("#38D800", out color))
                 {
                     statusText.color = color;
