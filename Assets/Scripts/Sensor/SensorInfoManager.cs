@@ -93,7 +93,7 @@ public class SensorInfoManager : MonoBehaviour
         lightLevelText.text = sensorData.GetLightLevel() != null ? $"조도: {sensorData.GetLightLevel()}" : "조도: -";
         waterLevelText.text = sensorData.GetWaterLevel() != null ? $"수위: {sensorData.GetWaterLevel()}" : "수위: -";
         flameDetectedText.text = sensorData.GetFlameDetected() != null ? $"불꽃감지: {sensorData.GetFlameDetected()}" : "불꽃감지: -";
-        humanDetectedText.text = sensorData.GetHumanDetected() > 30 ? "인체감지: 감지" : "인체감지: -";
+        humanDetectedText.text = sensorData.GetHumanDetected() > 30 ? "인체감지: 감지" : "인체감지: -";
         gasLevelText.text = sensorData.GetGasLevel() != null ? $"일산화탄소: {sensorData.GetGasLevel()}" : "일산화탄소: -";
         pm25LevelText.text = sensorData.GetPM25Level() != null ? $"PM2.5: {sensorData.GetPM25Level()}" : "PM2.5: -";
         pm100LevelText.text = sensorData.GetPM100Level() != null ? $"PM10: {sensorData.GetPM100Level()}" : "PM10: -";

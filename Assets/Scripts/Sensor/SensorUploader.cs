@@ -383,7 +383,7 @@ public class SensorUploader : MonoBehaviour
         // Check for unusual activity
 
         // Temperature is too high
-        if (Convert.ToDouble(sensorDict["temperature"]) > 35.0)
+        if (Convert.ToDouble(sensorDict["temperature"]) > 40.0)
         {
             alertDict.Add("temperature", Convert.ToDouble(sensorDict["temperature"]));
             uploadAlert = true;
@@ -410,7 +410,7 @@ public class SensorUploader : MonoBehaviour
         }
 
         // Flame detected
-        if (Convert.ToDouble(sensorDict["flameDetected"]) > 8.0)
+        if (Convert.ToDouble(sensorDict["flameDetected"]) > 13.0)
         {
             alertDict.Add("flameDetected", Convert.ToDouble(sensorDict["flameDetected"]));
             uploadAlert = true;
