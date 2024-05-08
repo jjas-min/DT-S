@@ -10,7 +10,9 @@ using Firebase.Extensions;
 
 public class SensorUploader : MonoBehaviour
 {
-    private FirebaseFirestore db;
+    [SerializeField] private bool issueAlertOn = false;
+
+   private FirebaseFirestore db;
     private float elapsedTime = 0f;
 
     private UduinoManager UduManager;
@@ -351,7 +353,10 @@ public class SensorUploader : MonoBehaviour
         };
 
         // Upload Alert if unusual activity is detected
-        CheckForAlertAndUpload(sensorDict);
+        if (issueAlertOn)
+        {
+            CheckForAlertAndUpload(sensorDict);
+        }
 
         // Upload sensor data to Firestore
         db.Collection("SensorPackages").Document(sensorPackageID).Collection("SensorData").Document(createdTime.ToString("yyyy-MM-dd HH:mm:ss")).SetAsync(sensorDict);
