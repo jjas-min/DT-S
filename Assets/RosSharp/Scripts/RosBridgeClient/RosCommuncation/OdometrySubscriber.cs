@@ -61,11 +61,11 @@ namespace RosSharp.RosBridgeClient
             instantiatedPrefab.transform.SetParent(pointsParent.transform);
 
             // Robot
-            Robot.transform.position = position;
-            // Robot.transform.Quaternion.w = rotation.w;
-            Quaternion originalQuaternion = Robot.transform.rotation;
-            Quaternion newQuaternion = new Quaternion(originalQuaternion.x, originalQuaternion.y, originalQuaternion.z, rotation.w);
-            Robot.transform.rotation = newQuaternion;
+            // Robot.transform.position = position;
+            // // Robot.transform.Quaternion.w = rotation.w;
+            // Quaternion originalQuaternion = Robot.transform.rotation;
+            // Quaternion newQuaternion = new Quaternion(originalQuaternion.x, originalQuaternion.y, originalQuaternion.z, rotation.w);
+            // Robot.transform.rotation = newQuaternion;
         }
 
         private Vector3 GetPosition(MessageTypes.Nav.Odometry message)
