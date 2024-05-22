@@ -12,7 +12,7 @@ public class SensorUploader : MonoBehaviour
 {
     [SerializeField] private bool issueAlertOn = false;
 
-   private FirebaseFirestore db;
+    private FirebaseFirestore db;
     private float elapsedTime = 0f;
 
     private UduinoManager UduManager;
@@ -22,6 +22,10 @@ public class SensorUploader : MonoBehaviour
     private string sensorPackageID;
     [SerializeField] private string inputDeviceName;
     [SerializeField] private string outputDeviceName;
+
+    // 보정값
+    [SerializeField] private double temperatureCorrection = 10.0;
+    [SerializeField] private int flameCorrection = 3;
 
     enum Pin
     {
@@ -181,7 +185,7 @@ public class SensorUploader : MonoBehaviour
                         {
                             case (int)Pin.A0:
                                 temperatureF = sensorValue;
-                                temperatureC = Math.Round(temperatureF * 0.48828125, 1);
+                                temperatureC = Math.Round(temperatureF * 0.48828125, 1) - temperatureCorrection;
                                 Debug.Log("Sensor value from " + inputDevice.name + ": T" + temperatureC);
                                 break;
                             case (int)Pin.A1:
@@ -193,7 +197,7 @@ public class SensorUploader : MonoBehaviour
                                 Debug.Log("Sensor value from " + inputDevice.name + ": W" + waterLevel);
                                 break;
                             case (int)Pin.A3:
-                                flameDetected = sensorValue;
+                                flameDetected = Math.Max(sensorValue - flameCorrection, 0);
                                 Debug.Log("Sensor value from " + inputDevice.name + ": F" + flameDetected);
                                 break;
                             case (int)Pin.A4:
